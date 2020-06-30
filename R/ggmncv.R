@@ -183,7 +183,7 @@ GGMncv <- function(x, n,
 
     vip_results <-
       data.frame(Relation =  sapply(1:p, function(x)
-        paste0(cn, "--", x))[upper.tri(I_p)],
+        paste0(cn, "--", cn[x]))[upper.tri(I_p)],
         VIP = rowMeans(vip_results))
 
   } else {

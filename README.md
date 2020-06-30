@@ -53,13 +53,117 @@ in Zou and Li (2008).
 
 ## Tuning Parameter
 
-`GGMncv` is currently tuning free. This is accomplished by setting the
-tuning parameter to `sqrt(log(p)/n)` (see for example Zhang, Ren, and
-Chen 2018; Li et al. 2015; Jankova and Van De Geer 2015).
+The methods in **GGMncv** are currently tuning free. This is
+accomplished by setting the tuning parameter to `sqrt(log(p)/n)` (see
+for example Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van
+De Geer 2015).
 
 ## Example
 
+A GGM can be fitted as follows
+
+``` r
+library(GGMncv)
+
+# data
+Y <- GGMncv::ptsd[,1:10]
+
+# polychoric
+S <- psych::polychoric(Y)$rho
+
+# fit model
+fit <- GGMncv(S, n = nrow(Y), 
+              penalty = "atan", 
+              LLA = TRUE)
+
+# print
+fit
+
+#>       1     2     3     4     5     6     7     8     9    10
+#> 1  0.000 0.255 0.000 0.309 0.101 0.000 0.000 0.000 0.073 0.000
+#> 2  0.255 0.000 0.485 0.000 0.000 0.000 0.122 0.000 0.000 0.000
+#> 3  0.000 0.485 0.000 0.185 0.232 0.000 0.000 0.000 0.000 0.000
+#> 4  0.309 0.000 0.185 0.000 0.300 0.000 0.097 0.000 0.000 0.243
+#> 5  0.101 0.000 0.232 0.300 0.000 0.211 0.166 0.000 0.000 0.000
+#> 6  0.000 0.000 0.000 0.000 0.211 0.000 0.234 0.079 0.000 0.000
+#> 7  0.000 0.122 0.000 0.097 0.166 0.234 0.000 0.000 0.000 0.000
+#> 8  0.000 0.000 0.000 0.000 0.000 0.079 0.000 0.000 0.000 0.114
+#> 9  0.073 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.261
+#> 10 0.000 0.000 0.000 0.243 0.000 0.000 0.000 0.114 0.261 0.000
+```
+
+## Bootstrapping
+
+It might be tempting to perform a bootstrap and then construct
+confidence intervals for the edges. However, in general, these
+“confidence” intervals do not have the correct properties to be
+considered a confidence intervals (see
+[Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval)). This
+sentiment is echoed in Section 3.1, “Why standard bootstrapping and
+subsampling do not work As,” of Bühlmann, Kalisch, and Meier (2014):
+
+> The (limiting) distribution of such a sparse estimator is non-Gaussian
+> with point mass at zero, and this is the reason why standard bootstrap
+> or subsampling techniques do not provide valid confidence regions or
+> p-values (pp. 7-8).
+
+For this reason, it is common to not provide the standard errors for
+penalized models. **GGMncv** follows the idea of behind the
+**penalized** `R` package:
+
+> It is a very natural question to ask for standard errors of regression
+> coefficients or other estimated quantities. In principle such standard
+> errors can easily be calculated, e.g. using the bootstrap. Still, this
+> package deliberately does not provide them. The reason for this is
+> that standard errors are not very meaningful for strongly biased
+> estimates such as arise from penalized estimation methods (p.18,
+> Goeman, Meijer, and Chaturvedi 2018)
+
+Thus, at this time, confidence intervals are not provided confidence
+intervals for the partial correlations. However, **GGMncv** does
+included the so-called variable inclusion “probability” for each
+relation (see p 1523 in Bunea et al. 2011; and Figure 6.7 in Hastie,
+Tibshirani, and Wainwright 2015). These are computed using a
+non-paramametric boostrap strategy.
+
+### Variable Inclusion “Probability”
+
+``` r
+# data
+Y <- GGMncv::ptsd[,1:10]
+
+# polychoric
+S <- psych::polychoric(Y)$rho
+
+# fit model
+fit <- GGMncv(S, n = nrow(Y), 
+              penalty = "atan", 
+              vip = TRUE)
+
+# plot
+plot(fit, size = 4)
+```
+
+![](man/figures/vip.png)
+
 <div id="refs" class="references">
+
+<div id="ref-bunea2011penalized">
+
+Bunea, Florentina, Yiyuan She, Hernando Ombao, Assawin Gongvatana, Kate
+Devlin, and Ronald Cohen. 2011. “Penalized Least Squares Regression
+Methods and Applications to Neuroimaging.” *NeuroImage* 55 (4): 1519–27.
+
+</div>
+
+<div id="ref-Buhlmann2014">
+
+Bühlmann, Peter, Markus Kalisch, and Lukas Meier. 2014.
+“High-Dimensional Statistics with a View Toward Applications in
+Biology.” *Annual Review of Statistics and Its Application* 1 (1):
+255–78. <https://doi.org/10.1146/annurev-statistics-022513-115545>.
+
+</div>
 
 <div id="ref-dicker2013variable">
 
@@ -82,6 +186,21 @@ Statistics* 3 (2): 521.
 Fan, Jianqing, and Runze Li. 2001. “Variable Selection via Nonconcave
 Penalized Likelihood and Its Oracle Properties.” *Journal of the
 American Statistical Association* 96 (456): 1348–60.
+
+</div>
+
+<div id="ref-goeman2018l1">
+
+Goeman, Jelle, Rosa Meijer, and Nimisha Chaturvedi. 2018. “L1 and L2
+Penalized Regression Models.”
+
+</div>
+
+<div id="ref-hastie2015statistical">
+
+Hastie, Trevor, Robert Tibshirani, and Martin Wainwright. 2015.
+*Statistical Learning with Sparsity: The Lasso and Generalizations*. CRC
+press.
 
 </div>
 
