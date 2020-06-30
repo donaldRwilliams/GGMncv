@@ -53,7 +53,7 @@ in Zou and Li (2008).
 
 `GGMncv` is currently tuning free. This is accomplished by setting the
 tuning parameter to `sqrt(log(p)/n)` (see for example Zhang, Ren, and
-Chen 2018; Li et al. 2015; Jankova, Van De Geer, and others 2015).
+Chen 2018; Li et al. 2015; Jankova and Van De Geer 2015).
 
 ## Example
 
@@ -85,9 +85,9 @@ American Statistical Association* 96 (456): 1348–60.
 
 <div id="ref-jankova2015confidence">
 
-Jankova, Jana, Sara Van De Geer, and others. 2015. “Confidence Intervals
-for High-Dimensional Inverse Covariance Estimation.” *Electronic Journal
-of Statistics* 9 (1): 1205–29.
+Jankova, Jana, and Sara Van De Geer. 2015. “Confidence Intervals for
+High-Dimensional Inverse Covariance Estimation.” *Electronic Journal of
+Statistics* 9 (1): 1205–29.
 
 </div>
 
