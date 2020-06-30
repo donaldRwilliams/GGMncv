@@ -68,3 +68,40 @@ exp_deriv <- function(Theta, lambda, gamma = 0.1){
   lambda_mat <- (lambda/gamma) * exp(-(Theta/gamma))
   return(lambda_mat)
   }
+
+
+htf <- function(Sigma, adj, tol = 1e-10) {
+  S <- Sigma
+  p <- ncol(S)
+  diag(adj) <- 0
+  W <- W_previous <- S
+  n_iter <- 0
+  repeat {
+    for (i in 1:p) {
+      beta <- rep(0, p - 1)
+      pad_index <- which(adj[i, -i] == 1)
+      if (length(pad_index) == 0) {
+        w_12 <- beta
+      }
+      else {
+        W_11 <- W[-i, -i]
+        s_12 <- S[i, -i]
+        W_11_star <- W_11[pad_index, pad_index]
+        s_12_star <- s_12[pad_index]
+        beta[pad_index] <- solve(W_11_star) %*% s_12_star
+        w_12 <- W_11 %*% beta
+      }
+      W[-i, i] <- W[i, -i] <- w_12
+    }
+    max_diff <- max(W_previous[upper.tri(W)] - W[upper.tri(W)])
+    if (max_diff < tol) {
+      break
+    }
+    else {
+      W_previous <- W
+      n_iter <- n_iter + 1
+    }
+  }
+  returned_object <- list(Theta = round(solve(W), 4), Sigma = round(W, 4))
+  returned_object
+}
