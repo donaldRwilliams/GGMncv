@@ -5,39 +5,72 @@
 \title{GGMncv}
 \usage{
 GGMncv(
-  Sigma,
+  x,
   n,
-  penalty = "selo",
-  nonreg = TRUE,
+  penalty = "atan",
+  nonreg = FALSE,
   LLA = FALSE,
-  steps = NULL,
-  threshold = FALSE
+  method = "pearson",
+  vip = FALSE,
+  vip_iter = 1000,
+  progress = TRUE,
+  ...
 )
 }
 \arguments{
-\item{Sigma}{Correlation matrix}
+\item{x}{There are 2 options: either a \code{n} by \code{p} data matrix or a
+\code{p} by \code{p} correlation matrix.}
 
 \item{n}{Numeric. Sample size.}
 
-\item{penalty}{Character string. Which penalty should be used (defaults to \code{selo}).}
+\item{penalty}{Character string. Which penalty should be used (defaults to \code{atan}).}
 
 \item{nonreg}{Logical. Should the precision matrix be reestimated, given the adjacency matrix
-(defaults to TRUE)? This provides the \strong{nonregularized}, maximum likelhood estimate,
-with constraints.}
+(defaults to \code{FALSE})? When set to \code{TRUE}, this provides the \strong{nonregularized},
+maximum likelhood estimate with constraints.}
 
 \item{LLA}{Logical. Should the local linear approximation be used for maxmizing the penalized likelihood ?
-The default is \code{FALSE} which results in a one-step approach (see details).}
+The default is \code{FALSE} (see details).}
 
-\item{steps}{Numeric. How many steps if \code{LLA = TRUE} ? Set to \code{Inf} for iterating until
-the algorithm converges.}
+\item{method}{Character string. Which correlation coefficient should be computed.
+One of "pearson" (default), "spearman", or  "polychoric".}
 
-\item{threshold}{Logical. Should a threshold be applied (\code{1/sqrt(n-p-5)} ) ? Note that this
-may be useful for small sample sizes to improve specificity (i.e., lower false positive rate),
-but not needed otherwise (see details).}
+\item{vip}{Logical. Should the respective variable inclusion 'probabilities' be
+computed (defaults to \code{FALSE})? This is accomplished with a
+non-parametric bootstrap (see details)}
+
+\item{vip_iter}{Numeric. How many number of bootstrap samples (defaults to 1000)?}
+
+\item{progress}{Logical. Should a progress bar be included (defaults to \code{TRUE}) ? Note that
+this only applies when \code{vip = TRUE}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 An object of class \code{ggmncv}, including:
+
+\itemize{
+\item \code{Theta} Inverse covariance matrix
+\item \code{Sigma} Covariance matrix
+\item \code{P} Weigthed adjacency matrix
+\item \code{adj} Adjacency matrix
+\item \code{lambda} Tuning parameter (i.e., sqrt(log(p)/n))
+\item \code{fit} glasso fitted model (a list)
+}
 }
 \description{
 GGMncv
+}
+\examples{
+# data
+Y <- BGGM::ptsd
+
+# polychoric
+S <- psych::polychoric(Y)$rho
+
+# fit model
+fit <- GGMncv(S, n = nrow(Y))
+
+qgraph::qgraph(fit$P)
+
 }

@@ -41,6 +41,7 @@ selo_pen <- function(Theta, lambda, gamma = 0.1) {
 selo_deriv <- function(Theta, lambda, gamma = 0.1){
   p <- ncol(Theta)
   Theta <- abs(Theta)
+  Theta <- ifelse(Theta == 0, 1e-5, Theta)
   lambda_mat <- matrix(numDeriv::grad(selo_pen, x = Theta, lambda = lambda, gamma = gamma), p, p)
   return(lambda_mat)
 }
