@@ -1,14 +1,16 @@
 Package: GGMncv
 Type: Package
 Title: Non-Convex Penalties for Gaussian Graphical Models
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Version: 1.0.0
+Authors@R: person("Donald", "Williams", email = "drwwilliams@ucdavis.edu", role = c("aut", "cre"))
+Maintainer: Donald Williams <drwwilliams@ucdavis.edu>
+Description: Estimate Gaussian graphical models with non-convex penalties. There are extensions
+  for computing variable inclusion probabilities, multiple regression coefficients, and 
+  out-of-sample predictive accuracy. 
 License: GPL-2
 Depends: R (>= 4.0.0)
 Imports:
+  Rdpack (>= 0.11-1),
   ggplot2 (>= 3.3.0),
   glassoFast (>= 1.0),
   numDeriv (>= 2016.8-1.1),
