@@ -9,6 +9,7 @@ Description: More about what it does (maybe more than one line)
 License: GPL-2
 Depends: R (>= 4.0.0)
 Imports:
+  ggplot2 (>= 3.3.0),
   glassoFast (>= 1.0),
   numDeriv (>= 2016.8-1.1),
   psych (>= 1.9.12.31),
