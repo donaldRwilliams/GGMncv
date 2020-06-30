@@ -1,3 +1,5 @@
+#' @importFrom numDeriv grad
+
 # Fan, J., & Li, R. (2001). Variable selection via nonconcave penalized likelihood and
 # its oracle properties. Journal of the American statistical Association, 96(456), 1348-1360.
 scad_deriv <- function(Theta, lambda, gamma = 3.7){
