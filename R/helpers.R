@@ -48,13 +48,13 @@ selo_deriv <- function(Theta, lambda, gamma = 0.1){
 
 # Zhang, C. H. (2010). Nearly unbiased variable selection under minimax concave penalty.
 # The Annals of statistics, 38(2), 894-942.
-mcp_deriv <- function(Theta, lambda, gamma = 2){
+mcp_deriv <- function(Theta, lambda, gamma = 3){
   Theta <- abs(Theta)
   lambda_mat <- (Theta <= gamma * lambda) * (lambda - Theta/gamma)
   return(lambda_mat)
   }
 
-mcp_pen <- function(Theta, lambda, gamma = 2){
+mcp_pen <- function(Theta, lambda, gamma = 3){
   Theta <- abs(Theta)
   pen_mat <- (Theta <= lambda * gamma) *  (lambda * Theta - (Theta^2/(2*gamma))) +
     (Theta > lambda * gamma) * (0.5 * gamma * lambda^2)
