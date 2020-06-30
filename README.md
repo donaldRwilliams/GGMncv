@@ -10,8 +10,8 @@ Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https:/
 
 The goal of GGMncv is to provide non-convex penalties for estimating
 Gaussian graphical models. These are known to overcome the various
-limitations of lasso, including (but not limited to) consistent model
-selection, nearly unbiased estimates, and a lower false positive rate.
+limitations of lasso, including (but not limited to) inconsistent model
+selection, biased estimates, and a high false positive rate.
 
 ## Installation
 
@@ -119,12 +119,11 @@ penalized models. **GGMncv** follows the idea of behind the
 > estimates such as arise from penalized estimation methods (p.18,
 > Goeman, Meijer, and Chaturvedi 2018)
 
-Thus, at this time, confidence intervals are not provided confidence
-intervals for the partial correlations. However, **GGMncv** does
-included the so-called variable inclusion “probability” for each
-relation (see p 1523 in Bunea et al. 2011; and Figure 6.7 in Hastie,
-Tibshirani, and Wainwright 2015). These are computed using a
-non-paramametric boostrap strategy.
+Thus, at this time, confidence intervals are not provided for the
+partial correlations. However, **GGMncv** does included the so-called
+variable inclusion “probability” for each relation (see p 1523 in Bunea
+et al. 2011; and Figure 6.7 in Hastie, Tibshirani, and Wainwright 2015).
+These are computed using a non-paramametric boostrap strategy.
 
 ### Variable Inclusion “Probability”
 
@@ -145,6 +144,8 @@ plot(fit, size = 4)
 ```
 
 ![](man/figures/vip.png)
+
+## References
 
 <div id="refs" class="references">
 

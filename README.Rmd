@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 [![Build Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https://travis-ci.org/donaldRwilliams/GGMncv)
 
 The goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known 
-to overcome the various limitations of lasso, including (but not limited to) consistent model selection, nearly unbiased estimates, and a lower false positive rate.
+to overcome the various limitations of lasso, including (but not limited to) inconsistent model selection, biased estimates, and a high false positive rate.
 
 ## Installation
 
@@ -112,7 +112,9 @@ For this reason, it is common to not provide the standard errors for penalized m
 >calculated, e.g. using the bootstrap. Still, this package deliberately does not provide them. The reason for this is that standard errors are not very meaningful for strongly biased estimates
 such as arise from penalized estimation methods [p.18, @goeman2018l1]
 
-Thus, at this time, confidence intervals are not provided confidence intervals for the partial correlations. However, **GGMncv** does included the so-called variable inclusion "probability" for each relation [see p 1523 in @bunea2011penalized; and Figure 6.7 in @hastie2015statistical]. These are computed using a non-paramametric boostrap strategy.
+Thus, at this time, confidence intervals are not provided for the partial correlations. However, **GGMncv** 
+does included the so-called variable inclusion "probability" for each relation [see p 1523 in @bunea2011penalized; 
+and Figure 6.7 in @hastie2015statistical]. These are computed using a non-paramametric boostrap strategy.
 
 ### Variable Inclusion "Probability"
 
@@ -132,3 +134,5 @@ fit <- GGMncv(S, n = nrow(Y),
 plot(fit, size = 4)
 ```
 ![](man/figures/vip.png)
+
+## References
