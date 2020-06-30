@@ -227,7 +227,12 @@ print.ggmncv <- function(x, ...){
 #'
 #' @param color Character string. The color of the points (defaults to \code{black})
 #'
+#' @param ... Currently ignored.
+#'
 #' @return A \code{ggplot} object
+#'
+#' @import ggplot2
+#'
 #'
 #' @examples
 #' # data
@@ -245,14 +250,25 @@ print.ggmncv <- function(x, ...){
 #' # plot VIP
 #' plot(fit)
 #' @export
-plot.ggmncv <- function(x, size = 1, color = "black"){
+plot.ggmncv <- function(x,
+                        size = 1,
+                        color = "black",
+                        ...){
   if(is.null(x$vip_results)){
     stop("variable inclusion 'probabilities' not found (set vip = TRUE)")
   }
+
   dat <- x$vip_results[order(x$vip_results$VIP),]
-  dat$new <- factor(dat$Relation, levels = dat$Relation, labels = dat$Relation)
-  ggplot(dat,aes(y= new, x= VIP, group = new)) +
-    geom_point(size = size, color = color)  +
+
+  dat$new1 <- factor(dat$Relation,
+                     levels = dat$Relation,
+                     labels = dat$Relation)
+
+  ggplot(dat,aes(y= new1,
+                 x = VIP,
+                 group = new1)) +
+    geom_point(size = size,
+               color = color)  +
     ylab("Relation")
 
 }

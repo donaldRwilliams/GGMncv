@@ -106,3 +106,5 @@ htf <- function(Sigma, adj, tol = 1e-10) {
   returned_object <- list(Theta = round(solve(W), 4), Sigma = round(W, 4))
   returned_object
 }
+
+globalVariables(c("VIP", "new1", "Y"))

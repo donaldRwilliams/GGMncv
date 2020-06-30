@@ -3,6 +3,7 @@
 S3method(plot,ggmncv)
 S3method(print,ggmncv)
 export(GGMncv)
+import(ggplot2)
 importFrom(glassoFast,glassoFast)
 importFrom(numDeriv,grad)
 importFrom(psych,polychoric)

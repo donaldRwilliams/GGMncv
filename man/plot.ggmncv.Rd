@@ -4,7 +4,7 @@
 \alias{plot.ggmncv}
 \title{Plot \code{ggmncv} Objects}
 \usage{
-\method{plot}{ggmncv}(x, size = 1, color = "black")
+\method{plot}{ggmncv}(x, size = 1, color = "black", ...)
 }
 \arguments{
 \item{x}{An object of class \code{ggmncv}}
@@ -12,6 +12,8 @@
 \item{size}{Numeric. The size of the points (defaults to 1).}
 
 \item{color}{Character string. The color of the points (defaults to \code{black})}
+
+\item{...}{Currently ignored.}
 }
 \value{
 A \code{ggplot} object
