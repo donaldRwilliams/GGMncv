@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<img src="man/figures/imgfile.jpg" width = 250 />
+<img src="man/figures/imgfile.png" width = 250 />
 
 # GGMncv
 
