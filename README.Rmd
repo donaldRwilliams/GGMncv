@@ -56,7 +56,7 @@ the solution is computationally efficient and solved with the local linear appro
 
 ## Tuning Parameter
 `GGMncv` is currently tuning free. This is accomplished by setting the tuning parameter to `sqrt(log(p)/n)` 
-[see for example @zhang2018silggm, Table @li2015flare, @jankova2015confidence].
+[see for example @zhang2018silggm; @li2015flare; @jankova2015confidence].
 
 
 ## Example

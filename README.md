@@ -53,7 +53,7 @@ in Zou and Li (2008).
 
 `GGMncv` is currently tuning free. This is accomplished by setting the
 tuning parameter to `sqrt(log(p)/n)` (see for example Zhang, Ren, and
-Chen 2018, Table @li2015flare, @jankova2015confidence).
+Chen 2018; Li et al. 2015; Jankova, Van De Geer, and others 2015).
 
 ## Example
 
