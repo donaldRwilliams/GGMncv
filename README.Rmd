@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+<img src="man/figures/imgfile.jpg" width = 250 />
+
 # GGMncv
 
 [![Build Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https://travis-ci.org/donaldRwilliams/GGMncv)
@@ -39,7 +41,7 @@ devtools::install_github("donaldRwilliams/GGMncv")
 
 
 ## Penalties
-The following are implemented in `GGMncv`
+The following are implemented in `GGMncv`:
 
 1. Atan [`penalty = "atan"`; @wang2016variable]. This is currently the default.
 

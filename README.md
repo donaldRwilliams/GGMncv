@@ -1,6 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<img src="man/figures/imgfile.jpg" width = 250 />
+
 # GGMncv
 
 [![Build
@@ -29,7 +31,7 @@ devtools::install_github("donaldRwilliams/GGMncv")
 
 ## Penalties
 
-The following are implemented in `GGMncv`
+The following are implemented in `GGMncv`:
 
 1.  Atan (`penalty = "atan"`; Wang and Zhu, n.d.). This is currently the
     default.
