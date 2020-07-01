@@ -7,6 +7,7 @@
 GGMncv(
   x,
   n,
+  lambda = NULL,
   gamma = 0.1,
   penalty = "atan",
   nonreg = FALSE,
@@ -23,6 +24,9 @@ GGMncv(
 \code{p} by \code{p} correlation matrix.}
 
 \item{n}{Numeric. Sample size.}
+
+\item{lambda}{Numeric. Tuning parameter governing the degress of penalization. Defaults to
+\code{NULL} which results in fixing lambda to \code{sqrt(log(p)/n)}.}
 
 \item{gamma}{Numeric. Hyperparameter for the penalty function. Defaults to \code{0.1}
 which is the recommended value for the default penalty (see details).}
@@ -63,12 +67,12 @@ An object of class \code{ggmncv}, including:
 }
 }
 \description{
-GGMncv
+Estimate Gaussian graphical models with non-convex penalties.
 }
 \examples{
 \donttest{
 # data
-Y <- BGGM::ptsd
+Y <- GGMncv::ptsd
 
 # polychoric
 S <- psych::polychoric(Y)$rho

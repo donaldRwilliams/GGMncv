@@ -24,7 +24,7 @@ Plot variable inclusion 'probabilities'
 \examples{
 \donttest{
 # data
-Y <- BGGM::ptsd
+Y <- GGMncv::ptsd
 
 # polychoric
 S <- psych::polychoric(Y)$rho

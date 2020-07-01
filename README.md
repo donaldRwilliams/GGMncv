@@ -11,8 +11,7 @@ Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https:/
 The goal of GGMncv is to provide non-convex penalties for estimating
 Gaussian graphical models. These are known to overcome the various
 limitations of lasso, including (but not limited to) inconsistent model
-selection, biased \[^Note that the penalties in **GGMncv** should be
-*nearly* unbiased.\] estimates, and a high false positive rate.
+selection, biased\[1\] estimates, and a high false positive rate.
 
 ## Installation
 
@@ -266,3 +265,5 @@ Penalized Likelihood Models.” *Annals of Statistics* 36 (4): 1509.
 </div>
 
 </div>
+
+1.  Note that the penalties in **GGMncv** should be *nearly* unbiased.

@@ -1,9 +1,14 @@
 #' GGMncv
 #'
+#' @description Estimate Gaussian graphical models with non-convex penalties.
+#'
 #' @param x There are 2 options: either a \code{n} by \code{p} data matrix or a
 #'          \code{p} by \code{p} correlation matrix.
 #'
 #' @param n Numeric. Sample size.
+#'
+#' @param lambda Numeric. Tuning parameter governing the degress of penalization. Defaults to
+#'               \code{NULL} which results in fixing lambda to \code{sqrt(log(p)/n)}.
 #'
 #' @param gamma Numeric. Hyperparameter for the penalty function. Defaults to \code{0.1}
 #'              which is the recommended value for the default penalty (see details).
@@ -50,7 +55,7 @@
 #' @examples
 #' \donttest{
 #' # data
-#' Y <- BGGM::ptsd
+#' Y <- GGMncv::ptsd
 #'
 #' # polychoric
 #' S <- psych::polychoric(Y)$rho
@@ -95,7 +100,7 @@ GGMncv <- function(x, n,
   # identity matrix
   I_p <- diag(p)
 
-  if(is.null(lamdba)){
+  if(is.null(lambda)){
     # tuning
     lambda <- sqrt(log(p)/n)
     }
@@ -245,7 +250,7 @@ print.ggmncv <- function(x, ...){
 #' @examples
 #' \donttest{
 #' # data
-#' Y <- BGGM::ptsd
+#' Y <- GGMncv::ptsd
 #'
 #' # polychoric
 #' S <- psych::polychoric(Y)$rho
