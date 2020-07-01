@@ -1,6 +1,6 @@
 Package: GGMncv
 Type: Package
-Title: Non-Convex Penalties for Gaussian Graphical Models
+Title: Gaussian Graphical Models with Non-convex Penalties
 Version: 1.0.0
 Authors@R: person("Donald", "Williams", email = "drwwilliams@ucdavis.edu", role = c("aut", "cre"))
 Maintainer: Donald Williams <drwwilliams@ucdavis.edu>

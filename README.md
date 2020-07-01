@@ -3,7 +3,7 @@
 
 <img src="man/figures/hex.png" width = 250 />
 
-# GGMncv
+# GGMncv: Gaussian Graphical Models with Non-convex Penalties
 
 [![Build
 Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https://travis-ci.org/donaldRwilliams/GGMncv)
