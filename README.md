@@ -33,7 +33,7 @@ devtools::install_github("donaldRwilliams/GGMncv")
 
 The following are implemented in `GGMncv`:
 
-1.  Atan (`penalty = "atan"`; Wang and Zhu, n.d.). This is currently the
+1.  Atan (`penalty = "atan"`; Wang and Zhu 2016). This is currently the
     default.
 
 2.  Seamless L0 (`penalty = "selo"`; Dicker, Huang, and Lin 2013)
@@ -94,8 +94,8 @@ fit
 
 ## Bootstrapping
 
-It might be tempting to perform a bootstrap and then construct
-confidence intervals for the edges. However, in general, these
+It might be tempting to perform a bootstrap and then attempt to
+construct confidence intervals for the edges. However, in general, these
 “confidence” intervals do not have the correct properties to be
 considered a confidence intervals (see
 [Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval)). This
@@ -123,7 +123,7 @@ Thus, at this time, confidence intervals are not provided for the
 partial correlations. However, **GGMncv** does included the so-called
 variable inclusion “probability” for each relation (see p 1523 in Bunea
 et al. 2011; and Figure 6.7 in Hastie, Tibshirani, and Wainwright 2015).
-These are computed using a non-paramametric boostrap strategy.
+These are computed using a non-parametric bootstrap strategy.
 
 ### Variable Inclusion “Probability”
 
@@ -231,9 +231,9 @@ Estimation Using a Continuous Approximation to the \[L\_0\] Penalty.”
 
 <div id="ref-wang2016variable">
 
-Wang, Yanxin, and Li Zhu. n.d. “Variable Selection and Parameter
+Wang, Yanxin, and Li Zhu. 2016. “Variable Selection and Parameter
 Estimation with the Atan Regularization Method.” *Journal of Probability
-and Statistics* 2016.
+and Statistics*.
 
 </div>
 
