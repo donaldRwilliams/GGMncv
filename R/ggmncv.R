@@ -45,6 +45,7 @@
 #'
 #'
 #' @examples
+#' \donttest{
 #' # data
 #' Y <- BGGM::ptsd
 #'
@@ -55,7 +56,7 @@
 #' fit <- GGMncv(S, n = nrow(Y))
 #'
 #' qgraph::qgraph(fit$P)
-#'
+#' }
 #' @export
 GGMncv <- function(x, n,
                    penalty = "atan",
@@ -235,6 +236,7 @@ print.ggmncv <- function(x, ...){
 #'
 #'
 #' @examples
+#' \donttest{
 #' # data
 #' Y <- BGGM::ptsd
 #'
@@ -249,6 +251,7 @@ print.ggmncv <- function(x, ...){
 #'
 #' # plot VIP
 #' plot(fit)
+#' }
 #' @export
 plot.ggmncv <- function(x,
                         size = 1,
