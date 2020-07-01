@@ -7,6 +7,7 @@
 GGMncv(
   x,
   n,
+  gamma = 0.1,
   penalty = "atan",
   nonreg = FALSE,
   LLA = FALSE,
@@ -22,6 +23,9 @@ GGMncv(
 \code{p} by \code{p} correlation matrix.}
 
 \item{n}{Numeric. Sample size.}
+
+\item{gamma}{Numeric. Hyperparameter for the penalty function. Defaults to \code{0.1}
+which is the recommended value for the default penalty (see details).}
 
 \item{penalty}{Character string. Which penalty should be used (defaults to \code{atan}).}
 
@@ -62,6 +66,7 @@ An object of class \code{ggmncv}, including:
 GGMncv
 }
 \examples{
+\donttest{
 # data
 Y <- BGGM::ptsd
 
@@ -72,5 +77,5 @@ S <- psych::polychoric(Y)$rho
 fit <- GGMncv(S, n = nrow(Y))
 
 qgraph::qgraph(fit$P)
-
+}
 }

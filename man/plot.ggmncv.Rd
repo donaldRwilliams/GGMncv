@@ -22,6 +22,7 @@ A \code{ggplot} object
 Plot variable inclusion 'probabilities'
 }
 \examples{
+\donttest{
 # data
 Y <- BGGM::ptsd
 
@@ -36,4 +37,5 @@ fit <- GGMncv(S, n = nrow(Y),
 
 # plot VIP
 plot(fit)
+}
 }

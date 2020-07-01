@@ -5,6 +5,9 @@
 #'
 #' @param n Numeric. Sample size.
 #'
+#' @param gamma Numeric. Hyperparameter for the penalty function. Defaults to \code{0.1}
+#'              which is the recommended value for the default penalty (see details).
+#'
 #' @param penalty Character string. Which penalty should be used (defaults to \code{atan}).
 #'
 #' @param nonreg Logical. Should the precision matrix be reestimated, given the adjacency matrix
@@ -59,6 +62,8 @@
 #' }
 #' @export
 GGMncv <- function(x, n,
+                   lambda = NULL,
+                   gamma = 0.1,
                    penalty = "atan",
                    nonreg = FALSE,
                    LLA = FALSE,
@@ -90,8 +95,10 @@ GGMncv <- function(x, n,
   # identity matrix
   I_p <- diag(p)
 
-  # tuning
-  lambda <- sqrt(log(p)/n)
+  if(is.null(lamdba)){
+    # tuning
+    lambda <- sqrt(log(p)/n)
+    }
 
   # inverse covariance matrix
   Theta <- solve(R)
@@ -100,7 +107,7 @@ GGMncv <- function(x, n,
   # lambda matrix
   lambda_mat <-
     eval(parse(text =  paste0(
-      penalty, "_deriv(Theta = Theta, lambda = lambda)"
+      penalty, "_deriv(Theta = Theta, lambda = lambda, gamma = gamma)"
     )))
 
   diag(lambda_mat) <- lambda
@@ -114,7 +121,7 @@ GGMncv <- function(x, n,
 
     lambda_mat <-
       eval(parse(text =  paste0(
-        penalty, "_deriv(Theta = Theta, lambda = lambda)"
+        penalty, "_deriv(Theta = Theta, lambda = lambda, gamma = gamma)"
       )))
 
     diag(lambda_mat) <- lambda
@@ -161,7 +168,7 @@ GGMncv <- function(x, n,
 
       lambda_mat <-
         eval(parse(text =  paste0(
-          penalty, "_deriv(Theta = Theta, lambda = lambda)"
+          penalty, "_deriv(Theta = Theta, lambda = lambda, gamma = gamma)"
         )))
 
       diag(lambda_mat) <- lambda

@@ -21,18 +21,18 @@ knitr::opts_chunk$set(
 [![Build Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https://travis-ci.org/donaldRwilliams/GGMncv)
 
 The goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known 
-to overcome the various limitations of lasso, including (but not limited to) inconsistent model selection, biased estimates, and a high false positive rate.
+to overcome the various limitations of lasso, including (but not limited to) inconsistent model selection, biased^[Note that the penalties in **GGMncv** should be *nearly* unbiased] estimates, and a high false positive rate.
 
 ## Installation
 
-You can install the released version of GGMncv from
-[CRAN](https://CRAN.R-project.org) with:
+You can install the development version from [GitHub](https://github.com/) with:
 
-``` r
-install.packages("GGMncv")
-```
+<!-- released version of GGMncv from -->
+<!-- [CRAN](https://CRAN.R-project.org) with: -->
 
-And the development version from [GitHub](https://github.com/) with:
+<!-- ``` r -->
+<!-- install.packages("GGMncv") -->
+<!-- ``` -->
 
 ``` r
 # install.packages("devtools")
@@ -94,8 +94,7 @@ fit
 
 
 ## Bootstrapping
-It might be tempting to perform a bootstrap and then attempt to construct confidence intervals for the edges. However, in general, these "confidence" intervals do not have the correct properties to be considered
-a confidence intervals (see  [Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval)). This 
+It might be tempting to perform a bootstrap and then attempt to construct confidence intervals for the edges. However, in general, these "confidence" intervals do not have the correct properties to be considered confidence intervals (see  [Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval)). This 
 sentiment is echoed in Section 3.1, "Why standard bootstrapping and subsampling do not work As," of 
 @Buhlmann2014:
 
@@ -113,7 +112,7 @@ For this reason, it is common to not provide the standard errors for penalized m
 such as arise from penalized estimation methods [p.18, @goeman2018l1]
 
 Thus, at this time, confidence intervals are not provided for the partial correlations. However, **GGMncv** 
-does included the so-called variable inclusion "probability" for each relation [see p 1523 in @bunea2011penalized; 
+does include the so-called variable inclusion "probability" for each relation [see p. 1523 in @bunea2011penalized; 
 and Figure 6.7 in @hastie2015statistical]. These are computed using a non-parametric bootstrap strategy.
 
 ### Variable Inclusion "Probability"

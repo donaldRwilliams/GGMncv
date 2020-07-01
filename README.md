@@ -11,18 +11,22 @@ Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https:/
 The goal of GGMncv is to provide non-convex penalties for estimating
 Gaussian graphical models. These are known to overcome the various
 limitations of lasso, including (but not limited to) inconsistent model
-selection, biased estimates, and a high false positive rate.
+selection, biased\[1\] estimates, and a high false positive rate.
 
 ## Installation
 
-You can install the released version of GGMncv from
-[CRAN](https://CRAN.R-project.org) with:
+You can install the development version from
+[GitHub](https://github.com/) with:
 
-``` r
-install.packages("GGMncv")
-```
+<!-- released version of GGMncv from -->
 
-And the development version from [GitHub](https://github.com/) with:
+<!-- [CRAN](https://CRAN.R-project.org) with: -->
+
+<!-- ``` r -->
+
+<!-- install.packages("GGMncv") -->
+
+<!-- ``` -->
 
 ``` r
 # install.packages("devtools")
@@ -97,7 +101,7 @@ fit
 It might be tempting to perform a bootstrap and then attempt to
 construct confidence intervals for the edges. However, in general, these
 “confidence” intervals do not have the correct properties to be
-considered a confidence intervals (see
+considered confidence intervals (see
 [Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval)). This
 sentiment is echoed in Section 3.1, “Why standard bootstrapping and
 subsampling do not work As,” of Bühlmann, Kalisch, and Meier (2014):
@@ -120,8 +124,8 @@ penalized models. **GGMncv** follows the idea of behind the
 > Goeman, Meijer, and Chaturvedi 2018)
 
 Thus, at this time, confidence intervals are not provided for the
-partial correlations. However, **GGMncv** does included the so-called
-variable inclusion “probability” for each relation (see p 1523 in Bunea
+partial correlations. However, **GGMncv** does include the so-called
+variable inclusion “probability” for each relation (see p. 1523 in Bunea
 et al. 2011; and Figure 6.7 in Hastie, Tibshirani, and Wainwright 2015).
 These are computed using a non-parametric bootstrap strategy.
 
@@ -261,3 +265,5 @@ Penalized Likelihood Models.” *Annals of Statistics* 36 (4): 1509.
 </div>
 
 </div>
+
+1.  Note that the penalties in **GGMncv** should be *nearly* unbiased
