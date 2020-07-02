@@ -344,7 +344,7 @@ GGMncv <- function(x, n,
                           vip_results = vip_results,
                           fitted_models = fitted_models)
 
-  class(returned_object) <- "ggmncv"
+  class(returned_object) <- c("ggmncv", "default")
   return(returned_object)
 }
 
@@ -353,11 +353,18 @@ GGMncv <- function(x, n,
 #' @param x An object of class \code{ggmncv}
 #' @param ... Currently ignored
 #' @export
-print.ggmncv <- function(x, ...){
-  mat <- round(x$P, 3)
-  colnames(mat) <- 1:ncol(x$P)
-  rownames(mat) <- 1:ncol(x$P)
-  print(mat)
+print.ggmncv <- function(x,...){
+
+  if(is(x, "default")){
+
+  print_ggmncv(x,...)
+
+  }
+  if(is(x, "coef")){
+
+    print_coef(x,...)
+  }
+
 }
 
 
@@ -418,4 +425,11 @@ plot.ggmncv <- function(x,
                color = color)  +
     ylab("Relation")
 
+}
+
+print_ggmncv <- function(x, ...){
+  mat <- round(x$P, 3)
+  colnames(mat) <- 1:ncol(x$P)
+  rownames(mat) <- 1:ncol(x$P)
+  print(mat)
 }
