@@ -50,7 +50,7 @@ The following are implemented in `GGMncv`:
 
 4. Smoothly clipped absolute deviation [`penalty = scad`; @fan2001variable]
 
-5. Minimax concave penalty `penalty = mcp`; @zhang2010nearly]
+5. Minimax concave penalty [`penalty = mcp`; @zhang2010nearly]
 
 Note that options 1-3 are continuous approximations to the L0 penalty, that is, best subsets model selection. However, the solution is computationally efficient and solved with the local linear approximation described in @fan2009network or the one-step approach described in @zou2008one.
 
@@ -112,7 +112,7 @@ such as arise from penalized estimation methods [p.18, @goeman2018l1]
 
 Thus, at this time, confidence intervals are not provided for the partial correlations. However, **GGMncv** 
 does include the so-called variable inclusion "probability" for each relation [see p. 1523 in @bunea2011penalized; 
-and Figure 6.7 in @hastie2015statistical]. These are computed using a non-parametric bootstrap strategy.
+and Figure 6.7 in @hastie2015statistical]. These are computed using a nonparametric bootstrap strategy.
 
 ### Variable Inclusion "Probability"
 

@@ -127,7 +127,7 @@ Thus, at this time, confidence intervals are not provided for the
 partial correlations. However, **GGMncv** does include the so-called
 variable inclusion “probability” for each relation (see p. 1523 in Bunea
 et al. 2011; and Figure 6.7 in Hastie, Tibshirani, and Wainwright 2015).
-These are computed using a non-parametric bootstrap strategy.
+These are computed using a nonparametric bootstrap strategy.
 
 ### Variable Inclusion “Probability”
 
