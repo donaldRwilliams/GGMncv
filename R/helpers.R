@@ -1,4 +1,6 @@
 #' @importFrom numDeriv grad
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib GGMncv, .registration=TRUE
 
 # Fan, J., & Li, R. (2001). Variable selection via nonconcave penalized likelihood and
 # its oracle properties. Journal of the American statistical Association, 96(456), 1348-1360.
@@ -69,6 +71,22 @@ exp_deriv <- function(Theta, lambda, gamma = 0.1){
   lambda_mat <- (lambda/gamma) * exp(-(Theta/gamma))
   return(lambda_mat)
   }
+
+# Mazumder, R., Friedman, J. H., & Hastie, T. (2011). Sparsenet: Coordinate descent
+# with nonconvex penalties. Journal of the American Statistical Association, 106(495), 1125-1138.
+log_pen <- function(inv, lambda, gamma){
+  gamma <- 1/gamma
+  inv <- abs(inv)
+  pen_mat <- ((lambda / log(gamma+ 1)) * log(gamma * inv + 1))
+  return(pen_mat)
+}
+
+log_deriv <- function(Theta, lambda, gamma = 0.1){
+  p <- ncol(Theta)
+  Theta <- abs(Theta)
+  lambda_mat <- matrix(numDeriv::grad(log_pen, x = Theta, lambda = lambda, gamma = gamma), p, p)
+  return(lambda_mat)
+}
 
 
 htf <- function(Sigma, adj, tol = 1e-10) {

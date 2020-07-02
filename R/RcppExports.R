@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 hft_algorithm <- function(Sigma, adj, tol) {
-    .Call('_GGMncv_hft_algorithm', PACKAGE = 'GGMncv', Sigma, adj, tol)
+    .Call(`_GGMncv_hft_algorithm`, Sigma, adj, tol)
 }
 

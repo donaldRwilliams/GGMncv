@@ -44,13 +44,15 @@ The following are implemented in `GGMncv`:
 
 3.  Exponential (`penalty = "exp"`; Wang, Fan, and Zhu 2018)
 
-4.  Smoothly clipped absolute deviation (`penalty = scad`; Fan and Li
+4.  Log (`penalty = "log"`; Mazumder, Friedman, and Hastie 2011)
+
+5.  Smoothly clipped absolute deviation (`penalty = scad`; Fan and Li
     2001)
 
-5.  Minimax concave penalty (`penalty = mcp`; Zhang and others 2010)
+6.  Minimax concave penalty (`penalty = mcp`; Zhang and others 2010)
 
-Note that options 1-3 are continuous approximations to the L0 penalty,
-that is, best subsets model selection. However, the solution is
+Note that options 1-3 are explicit, continuous approximations, to the L0
+penalty, that is, best subsets model selection. However, the solution is
 computationally efficient and solved with the local linear approximation
 described in Fan, Feng, and Wu (2009) or the one-step approach described
 in Zou and Li (2008).
@@ -197,7 +199,7 @@ American Statistical Association* 96 (456): 1348–60.
 <div id="ref-goeman2018l1">
 
 Goeman, Jelle, Rosa Meijer, and Nimisha Chaturvedi. 2018. “L1 and L2
-Penalized Regression Models.”
+Penalized Regression Models.” *Vignette R Package Penalized.*
 
 </div>
 
@@ -222,6 +224,14 @@ Statistics* 9 (1): 1205–29.
 Li, Xingguo, Tuo Zhao, Xiaoming Yuan, and Han Liu. 2015. “The Flare
 Package for High Dimensional Linear Regression and Precision Matrix
 Estimation in R.” *Journal of Machine Learning Research: JMLR* 16: 553.
+
+</div>
+
+<div id="ref-mazumder2011sparsenet">
+
+Mazumder, Rahul, Jerome H Friedman, and Trevor Hastie. 2011. “Sparsenet:
+Coordinate Descent with Nonconvex Penalties.” *Journal of the American
+Statistical Association* 106 (495): 1125–38.
 
 </div>
 
