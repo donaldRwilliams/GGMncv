@@ -10,12 +10,20 @@
 #' @param lambda Numeric. Tuning parameter governing the degress of penalization. Defaults to
 #'               \code{NULL} which results in fixing lambda to \code{sqrt(log(p)/n)}.
 #'
+#' @param n_lambda Numeric. The number of regularization/thresholding parameters
+#'                 (defaults to \code{100}).
+#'
 #' @param gamma Numeric. Hyperparameter for the penalty function. Defaults to \code{0.1}
 #'              which is the recommended value for the default penalty (see details).
 #'
+#' @param select Logical. Should lambda be selected with BIC (defaults to \code{FALSE})?
+#'
+#' @param L0_learn Logical. Should lambda be selected based on the non-regularized
+#'                 precision matrix (defaults to \code{FALSE}; see details).
+#'
 #' @param penalty Character string. Which penalty should be used (defaults to \code{atan}).
 #'
-#' @param nonreg Logical. Should the precision matrix be reestimated, given the adjacency matrix
+#' @param refit Logical. Should the precision matrix be refitted, given the adjacency matrix
 #'               (defaults to \code{FALSE})? When set to \code{TRUE}, this provides the \strong{nonregularized},
 #'               maximum likelhood estimate with constraints.
 #'
@@ -33,6 +41,11 @@
 #'
 #' @param progress Logical. Should a progress bar be included (defaults to \code{TRUE}) ? Note that
 #'                 this only applies when \code{vip = TRUE}.
+#'
+#' @param store Logical. Should all of the fitted models be saved (defaults to \code{NULL}). Note
+#'              this only applies when \code{select = TRUE}. and ignored otherwise
+#'              (the one model is saved.)
+#'
 #'
 #' @param ... Currently ignored.
 #'
@@ -65,19 +78,29 @@
 #' @export
 GGMncv <- function(x, n,
                    lambda = NULL,
-                   gamma = 0.1,
+                   n_lambda = 100,
+                   gamma = NULL,
+                   select = FALSE,
+                   L0_learn = FALSE,
                    penalty = "atan",
-                   nonreg = FALSE,
+                   refit = FALSE,
                    LLA = FALSE,
                    method = "pearson",
                    vip = FALSE,
                    vip_iter = 1000,
                    progress = TRUE,
+                   store = FALSE,
                    ...){
 
-  if(! penalty %in% c("atan", "mcp", "scad", "exp", "selo")){
-    stop("penalty not found. \ncurrent options: atan, mcp, scad, exp, selo")
+  if(! penalty %in% c("atan",
+                      "mcp",
+                      "scad",
+                      "exp",
+                      "selo",
+                      "log")){
+    stop("penalty not found. \ncurrent options: atan, mcp, scad, exp, selo, or log")
   }
+
 
   if (base::isSymmetric(x)) {
     R <- x
@@ -99,43 +122,166 @@ GGMncv <- function(x, n,
 
   if(is.null(lambda)){
     # tuning
-    lambda <- sqrt(log(p)/n)
+    lambda_no_select <- sqrt(log(p)/n)
     }
 
-  # inverse covariance matrix
-  Theta <- solve(R)
+  if(is.null(gamma)) {
+    if(penalty == "scad") {
+      gamma <- 3.7
+    } else if (penalty == "mcp") {
+      gamma <- 3
 
-  if(!LLA){
-  # lambda matrix
-  lambda_mat <-
-    eval(parse(text =  paste0(
-      penalty, "_deriv(Theta = Theta, lambda = lambda, gamma = gamma)"
-    )))
+    } else {
+      gamma <- 0.1
+      }
+    }
 
-  diag(lambda_mat) <- lambda
-
-  fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
-
-
+  # high dimensional ?
+  if(n > p){
+    # inverse covariance matrix
+    Theta <- solve(R)
   } else {
+    Theta <- glassoFast::glassoFast(R,  rho = lambda_no_select)$wi
+  }
 
-    Theta <- glassoFast::glassoFast(S = R, rho = lambda)$wi
+  # no selection
+  if(!select) {
 
-    lambda_mat <-
-      eval(parse(text =  paste0(
-        penalty, "_deriv(Theta = Theta, lambda = lambda, gamma = gamma)"
-      )))
+    if (!LLA) {
 
-    diag(lambda_mat) <- lambda
+      # lambda matrix
+      lambda_mat <-
+        eval(parse(
+          text =  paste0(
+            penalty,
+            "_deriv(Theta = Theta, lambda =  lambda_no_select, gamma = gamma)"
+          )
+        ))
 
-    fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+      diag(lambda_mat) <-  lambda_no_select
+
+      fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+
+    } else {
+
+      Theta <- glassoFast::glassoFast(S = R, rho =  lambda_no_select)$wi
+
+      lambda_mat <-
+        eval(parse(
+          text =  paste0(
+            penalty,
+            "_deriv(Theta = Theta, lambda =  lambda_no_select, gamma = gamma)"
+          )
+        ))
+
+      diag(lambda_mat) <-  lambda_no_select
+
+      fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+
+    }
+
+    fitted_models <- NULL
+    } else {
+
+    if(is.null(lambda)){
+      # take from the huge package:
+      # Zhao, T., Liu, H., Roeder, K., Lafferty, J., & Wasserman, L. (2012).
+      # The huge package for high-dimensional undirected graph estimation in R.
+      # The Journal of Machine Learning Research, 13(1), 1059-1062.
+      lambda.max <- max(max(R - I_p), -min(R - I_p))
+      lambda.min = 0.01 * lambda.max
+      lambda <- exp(seq(log(lambda.min), log(lambda.max), length.out = n_lambda))
+      }
+
+     n_lambda <- length(lambda)
+
+     if(progress){
+       message("selecting lambda")
+       pb <- utils::txtProgressBar(min = 0, max = n_lambda, style = 3)
+     }
+
+     fits <- lapply(1:n_lambda, function(i){
+
+      if (!LLA) {
+
+        # lambda matrix
+        lambda_mat <-
+          eval(parse(
+            text =  paste0(
+              penalty,
+              "_deriv(Theta = Theta, lambda = lambda[i], gamma = gamma)"
+            )
+          ))
+
+        diag(lambda_mat) <- lambda[i]
+
+        fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+        adj <- ifelse(fit$wi == 0, 0, 1)
+
+      } else {
+
+        Theta <- glassoFast::glassoFast(S = R, rho = lambda[i])$wi
+
+        lambda_mat <-
+          eval(parse(
+            text =  paste0(
+              penalty,
+              "_deriv(Theta = Theta, lambda = lambda[i], gamma = gamma)"
+            )
+          ))
+
+        diag(lambda_mat) <- lambda[i]
+
+        fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+        adj <- ifelse(fit$wi == 0, 0, 1)
+      }
+
+
+      if(L0_learn){
+        Theta <- GGMncv:::hft_algorithm(Sigma = R,
+                               adj = adj,
+                               tol = 0.00001)$Theta
+
+      } else {
+
+        Theta <- fit$wi
+      }
+
+      edges <- sum(adj[upper.tri(adj)] != 0)
+      log.like <- (n/2) * (log(det(Theta)) - sum(diag(R%*%Theta)))
+      bic <- -2 * log.like +  edges * log(n)
+      fit$bic <- bic
+      fit$lambda <- lambda[i]
+
+      if(progress){
+        utils::setTxtProgressBar(pb, i)
+      }
+      fit
+    })
+
+   fit <-  fits[[which.min(  sapply(fits, "[[", "bic"))]]
+
+   if(store){
+     fitted_models <- fits
+
+   } else {
+
+     fitted_models <- NULL
 
    }
 
+   }
+
+
   adj <- ifelse(fit$wi == 0, 0, 1)
 
-  if(nonreg) {
-    rest <- htf(R, adj)
+
+
+
+  if(refit) {
+    rest <- hft_algorithm(Sigma = R,
+                          adj = adj,
+                          tol =  0.00001)
     Theta <- rest$Theta
     Sigma <- rest$Sigma
     P <- -(stats::cov2cor(Theta) - I_p)
@@ -148,6 +294,7 @@ GGMncv <- function(x, n,
   if(vip){
 
     if(progress){
+      message("computing vip")
       pb <- utils::txtProgressBar(min = 0, max = vip_iter, style = 3)
     }
 
@@ -207,7 +354,8 @@ GGMncv <- function(x, n,
                           fit = fit,
                           adj = adj,
                           lambda = lambda,
-                          vip_results = vip_results)
+                          vip_results = vip_results,
+                          fitted_models = fitted_models)
 
   class(returned_object) <- "ggmncv"
   return(returned_object)

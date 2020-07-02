@@ -8,14 +8,18 @@ GGMncv(
   x,
   n,
   lambda = NULL,
-  gamma = 0.1,
+  n_lambda = 100,
+  gamma = NULL,
+  select = FALSE,
+  L0_learn = FALSE,
   penalty = "atan",
-  nonreg = FALSE,
+  refit = FALSE,
   LLA = FALSE,
   method = "pearson",
   vip = FALSE,
   vip_iter = 1000,
   progress = TRUE,
+  store = FALSE,
   ...
 )
 }
@@ -28,12 +32,20 @@ GGMncv(
 \item{lambda}{Numeric. Tuning parameter governing the degress of penalization. Defaults to
 \code{NULL} which results in fixing lambda to \code{sqrt(log(p)/n)}.}
 
+\item{n_lambda}{Numeric. The number of regularization/thresholding parameters
+(defaults to \code{100}).}
+
 \item{gamma}{Numeric. Hyperparameter for the penalty function. Defaults to \code{0.1}
 which is the recommended value for the default penalty (see details).}
 
+\item{select}{Logical. Should lambda be selected with BIC (defaults to \code{FALSE})?}
+
+\item{L0_learn}{Logical. Should lambda be selected based on the non-regularized
+precision matrix (defaults to \code{FALSE}; see details).}
+
 \item{penalty}{Character string. Which penalty should be used (defaults to \code{atan}).}
 
-\item{nonreg}{Logical. Should the precision matrix be reestimated, given the adjacency matrix
+\item{refit}{Logical. Should the precision matrix be refitted, given the adjacency matrix
 (defaults to \code{FALSE})? When set to \code{TRUE}, this provides the \strong{nonregularized},
 maximum likelhood estimate with constraints.}
 
@@ -51,6 +63,10 @@ non-parametric bootstrap (see details)}
 
 \item{progress}{Logical. Should a progress bar be included (defaults to \code{TRUE}) ? Note that
 this only applies when \code{vip = TRUE}.}
+
+\item{store}{Logical. Should all of the fitted models be saved (defaults to \code{NULL}). Note
+this only applies when \code{select = TRUE}. and ignored otherwise
+(the one model is saved.)}
 
 \item{...}{Currently ignored.}
 }
