@@ -18,6 +18,8 @@ GGMncv(
   method = "pearson",
   progress = TRUE,
   store = FALSE,
+  vip = FALSE,
+  vip_iter = 1000,
   ...
 )
 }
@@ -59,6 +61,11 @@ this only applies when \code{select = TRUE}.}
 \item{store}{Logical. Should all of the fitted models be saved (defaults to \code{NULL}). Note
 this only applies when \code{select = TRUE}. and ignored otherwise
 (the one model is saved.)}
+
+\item{vip}{Logical. Should variable inclusion "probabilities" be computed (defaults to \code{FALSE})?}
+
+\item{vip_iter}{Numeric. How many bootstrap sample for computing \code{vip} (defaults to 1000) ? Note
+also that only the default lambda is implemented (select is not implemented).}
 
 \item{...}{Currently ignored.}
 }

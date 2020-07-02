@@ -21,3 +21,22 @@ A \code{ggplot} object
 \description{
 Plot variable inclusion 'probabilities'
 }
+\examples{
+
+\donttest{
+# data
+Y <- GGMncv::ptsd[,1:10]
+
+# correlations
+S <- cor(Y, method = "spearman")
+
+# fit model
+fit <- GGMncv(x = S, n = nrow(Y),
+              penalty = "atan",
+              vip = TRUE)
+
+# plot
+plot(fit, size = 4)
+}
+
+}

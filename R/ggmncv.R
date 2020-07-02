@@ -41,7 +41,12 @@
 #'              this only applies when \code{select = TRUE}. and ignored otherwise
 #'              (the one model is saved.)
 #'
+#' @param vip Logical. Should variable inclusion "probabilities" be computed (defaults to \code{FALSE})?
 #'
+#' @param vip_iter Numeric. How many bootstrap sample for computing \code{vip} (defaults to 1000) ? Note
+#'                 also that only the default lambda is implemented (select is not implemented).
+#'
+
 #' @param ... Currently ignored.
 #'
 #' @importFrom stats cor cov2cor
@@ -83,6 +88,8 @@ GGMncv <- function(x, n,
                    method = "pearson",
                    progress = TRUE,
                    store = FALSE,
+                   vip = FALSE,
+                   vip_iter = 1000,
                    ...){
 
   if(! penalty %in% c("atan",
@@ -116,7 +123,10 @@ GGMncv <- function(x, n,
   if(is.null(lambda)){
     # tuning
     lambda_no_select <- sqrt(log(p)/n)
+  } else {
+      lambda_no_select <- lambda
     }
+
 
   if(is.null(gamma)) {
     if(penalty == "scad") {
@@ -281,6 +291,49 @@ GGMncv <- function(x, n,
   }
 
 
+  if(vip){
+    if(progress){
+      message("\ncomputing vip")
+      pb <- utils::txtProgressBar(min = 0, max = vip_iter, style = 3)
+    }
+
+    vip_results <-sapply(1:vip_iter, function(i){
+      Yboot <- Y[sample(1:n, size = n, replace = TRUE),]
+      if(method == "polychoric"){
+        suppressWarnings(
+          R <- psych::polychoric(Yboot)$rho
+        )
+      } else {
+        R <- cor(Yboot, method = method)
+      }
+      lambda <- sqrt(log(p)/n)
+      Theta <- solve(R)
+      lambda_mat <-
+        eval(parse(text =  paste0(
+          penalty, "_deriv(Theta = Theta, lambda = lambda, gamma = gamma)"
+        )))
+      diag(lambda_mat) <- lambda
+      fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+      adj <- ifelse(fit$wi == 0, 0, 1)
+      if(progress){
+        utils::setTxtProgressBar(pb, i)
+      }
+      adj[upper.tri(adj)]
+    })
+    if(is.null( colnames(Y))){
+      cn <- 1:p
+    } else {
+      cn <- colnames(Y)
+    }
+    vip_results <-
+      data.frame(Relation =  sapply(1:p, function(x)
+        paste0(cn, "--", cn[x]))[upper.tri(I_p)],
+        VIP = rowMeans(vip_results))
+  } else {
+    vip_results <- NULL
+  }
+
+
 
   returned_object <- list(Theta = Theta,
                           Sigma = Sigma,
@@ -288,6 +341,7 @@ GGMncv <- function(x, n,
                           fit = fit,
                           adj = adj,
                           lambda = lambda,
+                          vip_results = vip_results,
                           fitted_models = fitted_models)
 
   class(returned_object) <- "ggmncv"
@@ -323,6 +377,24 @@ print.ggmncv <- function(x, ...){
 #' @return A \code{ggplot} object
 #'
 #' @import ggplot2
+#'
+#' @examples
+#'
+#' \donttest{
+#' # data
+#' Y <- GGMncv::ptsd[,1:10]
+#'
+#' # correlations
+#' S <- cor(Y, method = "spearman")
+#'
+#' # fit model
+#' fit <- GGMncv(x = S, n = nrow(Y),
+#'               penalty = "atan",
+#'               vip = TRUE)
+#'
+#' # plot
+#' plot(fit, size = 4)
+#' }
 #'
 #' @export
 plot.ggmncv <- function(x,

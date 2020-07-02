@@ -125,4 +125,10 @@ htf <- function(Sigma, adj, tol = 1e-10) {
   returned_object
 }
 
+coef_helper <- function(Theta){
+  p <- ncol(Theta)
+  betas <- round(t(sapply(1:p, function(x) Theta[x,-x] / Theta[x,x])), 3)  * -1
+  return(betas)
+}
+
 globalVariables(c("VIP", "new1", "Y"))
