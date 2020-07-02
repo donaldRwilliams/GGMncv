@@ -21,21 +21,3 @@ A \code{ggplot} object
 \description{
 Plot variable inclusion 'probabilities'
 }
-\examples{
-\donttest{
-# data
-Y <- GGMncv::ptsd
-
-# polychoric
-S <- cor(Y)
-
-# fit model
-fit <- GGMncv(S, n = nrow(Y),
-              nonreg = FALSE,
-              vip = TRUE,
-              progress = FALSE)
-
-# plot VIP
-plot(fit)
-}
-}

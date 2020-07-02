@@ -33,14 +33,9 @@
 #' @param method Character string. Which correlation coefficient should be computed.
 #'               One of "pearson" (default), "spearman", or  "polychoric".
 #'
-#' @param vip Logical. Should the respective variable inclusion 'probabilities' be
-#'            computed (defaults to \code{FALSE})? This is accomplished with a
-#'            non-parametric bootstrap (see details)
-#'
-#' @param vip_iter Numeric. How many number of bootstrap samples (defaults to 1000)?
 #'
 #' @param progress Logical. Should a progress bar be included (defaults to \code{TRUE}) ? Note that
-#'                 this only applies when \code{vip = TRUE}.
+#'                 this only applies when \code{select = TRUE}.
 #'
 #' @param store Logical. Should all of the fitted models be saved (defaults to \code{NULL}). Note
 #'              this only applies when \code{select = TRUE}. and ignored otherwise
@@ -86,8 +81,6 @@ GGMncv <- function(x, n,
                    refit = FALSE,
                    LLA = FALSE,
                    method = "pearson",
-                   vip = FALSE,
-                   vip_iter = 1000,
                    progress = TRUE,
                    store = FALSE,
                    ...){
@@ -238,7 +231,7 @@ GGMncv <- function(x, n,
 
 
       if(L0_learn){
-        Theta <- GGMncv:::hft_algorithm(Sigma = R,
+        Theta <- hft_algorithm(Sigma = R,
                                adj = adj,
                                tol = 0.00001)$Theta
 
@@ -272,11 +265,7 @@ GGMncv <- function(x, n,
 
    }
 
-
   adj <- ifelse(fit$wi == 0, 0, 1)
-
-
-
 
   if(refit) {
     rest <- hft_algorithm(Sigma = R,
@@ -291,62 +280,7 @@ GGMncv <- function(x, n,
     P <- -(stats::cov2cor(Theta) - I_p)
   }
 
-  if(vip){
 
-    if(progress){
-      message("computing vip")
-      pb <- utils::txtProgressBar(min = 0, max = vip_iter, style = 3)
-    }
-
-    vip_results <-sapply(1:vip_iter, function(i){
-
-      Yboot <- Y[sample(1:n, size = n, replace = TRUE),]
-
-      if(method == "polychoric"){
-
-        suppressWarnings(
-          R <- psych::polychoric(Yboot)$rho
-          )
-
-        } else {
-
-        R <- cor(Yboot, method = method)
-      }
-
-      Theta <- solve(R)
-
-      lambda_mat <-
-        eval(parse(text =  paste0(
-          penalty, "_deriv(Theta = Theta, lambda = lambda, gamma = gamma)"
-        )))
-
-      diag(lambda_mat) <- lambda
-      fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
-      adj <- ifelse(fit$wi == 0, 0, 1)
-
-      if(progress){
-       utils::setTxtProgressBar(pb, i)
-      }
-
-      adj[upper.tri(adj)]
-    })
-
-    if(is.null( colnames(Y))){
-      cn <- 1:p
-    } else {
-
-      cn <- colnames(Y)
-    }
-
-    vip_results <-
-      data.frame(Relation =  sapply(1:p, function(x)
-        paste0(cn, "--", cn[x]))[upper.tri(I_p)],
-        VIP = rowMeans(vip_results))
-
-  } else {
-
-    vip_results <- NULL
-  }
 
   returned_object <- list(Theta = Theta,
                           Sigma = Sigma,
@@ -354,7 +288,6 @@ GGMncv <- function(x, n,
                           fit = fit,
                           adj = adj,
                           lambda = lambda,
-                          vip_results = vip_results,
                           fitted_models = fitted_models)
 
   class(returned_object) <- "ggmncv"
@@ -391,24 +324,6 @@ print.ggmncv <- function(x, ...){
 #'
 #' @import ggplot2
 #'
-#'
-#' @examples
-#' \donttest{
-#' # data
-#' Y <- GGMncv::ptsd
-#'
-#' # polychoric
-#' S <- cor(Y)
-#'
-#' # fit model
-#' fit <- GGMncv(S, n = nrow(Y),
-#'               nonreg = FALSE,
-#'               vip = TRUE,
-#'               progress = FALSE)
-#'
-#' # plot VIP
-#' plot(fit)
-#' }
 #' @export
 plot.ggmncv <- function(x,
                         size = 1,

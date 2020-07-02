@@ -16,8 +16,6 @@ GGMncv(
   refit = FALSE,
   LLA = FALSE,
   method = "pearson",
-  vip = FALSE,
-  vip_iter = 1000,
   progress = TRUE,
   store = FALSE,
   ...
@@ -55,14 +53,8 @@ The default is \code{FALSE} (see details).}
 \item{method}{Character string. Which correlation coefficient should be computed.
 One of "pearson" (default), "spearman", or  "polychoric".}
 
-\item{vip}{Logical. Should the respective variable inclusion 'probabilities' be
-computed (defaults to \code{FALSE})? This is accomplished with a
-non-parametric bootstrap (see details)}
-
-\item{vip_iter}{Numeric. How many number of bootstrap samples (defaults to 1000)?}
-
 \item{progress}{Logical. Should a progress bar be included (defaults to \code{TRUE}) ? Note that
-this only applies when \code{vip = TRUE}.}
+this only applies when \code{select = TRUE}.}
 
 \item{store}{Logical. Should all of the fitted models be saved (defaults to \code{NULL}). Note
 this only applies when \code{select = TRUE}. and ignored otherwise
