@@ -59,10 +59,17 @@ in Zou and Li (2008).
 
 ## Tuning Parameter
 
-The methods in **GGMncv** are currently tuning free. This is
-accomplished by setting the tuning parameter to `sqrt(log(p)/n)` (see
-for example Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van
-De Geer 2015).
+### Tuning Free
+
+The default approach in **GGMncv** is tuning free. This is accomplished
+by setting the tuning parameter to `sqrt(log(p)/n)` (see for example
+Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van De Geer
+2015).
+
+### Selection
+
+It is also possible to select the tuning parameter with BIC. This is
+accomplished by setting `select = TRUE`.
 
 ## Example
 
@@ -129,7 +136,7 @@ Thus, at this time, confidence intervals are not provided for the
 partial correlations. However, **GGMncv** does include the so-called
 variable inclusion “probability” for each relation (see p. 1523 in Bunea
 et al. 2011; and Figure 6.7 in Hastie, Tibshirani, and Wainwright 2015).
-These are computed using a nonparametric bootstrap strategy.
+These are computed using a non-parametric bootstrap strategy.
 
 ### Variable Inclusion “Probability”
 
