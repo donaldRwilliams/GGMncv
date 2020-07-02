@@ -21,7 +21,7 @@ arma::mat Sigma_i_not_i(arma::mat x, int index) {
 }
 
 // [[Rcpp::export]]
-Rcpp::List hft(arma::mat Sigma, arma::mat adj, double tol) {
+Rcpp::List hft_algorithm(arma::mat Sigma, arma::mat adj, double tol) {
 
   arma::mat S = Sigma;
   arma::mat W = S;
@@ -31,7 +31,7 @@ Rcpp::List hft(arma::mat Sigma, arma::mat adj, double tol) {
   double p = S.n_cols;
   arma::mat iter(1,1, arma::fill::zeros);
   double max_diff = 100;
-  arma::mat w_12(1,p-1);
+  arma::mat w_12(1, p-1);
 
   while(max_diff > tol){
 
@@ -61,11 +61,8 @@ Rcpp::List hft(arma::mat Sigma, arma::mat adj, double tol) {
         }
 
         max_diff = max(W.elem(upper_indices) -  W_previous.elem(upper_indices));
-
         W_previous = W;
       }
-
-
     }
 
     iter(0,0) = iter(0,0) + 1;
@@ -74,39 +71,9 @@ Rcpp::List hft(arma::mat Sigma, arma::mat adj, double tol) {
   arma::mat Theta = inv(W) % adj;
   arma::mat W_return = inv(Theta);
 
- List ret;
- ret["Theta"] = Theta;
- ret["Sigma"] = W_return;
- ret["iter"]  =  iter;
- return ret;
+  List ret;
+  ret["Theta"] = Theta;
+  ret["Sigma"] = W_return;
+  ret["iter"]  =  iter;
+  return ret;
 }
-
-/*** R
-# diag(adj) <- 1
-# # system.time({
-# # replicate(100,
-# #  test <- hft(cor(Y), adj,  0.000001)
-# # qpgraph::qpHTF(cor(Y), adj, tol = 0.000001)
-# # # test2 <- GGMncv:::htf(cor(Y), adj = adj, tol = 0.000001)
-# # )})
-# test <- hft(cor(Y), adj,  0.001)
-# test2 <- GGMncv:::htf(cor(Y), adj = adj, tol = 0.001)
-#
-# round(test$Sigma, 3) -round(test2$Sigma,3)
-# t <- qpgraph::qpHTF(cor(Y), adj, tol = 0.0001)
-# round(solve(t),3) - round(solve(test2$Sigma),3)
-#
-# #
-# #
-# # solve(solve(test$W) * adj)
-# #
-# # test$W[,7]
-# # round(solve(test$W), 3)[1,]
-# #
-# # round(test$W[2,], 3)
-# # test2 <- GGMncv:::htf(cor(Y), adj = adj)
-# # test2$Theta
-# # round(test2$Sigma[2,], 3)
-# # qpgraph::qpHTF(cor(Y), adj)
-# # solve(qpgraph::qpHTF(cor(Y), adj))[1,]
-*/

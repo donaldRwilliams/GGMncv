@@ -57,13 +57,10 @@
 #' # data
 #' Y <- GGMncv::ptsd
 #'
-#' # polychoric
-#' S <- psych::polychoric(Y)$rho
+#' S <- cor(Y)
 #'
 #' # fit model
 #' fit <- GGMncv(S, n = nrow(Y))
-#'
-#' qgraph::qgraph(fit$P)
 #' }
 #' @export
 GGMncv <- function(x, n,
@@ -253,7 +250,7 @@ print.ggmncv <- function(x, ...){
 #' Y <- GGMncv::ptsd
 #'
 #' # polychoric
-#' S <- psych::polychoric(Y)$rho
+#' S <- cor(Y)
 #'
 #' # fit model
 #' fit <- GGMncv(S, n = nrow(Y),

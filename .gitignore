@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+^testing$
+src/*.o
+src/*.so
+src/*.dll

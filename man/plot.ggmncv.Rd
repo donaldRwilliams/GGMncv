@@ -27,7 +27,7 @@ Plot variable inclusion 'probabilities'
 Y <- GGMncv::ptsd
 
 # polychoric
-S <- psych::polychoric(Y)$rho
+S <- cor(Y)
 
 # fit model
 fit <- GGMncv(S, n = nrow(Y),

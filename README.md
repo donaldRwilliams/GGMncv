@@ -47,7 +47,7 @@ The following are implemented in `GGMncv`:
 4.  Smoothly clipped absolute deviation (`penalty = scad`; Fan and Li
     2001)
 
-5.  Minimax concave penalty `penalty = mcp`; Zhang and others (2010)\]
+5.  Minimax concave penalty (`penalty = mcp`; Zhang and others 2010)
 
 Note that options 1-3 are continuous approximations to the L0 penalty,
 that is, best subsets model selection. However, the solution is
