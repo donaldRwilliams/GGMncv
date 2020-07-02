@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<img src="man/figures/hex.png" width = 250 />
+<img src="man/figures/hex.png" width = 200 />
 
 # GGMncv: Gaussian Graphical Models with Non-Convex Penalties
 
