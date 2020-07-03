@@ -151,7 +151,7 @@ of behind the **penalized** `R` package:
 > Goeman, Meijer, and Chaturvedi 2018)
 
 Thus, at this time, confidence intervals are not provided for the
-partial correlations <span id="a2">[\[1\]](#f2)</span>. These do not use
+partial correlations <span id="a2">[\[2\]](#f2)</span>. These do not use
 the bootstrap (Zhang, Ren, and Chen 2018)\]. However, **GGMncv** does
 include the so-called variable inclusion “probability” for each relation
 (see p. 1523 in Bunea et al. 2011; and Figure 6.7 in Hastie, Tibshirani,
@@ -185,6 +185,7 @@ plot(fit, size = 4)
 
 2.  <span id="f2"></span> It is possible to compute confidence intervals
     for lasso with the methods included in the **SILGGM** `R` package.
+    (return)(\#a2)
 
 ## References
 
