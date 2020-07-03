@@ -85,7 +85,7 @@
 #'
 #' \item SCAD: \code{penalty = "scad"}  \insertCite{fan2001variable}{GGMncv}.
 #'
-#' \item MCP: \code{penalty = "mcp"} \insertCite{zhang2010nearly}{GGMcnv}.
+#' \item MCP: \code{penalty = "mcp"} \insertCite{zhang2010nearly}{GGMncv}.
 #'
 #' }
 #'
@@ -417,16 +417,20 @@ GGMncv <- function(x, n,
 #' Print \code{ggmncv} Objects
 #'
 #' @param x An object of class \code{ggmncv}
+#'
 #' @param ... Currently ignored
+#'
+#' @importFrom methods is
+#'
 #' @export
 print.ggmncv <- function(x,...){
 
-  if(is(x, "default")){
+  if(methods::is(x, "default")){
 
   print_ggmncv(x,...)
 
   }
-  if(is(x, "coef")){
+  if(methods::is(x, "coef")){
 
     print_coef(x,...)
   }

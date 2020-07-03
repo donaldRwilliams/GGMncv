@@ -103,7 +103,7 @@ L0 approximations:
 
 \item SCAD: \code{penalty = "scad"}  \insertCite{fan2001variable}{GGMncv}.
 
-\item MCP: \code{penalty = "mcp"} \insertCite{zhang2010nearly}{GGMcnv}.
+\item MCP: \code{penalty = "mcp"} \insertCite{zhang2010nearly}{GGMncv}.
 
 }
 
@@ -140,7 +140,7 @@ This is essentially a weighted (g)lasso. Note that by default \code{LLA = FALSE}
 work of \insertCite{zou2008one}{GGMncv}, which suggested that, so long as the starting values are good,
 then it is possible to use a one-step estimator. In the case of low-dimensional data , the sample based
 inverse covariance matrix is used to compute the lambda matrix. This is expected to work well, assuming
-that \emph{n} is sufficiently larger than \emph{p}. For high-dimensional data, the intial values for obtaining
+that \emph{n} is sufficiently larger than \emph{p}. For high-dimensional data, the initial values for obtaining
 the lambda matrix are obtained from glasso.
 
 \strong{Model Selection}

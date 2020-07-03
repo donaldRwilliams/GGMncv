@@ -120,9 +120,9 @@ subsampling do not work As,” of Bühlmann, Kalisch, and Meier (2014):
 > or subsampling techniques do not provide valid confidence regions or
 > p-values (pp. 7-8).
 
-For this reason, it is common to not provide the standard errors for
-penalized models. **GGMncv** follows the idea of behind the
-**penalized** `R` package:
+For this reason, it is common to not provide standard errors (and thus
+confidence intervals) for penalized models. **GGMncv** follows the idea
+of behind the **penalized** `R` package:
 
 > It is a very natural question to ask for standard errors of regression
 > coefficients or other estimated quantities. In principle such standard
@@ -245,8 +245,8 @@ Statistical Association* 106 (495): 1125–38.
 <div id="ref-wang2018variable">
 
 Wang, Yanxin, Qibin Fan, and Li Zhu. 2018. “Variable Selection and
-Estimation Using a Continuous Approximation to the \[L\_0\] Penalty.”
-*Annals of the Institute of Statistical Mathematics* 70 (1): 191–214.
+Estimation Using a Continuous Approximation to the L0 Penalty.” *Annals
+of the Institute of Statistical Mathematics* 70 (1): 191–214.
 
 </div>
 

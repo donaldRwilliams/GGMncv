@@ -1,6 +1,7 @@
 #' Regression Coefficients from \code{ggmncv} Objects
 #'
 #' @param object An Object of classs \code{ggmncv}
+#'
 #' @param ... Currently ignored
 #'
 #' @return A matrix of regression coefficients
