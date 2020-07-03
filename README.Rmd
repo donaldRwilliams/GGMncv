@@ -20,7 +20,9 @@ knitr::opts_chunk$set(
 
 [![Build Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https://travis-ci.org/donaldRwilliams/GGMncv)
 
-The goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known to overcome the various limitations of lasso, including (but not limited to) inconsistent model selection [@zhao2006model], biased ^[Note that the penalties in **GGMncv** should provide *nearly* unbiased estimates.] estimates [@zhang2010nearly], and a high false positive rate [see for example @williams2020back; @williams2019nonregularized].
+The goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known to overcome the various limitations of lasso, including (but not limited to) inconsistent model selection [@zhao2006model], biased  <span id="a1">[[1]](#f1)</span>
+
+ estimates [@zhang2010nearly], and a high false positive rate [see for example @williams2020back; @williams2019nonregularized].
 
 Note that these limitations of lasso are well-known. In the case of false positives, for example, it has been noted that 
 
@@ -153,5 +155,9 @@ fit <- GGMncv(S, n = nrow(Y),
 plot(fit, size = 4)
 ```
 ![](man/figures/vip.png)
+
+## Footnotes
+1. <span id="f1"></span> This is a footnote. [$\hookleftarrow$](#a1)
+
 
 ## References

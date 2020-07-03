@@ -11,9 +11,10 @@ Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https:/
 The goal of GGMncv is to provide non-convex penalties for estimating
 Gaussian graphical models. These are known to overcome the various
 limitations of lasso, including (but not limited to) inconsistent model
-selection (Zhao and Yu 2006), biased\[1\] estimates (Zhang 2010), and a
-high false positive rate (see for example Williams and Rast 2020;
-Williams et al. 2019).
+selection (Zhao and Yu 2006), biased <span id="a1">[\[1\]](#f1)</span>
+
+estimates (Zhang 2010), and a high false positive rate (see for example
+Williams and Rast 2020; Williams et al. 2019).
 
 Note that these limitations of lasso are well-known. In the case of
 false positives, for example, it has been noted that
@@ -151,7 +152,7 @@ of behind the **penalized** `R` package:
 > Goeman, Meijer, and Chaturvedi 2018)
 
 Thus, at this time, confidence intervals are not provided for the
-partial correlations.\[2\] However, **GGMncv** does include the
+partial correlations.\[1\] However, **GGMncv** does include the
 so-called variable inclusion “probability” for each relation (see
 p. 1523 in Bunea et al. 2011; and Figure 6.7 in Hastie, Tibshirani, and
 Wainwright 2015). These are computed using a non-parametric bootstrap
@@ -176,6 +177,10 @@ plot(fit, size = 4)
 ```
 
 ![](man/figures/vip.png)
+
+## Footnotes
+
+1.  <span id="f1"></span> This is a footnote. [\(\hookleftarrow\)](#a1)
 
 ## References
 
@@ -348,9 +353,6 @@ Penalized Likelihood Models.” *Annals of Statistics* 36 (4): 1509.
 
 </div>
 
-1.  Note that the penalties in **GGMncv** should provide *nearly*
-    unbiased estimates.
-
-2.  It is possible to compute confidence intervals for lasso with the
+1.  It is possible to compute confidence intervals for lasso with the
     methods included in the **SILGGM** `R` package. These do not use the
     bootstrap (Zhang, Ren, and Chen 2018)
