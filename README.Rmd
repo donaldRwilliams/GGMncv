@@ -20,7 +20,20 @@ knitr::opts_chunk$set(
 
 [![Build Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https://travis-ci.org/donaldRwilliams/GGMncv)
 
-The goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known to overcome the various limitations of lasso, including (but not limited to) inconsistent model selection, biased ^[Note that the penalties in **GGMncv** should be *nearly* unbiased.] estimates, and a high false positive rate.
+The goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known to overcome the various limitations of lasso, including (but not limited to) inconsistent model selection [@zhao2006model], biased ^[Note that the penalties in **GGMncv** should provide *nearly* unbiased estimates.] estimates [@@zhang2010nearly], and a high false positive rate [see for example @williams2020back; @williams2019nonregularized].
+
+Note that these limitations of lasso are well-known. In the case of false positives, for example, it has been noted that 
+
+>The lasso is doing variable screening and, hence, I suggest that we interpret
+> the second ‘s’ in lasso as ‘screening’ rather than ‘selection’. 
+> Once we have the screening property, the task is to remove the false 
+positive selections [p. 278, @tibshirani2011regression].
+
+Hence, contrary to the popular view of lasso (least absolute shrinkage "screening" operator), 
+using it for model *selection* is not ideal. There are various ways to remove the false positives, including thresholding after model selection [i.e., removing small relations, @loh2012structure] 
+and two-stage procedures [@zou2006adaptive]. The method in **GGMncv**, on the other hand, selects
+the graph with non-convex penalization.
+
 
 ## Installation
 
@@ -118,8 +131,8 @@ penalized models. **GGMncv** follows the idea of behind the **penalized** `R` pa
 >calculated, e.g. using the bootstrap. Still, this package deliberately does not provide them. The reason for this is that standard errors are not very meaningful for strongly biased estimates
 such as arise from penalized estimation methods [p.18, @goeman2018l1]
 
-Thus, at this time, confidence intervals are not provided for the partial correlations. However, **GGMncv** 
-does include the so-called variable inclusion "probability" for each relation [see p. 1523 in @bunea2011penalized; 
+Thus, at this time, confidence intervals are not provided for the partial correlations
+^[It is possible to compute confidence intervals for lasso with the methods included in the **SILGGM** `R` package. These do not use the bootstrap [@zhang2018silggm]]. However, **GGMncv**  does include the so-called variable inclusion "probability" for each relation [see p. 1523 in @bunea2011penalized; 
 and Figure 6.7 in @hastie2015statistical]. These are computed using a non-parametric bootstrap strategy.
 
 ### Variable Inclusion "Probability"

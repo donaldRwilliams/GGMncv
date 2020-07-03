@@ -11,7 +11,25 @@ Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https:/
 The goal of GGMncv is to provide non-convex penalties for estimating
 Gaussian graphical models. These are known to overcome the various
 limitations of lasso, including (but not limited to) inconsistent model
-selection, biased\[1\] estimates, and a high false positive rate.
+selection (Zhao and Yu 2006), biased\[1\] estimates (@ Zhang and others
+2010), and a high false positive rate (see for example Williams and Rast
+2020; Williams et al. 2019).
+
+Note that these limitations of lasso are well-known. In the case of
+false positives, for example, it has been noted that
+
+> The lasso is doing variable screening and, hence, I suggest that we
+> interpret the second ‘s’ in lasso as ‘screening’ rather than
+> ‘selection’. Once we have the screening property, the task is to
+> remove the false positive selections (p. 278, Tibshirani 2011).
+
+Hence, contrary to the popular view of lasso (least absolute shrinkage
+“screening” operator), using it for model *selection* is not ideal.
+There are various ways to remove the false positives, including
+thresholding after model selection (i.e., removing small relations, Loh
+and Wainwright 2012) and two-stage procedures (Zou 2006). The method in
+**GGMncv**, on the other hand, selects the graph with non-convex
+penalization.
 
 ## Installation
 
@@ -133,10 +151,11 @@ of behind the **penalized** `R` package:
 > Goeman, Meijer, and Chaturvedi 2018)
 
 Thus, at this time, confidence intervals are not provided for the
-partial correlations. However, **GGMncv** does include the so-called
-variable inclusion “probability” for each relation (see p. 1523 in Bunea
-et al. 2011; and Figure 6.7 in Hastie, Tibshirani, and Wainwright 2015).
-These are computed using a non-parametric bootstrap strategy.
+partial correlations.\[2\] However, **GGMncv** does include the
+so-called variable inclusion “probability” for each relation (see
+p. 1523 in Bunea et al. 2011; and Figure 6.7 in Hastie, Tibshirani, and
+Wainwright 2015). These are computed using a non-parametric bootstrap
+strategy.
 
 ### Variable Inclusion “Probability”
 
@@ -234,11 +253,28 @@ Estimation in R.” *Journal of Machine Learning Research: JMLR* 16: 553.
 
 </div>
 
+<div id="ref-loh2012structure">
+
+Loh, Po-Ling, and Martin J Wainwright. 2012. “Structure Estimation for
+Discrete Graphical Models: Generalized Covariance Matrices and Their
+Inverses.” In *Advances in Neural Information Processing Systems*,
+2087–95.
+
+</div>
+
 <div id="ref-mazumder2011sparsenet">
 
 Mazumder, Rahul, Jerome H Friedman, and Trevor Hastie. 2011. “Sparsenet:
 Coordinate Descent with Nonconvex Penalties.” *Journal of the American
 Statistical Association* 106 (495): 1125–38.
+
+</div>
+
+<div id="ref-tibshirani2011regression">
+
+Tibshirani, Robert. 2011. “Regression Shrinkage and Selection via the
+Lasso: A Retrospective.” *Journal of the Royal Statistical Society:
+Series B (Statistical Methodology)* 73 (3): 273–82.
 
 </div>
 
@@ -258,6 +294,22 @@ and Statistics*.
 
 </div>
 
+<div id="ref-williams2020back">
+
+Williams, Donald R, and Philippe Rast. 2020. “Back to the Basics:
+Rethinking Partial Correlation Network Methodology.” *British Journal of
+Mathematical and Statistical Psychology* 73 (2): 187–212.
+
+</div>
+
+<div id="ref-williams2019nonregularized">
+
+Williams, Donald R, Mijke Rhemtulla, Anna C Wysocki, and Philippe Rast.
+2019. “On Nonregularized Estimation of Psychological Networks.”
+*Multivariate Behavioral Research* 54 (5): 719–50.
+
+</div>
+
 <div id="ref-zhang2010nearly">
 
 Zhang, Cun-Hui, and others. 2010. “Nearly Unbiased Variable Selection
@@ -274,6 +326,20 @@ Networks.” *PLoS Computational Biology* 14 (8): e1006369.
 
 </div>
 
+<div id="ref-zhao2006model">
+
+Zhao, Peng, and Bin Yu. 2006. “On Model Selection Consistency of Lasso.”
+*Journal of Machine Learning Research* 7 (Nov): 2541–63.
+
+</div>
+
+<div id="ref-zou2006adaptive">
+
+Zou, Hui. 2006. “The Adaptive Lasso and Its Oracle Properties.” *Journal
+of the American Statistical Association* 101 (476): 1418–29.
+
+</div>
+
 <div id="ref-zou2008one">
 
 Zou, Hui, and Runze Li. 2008. “One-Step Sparse Estimates in Nonconcave
@@ -283,4 +349,9 @@ Penalized Likelihood Models.” *Annals of Statistics* 36 (4): 1509.
 
 </div>
 
-1.  Note that the penalties in **GGMncv** should be *nearly* unbiased.
+1.  Note that the penalties in **GGMncv** should provide *nearly*
+    unbiased estimates.
+
+2.  It is possible to compute confidence intervals for lasso with the
+    methods included in the **SILGGM** `R` package. These do not use the
+    bootstrap (Zhang, Ren, and Chen 2018)
