@@ -33,12 +33,19 @@
 #' }
 #' @export
 constrained <- function(Sigma, adj){
-
+  # change to zeros
   adj <- ifelse(adj == 1, 0, 1)
+
+  # include diagonal!
   diag(adj) <- 1
+
+  # call c++
   fit <- hft_algorithm(Sigma, adj, tol = 1e10)
+
   Theta <- round(fit$Theta, 3)
   Sigma <- round(fit$Sigma, 3)
+
   returned_object <- list(Theta = Theta, Sigma = Sigma)
+
   return(returned_object)
 }
