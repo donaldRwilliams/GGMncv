@@ -29,7 +29,7 @@ There are various ways to remove the false positives, including
 thresholding after model selection (i.e., removing small relations, Loh
 and Wainwright 2012) and two-stage procedures (Zou 2006). The approach
 in **GGMncv**, on the other hand, selects the graph with non-convex
-penalization.
+penalization (with lasso as a special case).
 
 ## Installation
 
