@@ -24,12 +24,12 @@ false positives, for example, it has been noted that
 > remove the false positive selections (p. 278, Tibshirani 2011).
 
 Hence, contrary to the popular view of lasso (least absolute shrinkage
-“screening” operator), using it for model *selection* is not ideal.
-There are various ways to remove the false positives, including
-thresholding after model selection (i.e., removing small relations, Loh
-and Wainwright 2012) and two-stage procedures (Zou 2006). The approach
-in **GGMncv**, on the other hand, selects the graph with non-convex
-penalization (with lasso as a special case).
+“screening” operator), using it for model *selection* is not
+necessarily ideal. There are various ways to remove the false positives,
+including thresholding after model selection (i.e., removing small
+relations, Loh and Wainwright 2012) and two-stage procedures (Zou 2006).
+The approach in **GGMncv**, on the other hand, selects the graph with
+non-convex penalization (with lasso as a special case).
 
 ## Installation
 
