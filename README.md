@@ -125,13 +125,12 @@ fit
 
 ## Bootstrapping
 
-It might be tempting to perform a bootstrap and then attempt to
-construct confidence intervals for the edges. However, in general, these
-“confidence” intervals do not have the correct properties to be
-considered confidence intervals (see
-[Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval)). This
+**GGMncv** does not provide confidence intervals. This is because, in
+general, “confidence” intervals from penalized approaches do not have
+the correct properties to be considered confidence intervals [see
+Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval)). This
 sentiment is echoed in Section 3.1, “Why standard bootstrapping and
-subsampling do not work As,” of Bühlmann, Kalisch, and Meier (2014):
+subsampling do not work,” of Bühlmann, Kalisch, and Meier (2014):
 
 > The (limiting) distribution of such a sparse estimator is non-Gaussian
 > with point mass at zero, and this is the reason why standard bootstrap
@@ -139,8 +138,9 @@ subsampling do not work As,” of Bühlmann, Kalisch, and Meier (2014):
 > p-values (pp. 7-8).
 
 For this reason, it is common to not provide standard errors (and thus
-confidence intervals) for penalized models. **GGMncv** follows the idea
-of behind the **penalized** `R` package:
+confidence intervals) for penalized models
+<span id="a2">[\[2\]](#f2)</span>. **GGMncv** follows the idea of behind
+the **penalized** `R` package:
 
 > It is a very natural question to ask for standard errors of regression
 > coefficients or other estimated quantities. In principle such standard
@@ -150,13 +150,10 @@ of behind the **penalized** `R` package:
 > estimates such as arise from penalized estimation methods (p.18,
 > Goeman, Meijer, and Chaturvedi 2018)
 
-Thus, at this time, confidence intervals are not provided for the
-partial correlations <span id="a2">[\[2\]](#f2)</span>. These do not use
-the bootstrap (Zhang, Ren, and Chen 2018)\]. However, **GGMncv** does
-include the so-called variable inclusion “probability” for each relation
-(see p. 1523 in Bunea et al. 2011; and Figure 6.7 in Hastie, Tibshirani,
-and Wainwright 2015). These are computed using a non-parametric
-bootstrap strategy.
+However, **GGMncv** does include the so-called variable inclusion
+“probability” for each relation (see p. 1523 in Bunea et al. 2011; and
+Figure 6.7 in Hastie, Tibshirani, and Wainwright 2015). These are
+computed using a non-parametric bootstrap strategy.
 
 ### Variable Inclusion “Probability”
 
@@ -185,6 +182,7 @@ plot(fit, size = 4)
 
 2.  <span id="f2"></span> It is possible to compute confidence intervals
     for lasso with the methods included in the **SILGGM** `R` package.
+    These do not use the bootstrap (Zhang, Ren, and Chen 2018)  
     [(return)](#a2)
 
 ## References
