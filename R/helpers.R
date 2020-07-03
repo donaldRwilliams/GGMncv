@@ -89,6 +89,11 @@ log_deriv <- function(Theta, lambda, gamma = 0.1){
 }
 
 
+lasso_deriv <- function(Theta, lambda, gamma = 0){
+  p <- ncol(Theta)
+  lambda_mat <- matrix(lambda, p, p)
+}
+
 htf <- function(Sigma, adj, tol = 1e-10) {
   S <- Sigma
   p <- ncol(S)

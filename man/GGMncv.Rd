@@ -107,6 +107,7 @@ L0 approximations:
 
 }
 
+Also note that lasso can be used (\code{penalty = "lasso"}).
 
 \strong{Gamma}
 

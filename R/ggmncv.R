@@ -89,6 +89,7 @@
 #'
 #' }
 #'
+#' Also note that lasso can be used (\code{penalty = "lasso"}).
 #'
 #' \strong{Gamma}
 #'
@@ -163,7 +164,8 @@ GGMncv <- function(x, n,
                       "scad",
                       "exp",
                       "selo",
-                      "log")){
+                      "log",
+                      "lasso")){
     stop("penalty not found. \ncurrent options: atan, mcp, scad, exp, selo, or log")
   }
 

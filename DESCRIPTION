@@ -4,8 +4,7 @@ Title: Gaussian Graphical Models with Non-Convex Penalties
 Version: 1.0.0
 Authors@R: person("Donald", "Williams", email = "drwwilliams@ucdavis.edu", role = c("aut", "cre"))
 Description: Estimate Gaussian graphical models with non-convex penalties. There are extensions
-  for computing variable inclusion probabilities, multiple regression coefficients, and 
-  out-of-sample predictive accuracy. 
+  for computing variable inclusion probabilities and multiple regression coefficients.
 License: GPL-2
 Depends: R (>= 4.0.0)
 Imports:
