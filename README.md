@@ -181,11 +181,11 @@ plot(fit, size = 4)
 ## Footnotes
 
 1.  <span id="f1"></span> Note that the penalties in **GGMncv** should
-    provide *nearly* unbiased estimates. [return](#a1)
+    provide *nearly* unbiased estimates. [(return)](#a1)
 
 2.  <span id="f2"></span> It is possible to compute confidence intervals
     for lasso with the methods included in the **SILGGM** `R` package.
-    (return)(\#a2)
+    [(return)](#a2)
 
 ## References
 
