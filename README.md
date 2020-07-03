@@ -11,9 +11,9 @@ Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https:/
 The goal of GGMncv is to provide non-convex penalties for estimating
 Gaussian graphical models. These are known to overcome the various
 limitations of lasso, including (but not limited to) inconsistent model
-selection (Zhao and Yu 2006), biased\[1\] estimates (@ Zhang and others
-2010), and a high false positive rate (see for example Williams and Rast
-2020; Williams et al. 2019).
+selection (Zhao and Yu 2006), biased\[1\] estimates (Zhang 2010), and a
+high false positive rate (see for example Williams and Rast 2020;
+Williams et al. 2019).
 
 Note that these limitations of lasso are well-known. In the case of
 false positives, for example, it has been noted that
@@ -67,7 +67,7 @@ The following are implemented in `GGMncv`:
 5.  Smoothly clipped absolute deviation (`penalty = scad`; Fan and Li
     2001)
 
-6.  Minimax concave penalty (`penalty = mcp`; Zhang and others 2010)
+6.  Minimax concave penalty (`penalty = mcp`; Zhang 2010)
 
 Note that options 1-3 are explicit, continuous approximations, to the L0
 penalty, that is, best subsets model selection. However, the solution is
@@ -312,9 +312,8 @@ Williams, Donald R, Mijke Rhemtulla, Anna C Wysocki, and Philippe Rast.
 
 <div id="ref-zhang2010nearly">
 
-Zhang, Cun-Hui, and others. 2010. “Nearly Unbiased Variable Selection
-Under Minimax Concave Penalty.” *The Annals of Statistics* 38 (2):
-894–942.
+Zhang, Cun-Hui. 2010. “Nearly Unbiased Variable Selection Under Minimax
+Concave Penalty.” *The Annals of Statistics* 38 (2): 894–942.
 
 </div>
 
