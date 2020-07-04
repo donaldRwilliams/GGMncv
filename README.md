@@ -195,10 +195,10 @@ sources.
 
   - Atan
 
-`@article{wang2016variable, title={Variable selection and parameter
-estimation with the Atan regularization method}, author={Wang, Yanxin
-and Zhu, Li}, journal={Journal of Probability and Statistics},
-year={2016}, publisher={Hindawi} }`
+  - `@article{wang2016variable, title={Variable selection and parameter
+    estimation with the Atan regularization method}, author={Wang,
+    Yanxin and Zhu, Li}, journal={Journal of Probability and
+    Statistics}, year={2016}, publisher={Hindawi} }`
 
 ## Footnotes
 
