@@ -51,7 +51,7 @@ You can install the development version from
 devtools::install_github("donaldRwilliams/GGMncv")
 ```
 
-## Penalties
+## <i class="fas fa-cog"></i> Penalties
 
 The following are implemented in `GGMncv`:
 
@@ -65,9 +65,9 @@ The following are implemented in `GGMncv`:
 4.  Smooth integration of counting and absolute deviation (`penalty =
     "sica"`; Lv, Fan, and others 2009)
 
-5.  *L*<sub>q</sub> (`penalty = "lq"`; e.g., Knight and Fu 2000)
+5.  Log (`penalty = "log"`; Mazumder, Friedman, and Hastie 2011)
 
-6.  Log (`penalty = "log"`; Mazumder, Friedman, and Hastie 2011)
+6.  *L*<sub>q</sub> (`penalty = "lq"`; e.g., Knight and Fu 2000)
 
 7.  Smoothly clipped absolute deviation (`penalty = "scad"`; Fan and Li
     2001)
@@ -191,8 +191,7 @@ It is important to note that **GGMncv** merely provides a software
 implementation of other researchers work. There are no methological
 innovations. Hence, in addition to citing the package
 `citation("GGMncv")`, it is important to give credit to the primary
-sources. The references are appropriate references are provided in
-[(Penalties)](#penalties)
+sources. The references can be found in [(Penalties)](#penalties).
 
 ## Footnotes
 
