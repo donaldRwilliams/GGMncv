@@ -163,7 +163,9 @@ GGMncv <- function(x, n,
                       "exp",
                       "selo",
                       "log",
-                      "lasso")){
+                      "lasso",
+                      "sica",
+                      "lq")){
     stop("penalty not found. \ncurrent options: atan, mcp, scad, exp, selo, or log")
   }
 
@@ -348,7 +350,8 @@ GGMncv <- function(x, n,
   if(refit) {
     rest <- hft_algorithm(Sigma = R,
                           adj = adj,
-                          tol =  0.00001)
+                          tol =  0.00001,
+                          max_iter = 100)
     Theta <- rest$Theta
     Sigma <- rest$Sigma
     P <- -(stats::cov2cor(Theta) - I_p)

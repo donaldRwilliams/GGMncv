@@ -57,7 +57,8 @@ The following are implemented in `GGMncv`:
 1.  Atan (`penalty = "atan"`; Wang and Zhu 2016). This is currently the
     default.
 
-2.  Seamless L0 (`penalty = "selo"`; Dicker, Huang, and Lin 2013)
+2.  Seamless *L*<sub>0</sub> (`penalty = "selo"`; Dicker, Huang, and Lin
+    2013)
 
 3.  Exponential (`penalty = "exp"`; Wang, Fan, and Zhu 2018)
 
