@@ -178,9 +178,6 @@ references can be found in [(Penalties)](#penalties).
 2. <span id="f2"></span>  In low-dimensional settings, assuming that *n* is sufficiently larger than *p*,
 the sample covariance matrix provides adequate initial estimates. In high-dimensional settings (*n* < *p*), the initial estimates are obtained from lasso [(return)](#a2). 
 
-3. <span id="f3"></span>  It is possible to compute confidence intervals for lasso with the methods included in the **SILGGM** `R` package. These do not use the bootstrap [@zhang2018silggm]   
-[(return)](#a3).
-
-
+3. <span id="f3"></span>  It is possible to compute confidence intervals for lasso with the methods included in the **SILGGM** `R` package  [@zhang2018silggm]. These do not use the bootstrap [(return)](#a3).
 
 ## References

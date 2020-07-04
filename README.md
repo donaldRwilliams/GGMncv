@@ -205,8 +205,8 @@ sources. The references can be found in [(Penalties)](#penalties).
     [(return)](#a2).
 
 3.  <span id="f3"></span> It is possible to compute confidence intervals
-    for lasso with the methods included in the **SILGGM** `R` package.
-    These do not use the bootstrap (Zhang, Ren, and Chen 2018)  
+    for lasso with the methods included in the **SILGGM** `R` package
+    (Zhang, Ren, and Chen 2018). These do not use the bootstrap
     [(return)](#a3).
 
 ## References
