@@ -81,8 +81,9 @@ in Zou and Li (2008).
 
 Note that computing the non-convex solution is a challenging task.
 However, section 3.3 in Zou and Li (2008) indicates that the one-step
-approach is a viable approximation for a variety of non-convex
-penalties, assuming the initial estimates are “good enough”.
+approach is a viable **approximation** for a variety of non-convex
+penalties, assuming the initial estimates are “good
+enough”<span id="a2">[\[2\]](#f2)</span>.
 
 ## Tuning Parameter
 
@@ -148,7 +149,7 @@ subsampling do not work,” of Bühlmann, Kalisch, and Meier (2014):
 
 For this reason, it is common to **not** provide standard errors (and
 thus confidence intervals) for penalized models
-<span id="a2">[\[2\]](#f2)</span>. **GGMncv** follows the idea of behind
+<span id="a3">[\[3\]](#f3)</span>. **GGMncv** follows the idea of behind
 the **penalized** `R` package:
 
 > It is a very natural question to ask for standard errors of regression
@@ -195,12 +196,18 @@ sources. The references can be found in [(Penalties)](#penalties).
 ## Footnotes
 
 1.  <span id="f1"></span> Note that the penalties in **GGMncv** should
-    provide *nearly* unbiased estimates. [(return)](#a1)
+    provide *nearly* unbiased estimates [(return)](#a1).
 
-2.  <span id="f2"></span> It is possible to compute confidence intervals
+2.  <span id="f2"></span> In low-dimensional settings, assuming that *n*
+    is sufficiently larger than *p*, the sample covariance matrix
+    provides adequate initial estimates. In high-dimensional settings
+    (*n* \< *p*), the initial estimates are obtained from lasso
+    [(return)](#a2).
+
+3.  <span id="f3"></span> It is possible to compute confidence intervals
     for lasso with the methods included in the **SILGGM** `R` package.
     These do not use the bootstrap (Zhang, Ren, and Chen 2018)  
-    [(return)](#a2)
+    [(return)](#a3).
 
 ## References
 
