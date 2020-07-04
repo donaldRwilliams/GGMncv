@@ -30,9 +30,12 @@ Note that these limitations of lasso are well-known. In the case of false positi
 positive selections [p. 278, @tibshirani2011regression].
 
 Hence, contrary to the popular view of lasso (least absolute shrinkage "screening" operator), 
-using it for model *selection* is not necessarily ideal. There are various ways to remove the false positives, including thresholding after model selection [i.e., removing small relations, @loh2012structure] 
-and two-stage procedures [@zou2006adaptive]. The approach in **GGMncv**, on the other hand, selects
-the graph with non-convex penalization (with lasso as a special case).
+using it for model *selection* is not necessarily ideal. There are various ways to remove the 
+false positives, including thresholding after model selection 
+[i.e., removing small relations, @loh2012structure] 
+and two-stage procedures [@zou2006adaptive]. The approach in **GGMncv**, 
+on the other hand, selects the graph with non-convex penalization 
+(with *L* <sub>subscript</sub> as a special case).
 
 
 ## Installation
