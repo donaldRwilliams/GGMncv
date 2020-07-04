@@ -5,12 +5,12 @@ Version: 1.0.0
 Date: 2020-07-03
 Authors@R: person("Donald", "Williams", email = "drwwilliams@ucdavis.edu", role = c("aut", "cre"))
 Description: Estimate Gaussian graphical models with non-convex penalties, including 
-  the atan Wang and Zhu (2016) <https://doi.org/10.1155/2016/6495417>, 
-  seamless L0 Dicker, Huang, and Lin (2013) <doi:http://dx.doi.org/10.5705/ss.2011.074>,
-  exponential Wang, Fan, and Zhu <https://doi.org/10.1007/s10463-016-0588-3>, 
+  the atan Wang and Zhu (2016) <doi:10.1155/2016/6495417>, 
+  seamless L0 Dicker, Huang, and Lin (2013) <doi:10.5705/ss.2011.074>,
+  exponential Wang, Fan, and Zhu <doi:10.1007/s10463-016-0588-3>, 
   smooth integration of counting and absolute deviation Lv and Fan (2009) <doi:10.1214/09-AOS683>,
-  logarithm Mazumder, Friedman, and Hastie (2011) <doi: 10.1198/jasa.2011.tm09738>,
-  Lq, smoothly clipped absolute deviation Fan and Li (2001) <https://doi.org/10.1198/016214501753382273>,
+  logarithm Mazumder, Friedman, and Hastie (2011) <doi:10.1198/jasa.2011.tm09738>,
+  Lq, smoothly clipped absolute deviation Fan and Li (2001) <doi:10.1198/016214501753382273>,
   and minimax concave penalty Zhang (2010) <doi:10.1214/09-AOS729>. There are also extensions
   for computing variable inclusion probabilities and multiple regression coefficients.
 License: GPL-2
