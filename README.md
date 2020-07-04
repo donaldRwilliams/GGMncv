@@ -12,7 +12,7 @@ The goal of GGMncv is to provide non-convex penalties for estimating
 Gaussian graphical models. These are known to overcome the various
 limitations of lasso (least absolute shrinkage “screening” operator),
 including inconsistent model selection (Zhao and Yu 2006), biased
-<span id="a1">[\[1\]](#f1)</span> estimates (Zhang 2010), and a high
+estimates (Zhang 2010)<span id="a1">[\[1\]](#f1)</span>, and a high
 false positive rate (see for example Williams and Rast 2020; Williams et
 al. 2019).
 
