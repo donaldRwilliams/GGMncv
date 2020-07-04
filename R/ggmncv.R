@@ -145,7 +145,7 @@
 #' @export
 GGMncv <- function(x, n,
                    lambda = NULL,
-                   n_lambda = 100,
+                   n_lambda = 50,
                    gamma = NULL,
                    select = FALSE,
                    L0_learn = FALSE,
@@ -309,9 +309,11 @@ GGMncv <- function(x, n,
 
 
       if(L0_learn){
+
         Theta <- hft_algorithm(Sigma = R,
                                adj = adj,
-                               tol = 0.00001)$Theta
+                               tol = 0.00001,
+                               max_iter = 10)$Theta
 
       } else {
 
@@ -455,7 +457,7 @@ print.ggmncv <- function(x,...){
 #'
 #' @return A \code{ggplot} object
 #'
-#' @import ggplot2
+#' @importFrom  ggplot2 aes ggplot  geom_point ylab
 #'
 #' @examples
 #'

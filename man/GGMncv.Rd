@@ -8,7 +8,7 @@ GGMncv(
   x,
   n,
   lambda = NULL,
-  n_lambda = 100,
+  n_lambda = 50,
   gamma = NULL,
   select = FALSE,
   L0_learn = FALSE,

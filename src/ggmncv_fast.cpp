@@ -21,7 +21,7 @@ arma::mat Sigma_i_not_i(arma::mat x, int index) {
 }
 
 // [[Rcpp::export]]
-Rcpp::List hft_algorithm(arma::mat Sigma, arma::mat adj, double tol) {
+Rcpp::List hft_algorithm(arma::mat Sigma, arma::mat adj, double tol, double max_iter) {
 
   arma::mat S = Sigma;
   arma::mat W = S;
@@ -66,6 +66,11 @@ Rcpp::List hft_algorithm(arma::mat Sigma, arma::mat adj, double tol) {
     }
 
     iter(0,0) = iter(0,0) + 1;
+
+    if(iter(0,0) == max_iter){
+      break;
+    }
+
   }
 
   arma::mat Theta = inv(W) % adj;

@@ -40,7 +40,7 @@ constrained <- function(Sigma, adj){
   diag(adj) <- 1
 
   # call c++
-  fit <- hft_algorithm(Sigma, adj, tol = 1e10)
+  fit <- hft_algorithm(Sigma, adj, tol = 1e10, max_iter = 100)
 
   Theta <- round(fit$Theta, 3)
   Sigma <- round(fit$Sigma, 3)

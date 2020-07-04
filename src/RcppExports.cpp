@@ -7,21 +7,22 @@
 using namespace Rcpp;
 
 // hft_algorithm
-Rcpp::List hft_algorithm(arma::mat Sigma, arma::mat adj, double tol);
-RcppExport SEXP _GGMncv_hft_algorithm(SEXP SigmaSEXP, SEXP adjSEXP, SEXP tolSEXP) {
+Rcpp::List hft_algorithm(arma::mat Sigma, arma::mat adj, double tol, double max_iter);
+RcppExport SEXP _GGMncv_hft_algorithm(SEXP SigmaSEXP, SEXP adjSEXP, SEXP tolSEXP, SEXP max_iterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type Sigma(SigmaSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type adj(adjSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(hft_algorithm(Sigma, adj, tol));
+    Rcpp::traits::input_parameter< double >::type max_iter(max_iterSEXP);
+    rcpp_result_gen = Rcpp::wrap(hft_algorithm(Sigma, adj, tol, max_iter));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_GGMncv_hft_algorithm", (DL_FUNC) &_GGMncv_hft_algorithm, 3},
+    {"_GGMncv_hft_algorithm", (DL_FUNC) &_GGMncv_hft_algorithm, 4},
     {NULL, NULL, 0}
 };
 
