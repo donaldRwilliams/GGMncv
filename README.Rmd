@@ -35,7 +35,7 @@ false positives, including thresholding after model selection
 [i.e., removing small relations, @loh2012structure] 
 and two-stage procedures [@zou2006adaptive]. The approach in **GGMncv**, 
 on the other hand, selects the graph with non-convex penalization 
-(with *L* <sub>subscript</sub> as a special case).
+(with *L*<sub>1</sub> as a special case).
 
 
 ## Installation
@@ -64,13 +64,22 @@ The following are implemented in `GGMncv`:
 
 3. Exponential [`penalty = "exp"`; @wang2018variable]
 
-4. Log [`penalty = "log"`; @mazumder2011sparsenet]
+4. Smooth integration of counting and absolute deviation [`penalty = "sica"`; @lv2009unified]
 
-4. Smoothly clipped absolute deviation [`penalty = scad`; @fan2001variable]
+5. *L*<sub>q</sub> [`penalty = "lq"`; e.g., @knight2000asymptotics]
 
-5. Minimax concave penalty [`penalty = mcp`; @zhang2010nearly]
+6. Log [`penalty = "log"`; @mazumder2011sparsenet]
 
-Note that options 1-3 are explicit, continuous approximations, to the L0 penalty, that is, best subsets model selection. However, the solution is computationally efficient and solved with the local linear approximation described in @fan2009network or the one-step approach described in @zou2008one.
+7. Smoothly clipped absolute deviation [`penalty = "scad"`; @fan2001variable]
+
+8. Minimax concave penalty [`penalty = "mcp"`; @zhang2010nearly]
+
+Options 1-4 are continuous approximations to the *L*<sub>0</sub> penalty, that is, best subsets model selection.
+However, the solution is computationally efficient and solved with the local linear approximation described in @fan2009network or the one-step approach described in @zou2008one.
+
+Note that computing the non-convex solution is a challenging task. However, section 3.3 in @zou2008one 
+indicates that the one-step approach is a viable approximation for a variety of non-convex penalties, assuming
+the initial estimates are "good enough". 
 
 ## Tuning Parameter
 ### Tuning Free
@@ -158,6 +167,23 @@ fit <- GGMncv(S, n = nrow(Y),
 plot(fit, size = 4)
 ```
 ![](man/figures/vip.png)
+
+
+## Citing **GGMncv**
+It is important to note that **GGMncv** merely provides a software implementation of other researchers 
+work. There are no methological innovations. Hence, in addition to citing the package 
+`citation("GGMncv")`, it is important to give credit to the primary sources. 
+
+* Atan
+ 
+ `@article{wang2016variable,
+  title={Variable selection and parameter estimation with the Atan regularization method},
+  author={Wang, Yanxin and Zhu, Li},
+  journal={Journal of Probability and Statistics},
+  year={2016},
+  publisher={Hindawi}
+}`
+
 
 ## Footnotes
 1. <span id="f1"></span> Note that the penalties in **GGMncv** should provide *nearly* unbiased estimates. [(return)](#a1)

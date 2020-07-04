@@ -74,7 +74,7 @@ exp_deriv <- function(Theta, lambda, gamma = 0.1){
 
 # Mazumder, R., Friedman, J. H., & Hastie, T. (2011). Sparsenet: Coordinate descent
 # with nonconvex penalties. Journal of the American Statistical Association, 106(495), 1125-1138.
-log_pen <- function(inv, lambda, gamma){
+log_pen <- function(x, lambda, gamma){
   gamma <- 1/gamma
   inv <- abs(inv)
   pen_mat <- ((lambda / log(gamma+ 1)) * log(gamma * inv + 1))
@@ -93,6 +93,32 @@ lasso_deriv <- function(Theta, lambda, gamma = 0){
   p <- ncol(Theta)
   lambda_mat <- matrix(lambda, p, p)
 }
+
+lq_deriv <- function(Theta, lambda, gamma = 0.5){
+  Theta <- abs(Theta)
+  epsilon <- 0.0001
+  lambda_mat <- lambda * gamma * (Theta + epsilon)^(gamma - 1)
+  lambda_mat
+}
+
+# Lv, J., & Fan, Y. (2009). A unified approach to model selection and sparse recovery using
+# regularized least squares. The Annals of Statistics, 37(6A), 3498-3528.
+sica_pen <- function(x, lambda, gamma){
+  Theta <- x
+  Theta <- abs(Theta)
+  pen_mat <- lambda * (((gamma + 1) * Theta) /(Theta+gamma))
+  return(pen_mat)
+}
+
+sica_deriv <- function(Theta, lambda, gamma = 0.1){
+  p <- ncol(Theta)
+  Theta <- abs(Theta)
+  lambda_mat <- matrix(numDeriv::grad(sica_pen, x = Theta, lambda = lambda, gamma = gamma), p, p)
+  return(lambda_mat)
+}
+
+
+
 
 htf <- function(Sigma, adj, tol = 1e-10) {
   S <- Sigma

@@ -29,8 +29,7 @@ necessarily ideal. There are various ways to remove the false positives,
 including thresholding after model selection (i.e., removing small
 relations, Loh and Wainwright 2012) and two-stage procedures (Zou 2006).
 The approach in **GGMncv**, on the other hand, selects the graph with
-non-convex penalization (with *L* <sub>subscript</sub> as a special
-case).
+non-convex penalization (with *L*<sub>1</sub> as a special case).
 
 ## Installation
 
@@ -63,18 +62,28 @@ The following are implemented in `GGMncv`:
 
 3.  Exponential (`penalty = "exp"`; Wang, Fan, and Zhu 2018)
 
-4.  Log (`penalty = "log"`; Mazumder, Friedman, and Hastie 2011)
+4.  Smooth integration of counting and absolute deviation (`penalty =
+    "sica"`; Lv, Fan, and others 2009)
 
-5.  Smoothly clipped absolute deviation (`penalty = scad`; Fan and Li
+5.  *L*<sub>q</sub> (`penalty = "lq"`; e.g., Knight and Fu 2000)
+
+6.  Log (`penalty = "log"`; Mazumder, Friedman, and Hastie 2011)
+
+7.  Smoothly clipped absolute deviation (`penalty = "scad"`; Fan and Li
     2001)
 
-6.  Minimax concave penalty (`penalty = mcp`; Zhang 2010)
+8.  Minimax concave penalty (`penalty = "mcp"`; Zhang 2010)
 
-Note that options 1-3 are explicit, continuous approximations, to the L0
+Options 1-4 are continuous approximations to the *L*<sub>0</sub>
 penalty, that is, best subsets model selection. However, the solution is
 computationally efficient and solved with the local linear approximation
 described in Fan, Feng, and Wu (2009) or the one-step approach described
 in Zou and Li (2008).
+
+Note that computing the non-convex solution is a challenging task.
+However, section 3.3 in Zou and Li (2008) indicates that the one-step
+approach is a viable approximation for a variety of non-convex
+penalties, assuming the initial estimates are “good enough”.
 
 ## Tuning Parameter
 
@@ -176,6 +185,21 @@ plot(fit, size = 4)
 
 ![](man/figures/vip.png)
 
+## Citing **GGMncv**
+
+It is important to note that **GGMncv** merely provides a software
+implementation of other researchers work. There are no methological
+innovations. Hence, in addition to citing the package
+`citation("GGMncv")`, it is important to give credit to the primary
+sources.
+
+  - Atan
+
+`@article{wang2016variable, title={Variable selection and parameter
+estimation with the Atan regularization method}, author={Wang, Yanxin
+and Zhu, Li}, journal={Journal of Probability and Statistics},
+year={2016}, publisher={Hindawi} }`
+
 ## Footnotes
 
 1.  <span id="f1"></span> Note that the penalties in **GGMncv** should
@@ -254,6 +278,13 @@ Statistics* 9 (1): 1205–29.
 
 </div>
 
+<div id="ref-knight2000asymptotics">
+
+Knight, Keith, and Wenjiang Fu. 2000. “Asymptotics for Lasso-Type
+Estimators.” *Annals of Statistics*, 1356–78.
+
+</div>
+
 <div id="ref-li2015flare">
 
 Li, Xingguo, Tuo Zhao, Xiaoming Yuan, and Han Liu. 2015. “The Flare
@@ -268,6 +299,14 @@ Loh, Po-Ling, and Martin J Wainwright. 2012. “Structure Estimation for
 Discrete Graphical Models: Generalized Covariance Matrices and Their
 Inverses.” In *Advances in Neural Information Processing Systems*,
 2087–95.
+
+</div>
+
+<div id="ref-lv2009unified">
+
+Lv, Jinchi, Yingying Fan, and others. 2009. “A Unified Approach to Model
+Selection and Sparse Recovery Using Regularized Least Squares.” *The
+Annals of Statistics* 37 (6A): 3498–3528.
 
 </div>
 
