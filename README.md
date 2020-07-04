@@ -51,7 +51,7 @@ You can install the development version from
 devtools::install_github("donaldRwilliams/GGMncv")
 ```
 
-## <i class="fas fa-cog"></i> Penalties
+## Penalties
 
 The following are implemented in `GGMncv`:
 
