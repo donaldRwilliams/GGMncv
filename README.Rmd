@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 [![Build Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https://travis-ci.org/donaldRwilliams/GGMncv)
 
-The goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known to overcome the various limitations of lasso, including (but not limited to) inconsistent model selection [@zhao2006model], biased  <span id="a1">[[1]](#f1)</span> estimates [@zhang2010nearly], and a high false positive rate [see for example @williams2020back; @williams2019nonregularized].
+The goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known to overcome the various limitations of lasso (least absolute shrinkage "screening" operator), including inconsistent model selection [@zhao2006model], biased  <span id="a1">[[1]](#f1)</span> estimates [@zhang2010nearly], and a high false positive rate [see for example @williams2020back; @williams2019nonregularized].
 
 Note that these limitations of lasso are well-known. In the case of false positives, for example, it has been noted that 
 
@@ -29,12 +29,8 @@ Note that these limitations of lasso are well-known. In the case of false positi
 > Once we have the screening property, the task is to remove the false 
 positive selections [p. 278, @tibshirani2011regression].
 
-Hence, contrary to the popular view of lasso (least absolute shrinkage "screening" operator), 
-using it for model *selection* is not necessarily ideal. There are various ways to remove the 
-false positives, including thresholding after model selection 
-[i.e., removing small relations, @loh2012structure] 
-and two-stage procedures [@zou2006adaptive]. The approach in **GGMncv**, 
-on the other hand, selects the graph with non-convex penalization 
+There are various ways to remove the false positives, including thresholding after model selection 
+[i.e., removing small relations, @loh2012structure] and two-stage procedures [@zou2006adaptive]. The approach in **GGMncv**, on the other hand, selects the graph with non-convex penalization 
 (with *L*<sub>1</sub> as a special case).
 
 

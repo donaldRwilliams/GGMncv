@@ -10,10 +10,11 @@ Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https:/
 
 The goal of GGMncv is to provide non-convex penalties for estimating
 Gaussian graphical models. These are known to overcome the various
-limitations of lasso, including (but not limited to) inconsistent model
-selection (Zhao and Yu 2006), biased <span id="a1">[\[1\]](#f1)</span>
-estimates (Zhang 2010), and a high false positive rate (see for example
-Williams and Rast 2020; Williams et al. 2019).
+limitations of lasso (least absolute shrinkage “screening” operator),
+including inconsistent model selection (Zhao and Yu 2006), biased
+<span id="a1">[\[1\]](#f1)</span> estimates (Zhang 2010), and a high
+false positive rate (see for example Williams and Rast 2020; Williams et
+al. 2019).
 
 Note that these limitations of lasso are well-known. In the case of
 false positives, for example, it has been noted that
@@ -23,13 +24,11 @@ false positives, for example, it has been noted that
 > ‘selection’. Once we have the screening property, the task is to
 > remove the false positive selections (p. 278, Tibshirani 2011).
 
-Hence, contrary to the popular view of lasso (least absolute shrinkage
-“screening” operator), using it for model *selection* is not
-necessarily ideal. There are various ways to remove the false positives,
-including thresholding after model selection (i.e., removing small
-relations, Loh and Wainwright 2012) and two-stage procedures (Zou 2006).
-The approach in **GGMncv**, on the other hand, selects the graph with
-non-convex penalization (with *L*<sub>1</sub> as a special case).
+There are various ways to remove the false positives, including
+thresholding after model selection (i.e., removing small relations, Loh
+and Wainwright 2012) and two-stage procedures (Zou 2006). The approach
+in **GGMncv**, on the other hand, selects the graph with non-convex
+penalization (with *L*<sub>1</sub> as a special case).
 
 ## Installation
 
@@ -63,7 +62,7 @@ The following are implemented in `GGMncv`:
 3.  Exponential (`penalty = "exp"`; Wang, Fan, and Zhu 2018)
 
 4.  Smooth integration of counting and absolute deviation (`penalty =
-    "sica"`; Lv, Fan, and others 2009)
+    "sica"`; Lv and Fan 2009)
 
 5.  Log (`penalty = "log"`; Mazumder, Friedman, and Hastie 2011)
 
@@ -297,7 +296,7 @@ Inverses.” In *Advances in Neural Information Processing Systems*,
 
 <div id="ref-lv2009unified">
 
-Lv, Jinchi, Yingying Fan, and others. 2009. “A Unified Approach to Model
+Lv, Jinchi, and Yingying Fan. 2009. “A Unified Approach to Model
 Selection and Sparse Recovery Using Regularized Least Squares.” *The
 Annals of Statistics* 37 (6A): 3498–3528.
 
