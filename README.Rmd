@@ -126,7 +126,7 @@ fit
 **GGMncv** does not provide confidence intervals.  This is because, in general, 
 "confidence" intervals from penalized approaches do not have the correct properties to 
 be considered confidence intervals 
-[see Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval)). This 
+[(see Wikipedia)](https://en.wikipedia.org/wiki/Confidence_interval). This 
 sentiment is echoed in Section 3.1, "Why standard bootstrapping and subsampling do not work," of 
 @Buhlmann2014:
 
@@ -135,8 +135,7 @@ sentiment is echoed in Section 3.1, "Why standard bootstrapping and subsampling 
 > techniques do not provide valid confidence regions or p-values (pp. 7-8).
 
 
-For this reason, it is common to not provide standard errors (and thus confidence intervals) for 
-penalized models <span id="a2">[[2]](#f2)</span>. **GGMncv** follows the idea of behind the **penalized** `R` package:
+For this reason, it is common to **not** provide standard errors (and thus confidence intervals) for penalized models <span id="a2">[[2]](#f2)</span>. **GGMncv** follows the idea of behind the **penalized** `R` package:
 
 
 >It is a very natural question to ask for standard errors of regression coefficients
