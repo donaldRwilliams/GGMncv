@@ -190,9 +190,11 @@ plot(fit, size = 4)
 
 It is important to note that **GGMncv** merely provides a software
 implementation of other researchers work. There are no methological
-innovations. Hence, in addition to citing the package
-`citation("GGMncv")`, it is important to give credit to the primary
-sources. The references can be found in [(Penalties)](#penalties).
+innovations, although this is the most comprehensive `R` package for
+estimating GGMs with non-convex penalties. Hence, in addition to citing
+the package `citation("GGMncv")`, it is important to give credit to the
+primary sources. The references can be found in
+[(Penalties)](#penalties).
 
 ## Footnotes
 
