@@ -191,15 +191,8 @@ It is important to note that **GGMncv** merely provides a software
 implementation of other researchers work. There are no methological
 innovations. Hence, in addition to citing the package
 `citation("GGMncv")`, it is important to give credit to the primary
-sources.
-
-  - Atan
-
-> (<span class="citeproc-not-found" data-reference-id="article">**???**</span>){wang2016variable,
-> title={Variable selection and parameter estimation with the Atan
-> regularization method}, author={Wang, Yanxin and Zhu, Li},
-> journal={Journal of Probability and Statistics}, year={2016},
-> publisher={Hindawi} }\`
+sources. The references are appropriate references are provided in
+[(Penalties)](#penalties)
 
 ## Footnotes
 
