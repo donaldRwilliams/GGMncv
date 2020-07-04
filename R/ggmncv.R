@@ -133,7 +133,6 @@
 #' to provide competitive performance. It is possible to select lambda by setting \code{select = TRUE}.
 #'
 #' @examples
-#' \donttest{
 #' # data
 #' Y <- GGMncv::ptsd
 #'
@@ -141,7 +140,6 @@
 #'
 #' # fit model
 #' fit <- GGMncv(S, n = nrow(Y))
-#' }
 #' @export
 GGMncv <- function(x, n,
                    lambda = NULL,
@@ -461,7 +459,6 @@ print.ggmncv <- function(x,...){
 #'
 #' @examples
 #'
-#' \donttest{
 #' # data
 #' Y <- GGMncv::ptsd[,1:10]
 #'
@@ -471,11 +468,11 @@ print.ggmncv <- function(x,...){
 #' # fit model
 #' fit <- GGMncv(x = S, n = nrow(Y),
 #'               penalty = "atan",
-#'               vip = TRUE)
+#'               vip = TRUE,
+#'               vip_iter = 50)
 #'
 #' # plot
 #' plot(fit, size = 4)
-#' }
 #'
 #' @export
 plot.ggmncv <- function(x,

@@ -151,7 +151,6 @@ It is common to select lambda. However, in more recent approaches (see reference
 to provide competitive performance. It is possible to select lambda by setting \code{select = TRUE}.
 }
 \examples{
-\donttest{
 # data
 Y <- GGMncv::ptsd
 
@@ -159,7 +158,6 @@ S <- cor(Y)
 
 # fit model
 fit <- GGMncv(S, n = nrow(Y))
-}
 }
 \references{
 \insertAllCited{}

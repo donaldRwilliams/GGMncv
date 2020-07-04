@@ -23,7 +23,6 @@ Plot variable inclusion 'probabilities'
 }
 \examples{
 
-\donttest{
 # data
 Y <- GGMncv::ptsd[,1:10]
 
@@ -33,10 +32,10 @@ S <- cor(Y, method = "spearman")
 # fit model
 fit <- GGMncv(x = S, n = nrow(Y),
               penalty = "atan",
-              vip = TRUE)
+              vip = TRUE,
+              vip_iter = 50)
 
 # plot
 plot(fit, size = 4)
-}
 
 }
