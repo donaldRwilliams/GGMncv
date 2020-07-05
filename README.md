@@ -142,20 +142,22 @@ fit
 
 When `select = TRUE`, the solution path for either the partial
 correlations (`code = "pcor_path"`) or the information criterion (`code
-= ic_path`) can be plotted.
+= "ic_path"`) can be plotted.
 
 ### Atan Penalty
 
 Here is the current default penalty
 
 ``` r
+# data
 Y <- ptsd
 
+# fit model
 fit <- GGMncv(cor(Y), n = nrow(Y), 
               select = TRUE, 
               store = TRUE)
-
-
+              
+# plot path
 plot(fit, 
      alpha = 0.75, 
      type = "pcor_path") 
@@ -163,34 +165,42 @@ plot(fit,
 
 ![](man/figures/atan_path.png)
 
-Notice how the larger partial correlations “escape” regularization, at
-least to some degree, compared to the smaller partial correlations.
+The dotted line is denotes the selected lambda. Notice how the larger
+partial correlations “escape” regularization, at least to some degree,
+compared to the smaller partial correlations.
 
 ### Lasso Penalty
 
-Next L\*<sub>1</sub> regularization is implemented by setting `penalty =
+Next *L*<sub>1</sub> regularization is implemented by setting `penalty =
 "lasso"`.
 
 ``` r
+# data
 Y <- ptsd
 
+# fit model
 fit <- GGMncv(cor(Y), n = nrow(Y), 
               select = TRUE, 
               penalty = "lasso"
               store = TRUE)
 
-
+# plot path
 plot(fit, 
      alpha = 0.75, 
      type = "pcor_path") 
 ```
+
+![](man/figures/lasso_path.png)
 
 This solution is much different than above. For example, it is clear
 that the large partial correlations are heavily penalized, whereas this
 was not so for the atan penalty. The reason this is not ideal is that,
 if the partial correlations are large, it makes sense that they should
 not be penalized that much. This property of non-convex regularization
-should provide *nearly* unbiased estimates.
+should provide *nearly* unbiased estimates, which can imporove, say,
+predictive accuracy.
+
+Also notice that the atan penalty provides a sparser solution.
 
 ## Bootstrapping
 

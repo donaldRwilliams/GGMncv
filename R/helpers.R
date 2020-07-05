@@ -117,9 +117,6 @@ sica_deriv <- function(Theta, lambda, gamma = 0.1){
   return(lambda_mat)
 }
 
-
-
-
 htf <- function(Sigma, adj, tol = 1e-10) {
   S <- Sigma
   p <- ncol(S)
@@ -162,4 +159,4 @@ coef_helper <- function(Theta){
   return(betas)
 }
 
-globalVariables(c("VIP", "new1", "Y", "cs"))
+globalVariables(c("VIP", "new1", "Y", "cs", "value", "X1", "X2", "ic", "lambda"))

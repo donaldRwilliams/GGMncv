@@ -470,6 +470,8 @@ print.ggmncv <- function(x,...){
 #' @importFrom  ggplot2 aes ggplot  geom_point ylab facet_grid geom_line
 #' geom_vline geom_hline xlab ylab ggtitle theme element_text
 #'
+#' @importFrom reshape melt
+#'
 #' @examples
 #'
 #' # data
