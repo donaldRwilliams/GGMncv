@@ -30,6 +30,10 @@ and Wainwright 2012) and two-stage procedures (Zou 2006). The approach
 in **GGMncv**, on the other hand, selects the graph with non-convex
 penalization (with *L*<sub>1</sub> as a special case).
 
+An example of how these penalties address the bias issue of
+*L*<sub>1</sub> regularization is provided in [Solution
+Path](#solution-path).
+
 ## Installation
 
 You can install the development version from
@@ -134,6 +138,60 @@ fit
 #> 10 0.000 0.000 0.000 0.243 0.000 0.000 0.000 0.114 0.261 0.000
 ```
 
+## Solution Path
+
+When `select = TRUE`, the solution path for either the partial
+correlations (`code = "pcor_path"`) or the information criterion (`code
+= ic_path`) can be plotted.
+
+### Atan Penalty
+
+Here is the current default penalty
+
+``` r
+Y <- ptsd
+
+fit <- GGMncv(cor(Y), n = nrow(Y), 
+              select = TRUE, 
+              store = TRUE)
+
+
+plot(fit, 
+     alpha = 0.75, 
+     type = "pcor_path") 
+```
+
+![](man/figures/atan_path.png)
+
+Notice how the larger partial correlations “escape” regularization, at
+least to some degree, compared to the smaller partial correlations.
+
+### Lasso Penalty
+
+Next L\*<sub>1</sub> regularization is implemented by setting `penalty =
+"lasso"`.
+
+``` r
+Y <- ptsd
+
+fit <- GGMncv(cor(Y), n = nrow(Y), 
+              select = TRUE, 
+              penalty = "lasso"
+              store = TRUE)
+
+
+plot(fit, 
+     alpha = 0.75, 
+     type = "pcor_path") 
+```
+
+This solution is much different than above. For example, it is clear
+that the large partial correlations are heavily penalized, whereas this
+was not so for the atan penalty. The reason this is not ideal is that,
+if the partial correlations are large, it makes sense that they should
+not be penalized that much. This property of non-convex regularization
+should provide *nearly* unbiased estimates.
+
 ## Bootstrapping
 
 **GGMncv** does not provide confidence intervals. This is because, in
@@ -181,7 +239,7 @@ fit <- GGMncv(S, n = nrow(Y),
               vip = TRUE)
 
 # plot
-plot(fit, size = 4)
+plot(fit, size = 4, type = "vip")
 ```
 
 ![](man/figures/vip.png)
