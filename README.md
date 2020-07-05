@@ -30,9 +30,8 @@ and Wainwright 2012) and two-stage procedures (Zou 2006). The approach
 in **GGMncv**, on the other hand, selects the graph with non-convex
 penalization (with *L*<sub>1</sub> as a special case).
 
-An example of how these penalties address the bias issue of
-*L*<sub>1</sub> regularization is provided in [Solution
-Path](#solution-path).
+An example of how these penalties address the bias of *L*<sub>1</sub>
+regularization is provided in [Solution Path](#solution-path).
 
 ## Installation
 
@@ -77,6 +76,8 @@ The following are implemented in `GGMncv`:
     2001)
 
 8.  Minimax concave penalty (`penalty = "mcp"`; Zhang 2010)
+
+9.  Lasso (`penalty = "lasso"`; Tibshirani 1996)
 
 Options 1-4 are continuous approximations to the *L*<sub>0</sub>
 penalty, that is, best subsets model selection. However, the solution is
@@ -197,7 +198,7 @@ that the large partial correlations are heavily penalized, whereas this
 was not so for the atan penalty. The reason this is not ideal is that,
 if the partial correlations are large, it makes sense that they should
 not be penalized that much. This property of non-convex regularization
-should provide *nearly* unbiased estimates, which can imporove, say,
+should provide *nearly* unbiased estimates, which can improve, say,
 predictive accuracy.
 
 Also notice that the atan penalty provides a sparser solution.
@@ -388,11 +389,19 @@ Statistical Association* 106 (495): 1125–38.
 
 </div>
 
+<div id="ref-tibshirani1996regression">
+
+Tibshirani, Robert. 1996. “Regression Shrinkage and Selection via the
+Lasso.” *Journal of the Royal Statistical Society: Series B
+(Methodological)* 58 (1): 267–88.
+
+</div>
+
 <div id="ref-tibshirani2011regression">
 
-Tibshirani, Robert. 2011. “Regression Shrinkage and Selection via the
-Lasso: A Retrospective.” *Journal of the Royal Statistical Society:
-Series B (Statistical Methodology)* 73 (3): 273–82.
+———. 2011. “Regression Shrinkage and Selection via the Lasso: A
+Retrospective.” *Journal of the Royal Statistical Society: Series B
+(Statistical Methodology)* 73 (3): 273–82.
 
 </div>
 

@@ -33,8 +33,7 @@ There are various ways to remove the false positives, including thresholding aft
 [i.e., removing small relations, @loh2012structure] and two-stage procedures [@zou2006adaptive]. The approach in **GGMncv**, on the other hand, selects the graph with non-convex penalization 
 (with *L*<sub>1</sub> as a special case).
 
-An example of how these penalties address the bias issue of *L*<sub>1</sub> regularization is provided in
-[Solution Path](#solution-path).
+An example of how these penalties address the bias of *L*<sub>1</sub> regularization is provided in [Solution Path](#solution-path).
 
 ## Installation
 
@@ -73,9 +72,12 @@ The following are implemented in `GGMncv`:
 
 8. Minimax concave penalty [`penalty = "mcp"`; @zhang2010nearly]
 
+9. Lasso [`penalty = "lasso"`; @tibshirani1996regression]
+
+
 Options 1-4 are continuous approximations to the *L*<sub>0</sub> penalty, that is, best subsets 
 model selection. However, the solution is computationally efficient and solved with the local 
-linear approximation described in @fan2009network or the one-step approach described in @zou2008one.
+linear approximation described in @fan2009network or the one-step approach described in @zou2008one. 
 
 Note that computing the non-convex solution is a challenging task. However, section 3.3 in @zou2008one 
 indicates that the one-step approach is a viable **approximation** for a variety of non-convex penalties, assuming the initial estimates are "good enough"<span id="a2">[[2]](#f2)</span>. 
@@ -83,7 +85,7 @@ indicates that the one-step approach is a viable **approximation** for a variety
 ## Tuning Parameter
 ### Tuning Free
 
-The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to `sqrt(log(p)/n)` [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence].
+The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to `sqrt(log(p)/n)` [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence]. 
 
 ### Selection
 It is also possible to select the tuning parameter with BIC. This is accomplished by setting `select = TRUE`.
@@ -173,10 +175,11 @@ plot(fit,
 This solution is much different than above. For example, it is clear that the large partial correlations
 are heavily penalized, whereas this was not so for the atan penalty. The reason this is not ideal is that,
 if the partial correlations are large, it makes sense that they should not be penalized that much. This
-property of non-convex regularization should provide *nearly* unbiased estimates, which can imporove, say,
+property of non-convex regularization should provide *nearly* unbiased estimates, which can improve, say,
 predictive accuracy.
 
 Also notice that the atan penalty provides a sparser solution.
+
 
 ## Bootstrapping
 **GGMncv** does not provide confidence intervals.  This is because, in general, 

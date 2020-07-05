@@ -76,7 +76,7 @@ exp_deriv <- function(Theta, lambda, gamma = 0.1){
 # with nonconvex penalties. Journal of the American Statistical Association, 106(495), 1125-1138.
 log_pen <- function(x, lambda, gamma){
   gamma <- 1/gamma
-  inv <- abs(inv)
+  inv <- abs(x)
   pen_mat <- ((lambda / log(gamma+ 1)) * log(gamma * inv + 1))
   return(pen_mat)
 }
