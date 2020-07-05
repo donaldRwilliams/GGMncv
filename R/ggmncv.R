@@ -413,7 +413,8 @@ GGMncv <- function(x, n,
                           adj = adj,
                           lambda = lambda,
                           vip_results = vip_results,
-                          fitted_models = fitted_models)
+                          fitted_models = fitted_models,
+                          penalty = penalty)
 
   class(returned_object) <- c("ggmncv", "default")
   return(returned_object)
@@ -446,19 +447,28 @@ print.ggmncv <- function(x,...){
 
 #' Plot \code{ggmncv} Objects
 #'
-#' @description Plot variable inclusion 'probabilities'
+#' @description Plot the solution path for the partial correlations, the information criterion solution path, or
+#' the variable inclusion 'probabilities'.
 #'
 #' @param x An object of class \code{ggmncv}
 #'
-#' @param size Numeric. The size of the points (defaults to 1).
+#' @param type Character string. Which type should be plotted ? Options included
+#' \code{pcor_path}, \code{ic_path}, or \code{vip}.
 #'
-#' @param color Character string. The color of the points (defaults to \code{black})
+#' @param size Numeric. The size of the points (\code{vip})  or lines (\code{pcor_path} or \code{ic_path})
+#' The default is \code{1}.
+#'
+#' @param color Character string. The color of the points (\code{vip})  or lines
+#' (\code{pcor_path} or \code{ic_path}). The default is \code{black}.
+#'
+#' @param alpha Numeric. The transparency of the lines. Only for the solution path options.
 #'
 #' @param ... Currently ignored.
 #'
 #' @return A \code{ggplot} object
 #'
-#' @importFrom  ggplot2 aes ggplot  geom_point ylab
+#' @importFrom  ggplot2 aes ggplot  geom_point ylab facet_grid geom_line
+#' geom_vline geom_hline xlab ylab ggtitle theme
 #'
 #' @examples
 #'
@@ -475,31 +485,131 @@ print.ggmncv <- function(x,...){
 #'               vip_iter = 50)
 #'
 #' # plot
-#' plot(fit, size = 4)
+#' plot(fit, size = 4, type = "vip")
 #'
 #' @export
 plot.ggmncv <- function(x,
+                        type = "pcor_path",
                         size = 1,
+                        alpha = 0.5,
                         color = "black",
                         ...){
-  if(is.null(x$vip_results)){
-    stop("variable inclusion 'probabilities' not found (set vip = TRUE)")
+
+  if(type == "pcor_path"){
+
+    n_lambda <-  length(x$lambda)
+
+    if(n_lambda == 0) {
+      stop("solution path not found. must set 'select = TRUE'")
+    }
+
+
+    p <- ncol(x$Theta)
+    which_min <- which.min(sapply(x$fitted_models, "[[", "bic"))
+    lambda_min <- x$lambda[which_min]
+
+
+
+    Theta_std <- t(sapply(1:n_lambda, function(i)
+
+      cov2cor(x$fitted_models[[i]]$wi)[upper.tri(diag(p))]))
+
+    non_zero <- sum(Theta_std[which_min,] !=0)
+    dat_res <-  reshape::melt(Theta_std)
+    dat_res$X1 <- round(x$lambda, 3)
+    dat_res$penalty <- x$penalty
+
+    plt <- ggplot(dat_res, aes(y = -value,
+                               x = X1,
+                               group = as.factor(X2),
+                               color = as.factor(X2))) +
+      facet_grid(~ penalty) +
+
+      geom_line(show.legend = FALSE, size = size,
+                alpha = alpha) +
+      geom_vline(xintercept = lambda_min,
+                 linetype = "dotted",
+                 size = 1,
+                 alpha = 0.75) +
+      geom_hline(yintercept = 0,  color = "black") +
+      xlab(expression(lambda)) +
+      ylab(expression(hat(rho))) +
+      ggtitle(paste0(non_zero, " edges (",
+                     round(non_zero /  p*(p-1)*.5),
+                     "% connectivity)")) +
+      theme(axis.title  = element_text(size = 12),
+            strip.text = element_text(size = 12))
+
+
+  } else if (type == "ic_path"){
+    n_lambda <-  length(x$lambda)
+
+    if(n_lambda == 0) {
+      stop("solution path not found. must set 'select = TRUE'")
+    }
+
+
+
+    n_lambda <-  length(x$lambda)
+    p <- ncol(x$Theta)
+    which_min <- which.min(sapply(x$fitted_models, "[[", "bic"))
+    lambda_min <- x$lambda[which_min]
+
+
+    non_zero <- sum(x$adj[upper.tri(x$adj)] !=0)
+
+    dat_res <- data.frame(ic = sapply(x$fitted_models, "[[", "bic"),
+                          lambda = x$lambda)
+    dat_res$penalty <- x$penalty
+
+    plt <- ggplot(dat_res, aes(y = ic, x = lambda)) +
+      geom_line(size = size) +
+      geom_vline(xintercept = lambda_min,
+                 linetype = "dotted",
+                 size = 1,
+                 alpha = 0.75) +
+      facet_grid(~ penalty) +
+      xlab(expression(lambda)) +
+      ylab("IC") +
+      ggtitle(paste0(non_zero, " edges (",
+                     round(non_zero /  p*(p-1)*.5),
+                     "% connectivity)")) +
+      theme(axis.title  = element_text(size = 12),
+            strip.text = element_text(size = 12))
+
+
+  }  else if(type == "vip"){
+
+    if(is.null(x$vip_results)){
+      stop("variable inclusion 'probabilities' not found (set vip = TRUE)")
+    }
+
+    dat <- x$vip_results[order(x$vip_results$VIP),]
+
+    dat$new1 <- factor(dat$Relation,
+                       levels = dat$Relation,
+                       labels = dat$Relation)
+
+    dat$penalty <- x$penalty
+    plt <- ggplot(dat,aes(y= new1,
+                          x = VIP,
+                          group = new1)) +
+      facet_grid(~ penalty) +
+      geom_point(size = size,
+                 color = color)  +
+      ylab("Relation") +
+      theme(axis.title  = element_text(size = 12),
+            strip.text = element_text(size = 12))
+
+  } else {
+    stop("type not supported. must be 'pcor_path', 'ic_path', or 'vip'")
   }
 
-  dat <- x$vip_results[order(x$vip_results$VIP),]
-
-  dat$new1 <- factor(dat$Relation,
-                     levels = dat$Relation,
-                     labels = dat$Relation)
-
-  ggplot(dat,aes(y= new1,
-                 x = VIP,
-                 group = new1)) +
-    geom_point(size = size,
-               color = color)  +
-    ylab("Relation")
-
+  return(plt)
 }
+
+
+
 
 print_ggmncv <- function(x, ...){
   mat <- round(x$P, 3)
