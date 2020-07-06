@@ -38,18 +38,15 @@ regularization is provided in [Solution Path](#solution-path).
 
 ## Installation
 
-You can install the development version from
-[GitHub](https://github.com/) with:
+You can install the released version of GGMncv from
+[CRAN](https://CRAN.R-project.org) with:
 
-<!-- released version of GGMncv from -->
+``` r
+install.packages("GGMncv")
+```
 
-<!-- [CRAN](https://CRAN.R-project.org) with: -->
-
-<!-- ``` r -->
-
-<!-- install.packages("GGMncv") -->
-
-<!-- ``` -->
+You can install development version from [GitHub](https://github.com/)
+with:
 
 ``` r
 # install.packages("devtools")
