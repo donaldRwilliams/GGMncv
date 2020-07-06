@@ -36,6 +36,9 @@ penalization (with *L*<sub>1</sub> as a special case).
 An example of how these penalties address the bias of *L*<sub>1</sub>
 regularization is provided in [Solution Path](#solution-path).
 
+Important caveats relating to statistical inference are provided
+[below](#a-note-on%20statistical-inference).
+
 ## Installation
 
 You can install the released version of GGMncv from
@@ -296,9 +299,11 @@ plot(fit, size = 4, type = "vip")
 ## A Note on Statistical Inference
 
 It might be tempting to think these approaches lead to rich *inference*.
-This would be a mistake, as they suffer from all of the problems of any
-automated procedure for model selection (e.g., Berk et al. 2013; Lee et
-al. 2016). And note that:
+This would be a mistake–they suffer from all of the problems inherent to
+automated procedures for model selection (e.g., Berk et al. 2013; Lee et
+al. 2016).
+
+And note that:
 
 1.  Simply **not** detecting an effect does not provide evidence for the
     null hypothesis.
