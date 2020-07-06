@@ -5,6 +5,9 @@
 
 # GGMncv: Gaussian Graphical Models with Non-Convex Penalties
 
+[![CRAN
+Version](http://www.r-pkg.org/badges/version/GGMncv)](https://cran.r-project.org/package=GGMncv)
+[![Downloads](https://cranlogs.r-pkg.org/badges/GGMncv)](https://cran.r-project.org/package=GGMncv)
 [![Build
 Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https://travis-ci.org/donaldRwilliams/GGMncv)
 

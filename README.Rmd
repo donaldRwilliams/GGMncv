@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 
 # GGMncv: Gaussian Graphical Models with Non-Convex Penalties
 
+[![CRAN Version](http://www.r-pkg.org/badges/version/GGMncv)](https://cran.r-project.org/package=GGMncv)
+[![Downloads](https://cranlogs.r-pkg.org/badges/GGMncv)](https://cran.r-project.org/package=GGMncv)
 [![Build Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https://travis-ci.org/donaldRwilliams/GGMncv)
 
 The goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known to overcome the various limitations of lasso (least absolute shrinkage "screening" operator), including inconsistent model selection [@zhao2006model], biased estimates [@zhang2010nearly]<span id="a1">[[1]](#f1)</span>, and a high false positive rate [see for example @williams2020back; @williams2019nonregularized].
