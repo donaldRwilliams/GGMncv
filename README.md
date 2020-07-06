@@ -148,10 +148,7 @@ fit
 
 The **GGMncv** package can also be used for prediction, given the
 correspondence between the inverse covariance matrix and multiple
-regression (Kwan 2014). Here is an example compared to the **ncvreg**
-package that implements non-convex penalties for regression.
-
-### **GGMncv**
+regression (Kwan 2014).
 
 ``` r
 # protein expression data
@@ -176,36 +173,6 @@ round(apply((pred - Ytest)^2, 2, mean), 2)
 #> Raf  Erk Plcg  PKC  PKA PIP2 PIP3  Mek  P38  Jnk  Akt 
 #> 0.16 0.27 0.60 0.42 0.40 0.47 0.70 0.15 0.14 0.69 0.26 
 ```
-
-### **ncvreg**
-
-``` r
-# regression package
-library(ncvreg)
-
-cvreg_pred <- sapply(1:11, function(x) {
-  # fit
-  cvfit <- cv.ncvreg(Ytrain[,-x], y = Ytrain[,x])
-  fit <- cvfit$fit
-  # yhat
-  cbind(1, Ytest[,-x]) %*% fit$beta[,cvfit$min]
-})
-
-# print mse
-round(apply((cvreg_pred - Ytest)^2, 2, mean), 2)
-
-#> Raf  Erk Plcg  PKC  PKA PIP2 PIP3  Mek  P38  Jnk  Akt 
-#> 0.18 0.28 0.60 0.42 0.38 0.47 0.68 0.17 0.15 0.69 0.26 
-```
-
-Notice that **GGMncv** provides more than competitive performance, all
-the while the tuning parameter was not selected with cross-validation
-(it was fixed to `sqrt(log(p)/n)`).
-
-Note also that the default in **GGMncv** with the atan penalty resulted
-in 60 % connectivty, whereas the default approach in **ncvreg** with the
-mcp penalty resulted in 96 % connectivity. This translates into 20 fewer
-edges and comparable predictive accuracy.
 
 ## Solution Path
 
