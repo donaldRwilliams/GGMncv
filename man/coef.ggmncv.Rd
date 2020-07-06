@@ -17,6 +17,10 @@ A matrix of regression coefficients
 \description{
 Regression Coefficients from \code{ggmncv} Objects
 }
+\note{
+The matrix of coefficients can be accessed by removing the class
+from the returned object (e.g., \code{unclass(coefs)}).
+}
 \examples{
 
 \donttest{

@@ -2,6 +2,7 @@
 
 S3method(coef,ggmncv)
 S3method(plot,ggmncv)
+S3method(predict,ggmncv)
 S3method(print,ggmncv)
 export(GGMncv)
 export(constrained)

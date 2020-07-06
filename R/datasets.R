@@ -39,3 +39,27 @@
 #'
 #' @format A dataframe with 221 rows and 20 variables
 NULL
+
+
+#' @title Data: Sachs Network
+#'
+#' @description Protein expression in human immune system cells
+#'
+#' @name Sachs
+#'
+#' @docType data
+#'
+#' @keywords datasets
+#'
+#' @usage data("Sachs")
+#'
+#' @examples
+#' data("Sachs")
+#'
+#' @format A data frame containing 7466 cells (n = 7466) and flow cytometry
+#'  measurements of 11 (p = 11) phosphorylated proteins and phospholipids
+#'  \insertCite{sachs2002bayesian}{GGMncv}
+#'
+#' @references
+#' \insertAllCited{}
+NULL

@@ -6,6 +6,10 @@
 #'
 #' @return A matrix of regression coefficients
 #'
+#' @note
+#' The matrix of coefficients can be accessed by removing the class
+#' from the returned object (e.g., \code{unclass(coefs)}).
+#'
 #' @examples
 #'
 #' \donttest{
@@ -24,7 +28,6 @@
 #' }
 #' @export
 coef.ggmncv <- function(object, ...){
-
   Theta <- object$Theta
   coefs <- coef_helper(Theta)
   class(coefs) <- c("ggmncv", "coef")

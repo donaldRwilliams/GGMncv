@@ -434,7 +434,7 @@ GGMncv <- function(x, n,
                           lambda = lambda,
                           vip_results = vip_results,
                           fitted_models = fitted_models,
-                          penalty = penalty)
+                          penalty = penalty, x = x)
 
   class(returned_object) <- c("ggmncv", "default")
   return(returned_object)

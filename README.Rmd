@@ -92,10 +92,10 @@ It is also possible to select the tuning parameter with several information crit
 including `aic`, `bic`,`ebic`, `ric`, in addition to any of the *generalized* information criteria 
 provided in section 5 of @kim2012consistent. There are 6 GICs in total that are specified as  `gic_1` to `gic_6`.
 Note that `gic_1` is BIC, whereas `gic_3` is RIC. Lambda is selected by setting `select = TRUE` and 
-then the desired IC with, for example, `ic = gic_3`.
+then the desired IC with, for example, `ic = "gic_3"`.
 
 
-## Example
+## Example: Graph
 A GGM can be fitted as follows
 
 ```r
@@ -128,6 +128,63 @@ fit
 #> 10 0.000 0.000 0.000 0.243 0.000 0.000 0.000 0.114 0.261 0.000
 ```
 
+## Example: Out-of-Sample Prediction
+The **GGMncv** package can also be used for prediction, given the correspondence 
+between the inverse covariance matrix and multiple regression [@kwan2014regression]. 
+Here is an example compared to the  **ncvreg** package that implements non-convex 
+penalties for regression.
+
+### **GGMncv**
+
+```r
+# protein expression data
+Y <- scale(Sachs)
+
+# test data
+Ytest <- Y[1:100,]
+
+# training data
+Ytrain <- Y[101:nrow(Y),]
+
+# default: atan and tuning free
+fit <- GGMncv(Ytrain, 
+              n = nrow(Ytrain))
+
+# predict
+pred <- predict(fit, newdata = Ytest)
+
+# print mse
+round(apply((pred - Ytest)^2, 2, mean), 2)
+
+#> Raf  Erk Plcg  PKC  PKA PIP2 PIP3  Mek  P38  Jnk  Akt 
+#> 0.16 0.27 0.60 0.42 0.40 0.47 0.70 0.15 0.14 0.69 0.26 
+```
+
+### **ncvreg**
+```r
+# regression package
+library(ncvreg)
+
+cvreg_pred <- sapply(1:11, function(x) {
+  # fit
+  cvfit <- cv.ncvreg(Ytrain[,-x], y = Ytrain[,x])
+  fit <- cvfit$fit
+  # yhat
+  cbind(1, Ytest[,-x]) %*% fit$beta[,cvfit$min]
+})
+
+# print mse
+round(apply((cvreg_pred - Ytest)^2, 2, mean), 2)
+
+#> Raf  Erk Plcg  PKC  PKA PIP2 PIP3  Mek  P38  Jnk  Akt 
+#> 0.18 0.28 0.60 0.42 0.38 0.47 0.68 0.17 0.15 0.69 0.26 
+```
+
+Notice that **GGMncv** provides more than competitive performance, all the while the tuning 
+parameter was not selected with cross-validation (it was fixed to `sqrt(log(p)/n)`).
+
+Note also that the default in **GGMncv** with the atan penalty resulted in 60 % connectivty, whereas the default approach in **ncvreg** with the mcp penalty resulted in 96 % connectivity. This translates into 
+20 fewer edges and comparable predictive accuracy.
 
 ## Solution Path
 When `select = TRUE`, the solution path for either the partial correlations (`code = "pcor_path"`)
