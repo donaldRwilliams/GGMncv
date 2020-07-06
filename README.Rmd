@@ -95,7 +95,7 @@ Note that `gic_1` is BIC, whereas `gic_3` is RIC. Lambda is selected by setting 
 then the desired IC with, for example, `ic = "gic_3"`.
 
 
-## Example: Graph
+## Example: Structure Learning
 A GGM can be fitted as follows
 
 ```r
@@ -157,8 +157,7 @@ round(apply((pred - Ytest)^2, 2, mean), 2)
 ```
 
 ## Solution Path
-When `select = TRUE`, the solution path for either the partial correlations (`code = "pcor_path"`)
-or the information criterion (`code = "ic_path"`) can be plotted.
+When `select = TRUE`, the solution path for either the partial correlations (`code = "pcor_path"`) or the information criterion (`code = "ic_path"`) can be plotted.
 
 ### Atan Penalty
 Here is the current default penalty

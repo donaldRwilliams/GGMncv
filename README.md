@@ -110,7 +110,7 @@ are specified as `gic_1` to `gic_6`. Note that `gic_1` is BIC, whereas
 `gic_3` is RIC. Lambda is selected by setting `select = TRUE` and then
 the desired IC with, for example, `ic = "gic_3"`.
 
-## Example: Graph
+## Example: Structure Learning
 
 A GGM can be fitted as follows
 
