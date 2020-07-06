@@ -102,8 +102,13 @@ Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van De Geer
 
 ### Selection
 
-It is also possible to select the tuning parameter with BIC. This is
-accomplished by setting `select = TRUE`.
+It is also possible to select the tuning parameter with several
+information criterion (IC), including `aic`, `bic`,`ebic`, `ric`, in
+addition to any of the *generalized* information criteria provided in
+section 5 of Kim, Kwon, and Choi (2012). There are 6 GICs in total that
+are specified as `gic_1` to `gic_6`. Note that `gic_1` is BIC, whereas
+`gic_3` is RIC. Lambda is selected by setting `select = TRUE` and then
+the desired IC with, for example, `ic = gic_3`.
 
 ## Example
 
@@ -346,6 +351,14 @@ press.
 Jankova, Jana, and Sara Van De Geer. 2015. “Confidence Intervals for
 High-Dimensional Inverse Covariance Estimation.” *Electronic Journal of
 Statistics* 9 (1): 1205–29.
+
+</div>
+
+<div id="ref-kim2012consistent">
+
+Kim, Yongdai, Sunghoon Kwon, and Hosik Choi. 2012. “Consistent Model
+Selection Criteria on High Dimensions.” *The Journal of Machine Learning
+Research* 13: 1037–57.
 
 </div>
 

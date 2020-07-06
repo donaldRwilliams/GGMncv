@@ -117,6 +117,47 @@ sica_deriv <- function(Theta, lambda, gamma = 0.1){
   return(lambda_mat)
 }
 
+# Kim, Y., Kwon, S., & Choi, H. (2012). Consistent model selection criteria on high
+# dimensions. The Journal of Machine Learning Research, 13, 1037-1057.
+
+gic_helper <- function(Theta, R, edges, n, p, type = "bic", ...){
+  log.like <- (n / 2) * (log(det(Theta)) - sum(diag(R %*% Theta)))
+  neg_ll <- -2 * log.like
+
+  if(type == "bic" | type == "gic_1"){
+    ic <- neg_ll + edges * log(n)
+  } else if (type == "aic") {
+    ic <- neg_ll + edges * 2
+  } else if (type == "gic_2"){
+    ic <- neg_ll + edges * p^(1/3)
+  } else if(type == "ric" | type == "gic_3"){
+    ic <- neg_ll + edges * 2 * log(p)
+    } else if (type == "gic_4") {
+    ic <- neg_ll + edges * 2 * (log(p) + log(log(p)) )
+    } else if(type == "gic_5"){
+    ic <- neg_ll + edges * log(log(n)) * log(p)
+  } else if (type == "gic_6"){
+      ic <- neg_ll + edges * log(n) * log(p)
+  }else if(type == "ebic"){
+
+    dots <- list(...)
+    if(is.null(dots$ebic_gamma)){
+      gamma <- 0.5
+    } else {
+      gamma <- dots$ebic_gamma
+    }
+    ic <- neg_ll + edges * log(n) + 4 * edges * gamma * log(p)
+  } else {
+    stop("ic not found. see documentation")
+  }
+
+  return(ic)
+
+}
+
+
+# note this is implemented in c++ for speed.
+# This is for testing purposes
 htf <- function(Sigma, adj, tol = 1e-10) {
   S <- Sigma
   p <- ncol(S)

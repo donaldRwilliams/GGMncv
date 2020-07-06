@@ -7,6 +7,15 @@
 #'
 #' @param n Numeric. Sample size.
 #'
+#' @param penalty Character string. Which penalty should be used (defaults to \code{atan}).
+#'
+#' @param ic Character string. Which information criterion should be used (defaults to \code{bic}), give
+#'           \code{select = TRUE}. The options include \code{aic}, \code{ebic}
+#'           (ebic_gamma defaults to \code{0.5}; see details), \code{ric},
+#'           or any generalized information criterion provided in section 5 of
+#'           \insertCite{kim2012consistent;textual}{GGMncv}.
+#'           The options are \code{gic_1} (i.e., \code{bic}) to \code{gic_7}.
+#'
 #' @param lambda Numeric. Tuning parameter governing the degrees of penalization. Defaults to
 #'               \code{NULL} which results in fixing lambda to \code{sqrt(log(p)/n)}.
 #'
@@ -20,8 +29,6 @@
 #'
 #' @param L0_learn Logical. Should lambda be selected based on the non-regularized
 #'                 precision matrix (defaults to \code{FALSE}; see details).
-#'
-#' @param penalty Character string. Which penalty should be used (defaults to \code{atan}).
 #'
 #' @param refit Logical. Should the precision matrix be refitted, given the adjacency matrix
 #'               (defaults to \code{FALSE})? When set to \code{TRUE}, this provides the \strong{non-regularized},
@@ -118,6 +125,7 @@
 #' (i.e., low-dimensional).
 #'
 #' \strong{LLA}
+#'
 #' The local linear approximate is for non-covex penalties is described in \insertCite{fan2009network}{GGMncv}.
 #' This is essentially a weighted (g)lasso. Note that by default \code{LLA = FALSE}. This is due to the
 #' work of \insertCite{zou2008one}{GGMncv}, which suggested that, so long as the starting values are good,
@@ -132,6 +140,12 @@
 #' \code{sqrt(log(p)/n)}. This has the advantage of being tuning free and this value is expected
 #' to provide competitive performance. It is possible to select lambda by setting \code{select = TRUE}.
 #'
+#' \strong{EBIC}
+#'
+#' When setting \code{ic = "ebic"}, the additional parameter that determines the additional penalty to BIC is
+#' passed via the \code{...} argument. This must be specificed as \code{ebic_gamma = 1}, with the default set
+#' to \code{0.5}.
+#'
 #' @examples
 #' # data
 #' Y <- GGMncv::ptsd
@@ -142,17 +156,18 @@
 #' fit <- GGMncv(S, n = nrow(Y))
 #' @export
 GGMncv <- function(x, n,
+                   penalty = "atan",
+                   ic = "bic",
                    lambda = NULL,
                    n_lambda = 50,
                    gamma = NULL,
                    select = FALSE,
                    L0_learn = FALSE,
-                   penalty = "atan",
                    refit = FALSE,
                    LLA = FALSE,
                    method = "pearson",
                    progress = TRUE,
-                   store = FALSE,
+                   store = TRUE,
                    vip = FALSE,
                    vip_iter = 1000,
                    ...){
@@ -316,15 +331,20 @@ GGMncv <- function(x, n,
                                max_iter = 10)$Theta
 
       } else {
-
         Theta <- fit$wi
       }
 
-      edges <- sum(adj[upper.tri(adj)] != 0)
-      log.like <- (n/2) * (log(det(Theta)) - sum(diag(R%*%Theta)))
-      bic <- -2 * log.like +  edges * log(n)
-      fit$bic <- bic
-      fit$lambda <- lambda[i]
+       edges <- sum(adj[upper.tri(adj)] != 0)
+
+       fit$ic <- gic_helper(Theta = Theta,
+                             R = R,
+                             edges = edges,
+                             n = n,
+                             p = p,
+                             type = ic,
+                             ...)
+
+       fit$lambda <- lambda[i]
 
       if(progress){
         utils::setTxtProgressBar(pb, i)
@@ -332,7 +352,7 @@ GGMncv <- function(x, n,
       fit
     })
 
-   fit <-  fits[[which.min(  sapply(fits, "[[", "bic"))]]
+   fit <-  fits[[which.min(  sapply(fits, "[[", "ic"))]]
 
    if(store){
      fitted_models <- fits
@@ -507,7 +527,7 @@ plot.ggmncv <- function(x,
 
 
     p <- ncol(x$Theta)
-    which_min <- which.min(sapply(x$fitted_models, "[[", "bic"))
+    which_min <- which.min(sapply(x$fitted_models, "[[", "ic"))
     lambda_min <- x$lambda[which_min]
 
 
@@ -554,13 +574,13 @@ plot.ggmncv <- function(x,
 
     n_lambda <-  length(x$lambda)
     p <- ncol(x$Theta)
-    which_min <- which.min(sapply(x$fitted_models, "[[", "bic"))
+    which_min <- which.min(sapply(x$fitted_models, "[[", "ic"))
     lambda_min <- x$lambda[which_min]
 
 
     non_zero <- sum(x$adj[upper.tri(x$adj)] !=0)
 
-    dat_res <- data.frame(ic = sapply(x$fitted_models, "[[", "bic"),
+    dat_res <- data.frame(ic = sapply(x$fitted_models, "[[", "ic"),
                           lambda = x$lambda)
     dat_res$penalty <- x$penalty
 

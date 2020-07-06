@@ -85,10 +85,14 @@ indicates that the one-step approach is a viable **approximation** for a variety
 ## Tuning Parameter
 ### Tuning Free
 
-The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to `sqrt(log(p)/n)` [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence]. 
+The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to `sqrt(log(p)/n)` [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence].
 
 ### Selection
-It is also possible to select the tuning parameter with BIC. This is accomplished by setting `select = TRUE`.
+It is also possible to select the tuning parameter with several information criterion (IC), 
+including `aic`, `bic`,`ebic`, `ric`, in addition to any of the *generalized* information criteria 
+provided in section 5 of @kim2012consistent. There are 6 GICs in total that are specified as  `gic_1` to `gic_6`.
+Note that `gic_1` is BIC, whereas `gic_3` is RIC. Lambda is selected by setting `select = TRUE` and 
+then the desired IC with, for example, `ic = gic_3`.
 
 
 ## Example
