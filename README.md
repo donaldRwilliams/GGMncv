@@ -37,7 +37,7 @@ An example of how these penalties address the bias of *L*<sub>1</sub>
 regularization is provided in [Solution Path](#solution-path).
 
 Important caveats relating to statistical inference are provided
-[below](#a-note-on%20statistical-inference).
+[below](#a-note-on-statistical-inference).
 
 ## Installation
 
