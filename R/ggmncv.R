@@ -148,12 +148,15 @@
 #'
 #' @examples
 #' # data
-#' Y <- GGMncv::ptsd
+#' Y <- GGMncv::ptsd[,1:10]
 #'
 #' S <- cor(Y)
 #'
 #' # fit model
 #' fit <- GGMncv(S, n = nrow(Y))
+#'
+#' # plot
+#' qgraph::qgraph(fit$P)
 #' @export
 GGMncv <- function(x, n,
                    penalty = "atan",
@@ -434,7 +437,8 @@ GGMncv <- function(x, n,
                           lambda = lambda,
                           vip_results = vip_results,
                           fitted_models = fitted_models,
-                          penalty = penalty, x = x)
+                          penalty = penalty,
+                          x = x)
 
   class(returned_object) <- c("ggmncv", "default")
   return(returned_object)

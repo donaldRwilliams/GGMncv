@@ -144,6 +144,9 @@ fit
 #> 10 0.000 0.000 0.000 0.243 0.000 0.000 0.000 0.114 0.261 0.000
 ```
 
+Note that the object `fit` can be plotted with the `R` package
+[**qgraph**](https://cran.r-project.org/web/packages/qgraph/qgraph.pdf).
+
 ## Example: Out-of-Sample Prediction
 
 The **GGMncv** package can also be used for prediction, given the

@@ -167,12 +167,15 @@ to \code{0.5}.
 }
 \examples{
 # data
-Y <- GGMncv::ptsd
+Y <- GGMncv::ptsd[,1:10]
 
 S <- cor(Y)
 
 # fit model
 fit <- GGMncv(S, n = nrow(Y))
+
+# plot
+qgraph::qgraph(fit$P)
 }
 \references{
 \insertAllCited{}

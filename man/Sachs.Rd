@@ -7,10 +7,7 @@
 \format{
 A data frame containing 7466 cells (n = 7466) and flow cytometry
  measurements of 11 (p = 11) phosphorylated proteins and phospholipids
-
- @references
- Sachs, K., Gifford, D., Jaakkola, T., Sorger, P., & Lauffenburger, D. A. (2002).
- Bayesian network approach to cell signaling pathway modeling. Sci. STKE, 2002(148), pe38-pe38.
+ \insertCite{sachs2002bayesian}{GGMncv}
 }
 \usage{
 data("Sachs")
@@ -21,5 +18,8 @@ Protein expression in human immune system cells
 \examples{
 data("Sachs")
 
+}
+\references{
+\insertAllCited{}
 }
 \keyword{datasets}

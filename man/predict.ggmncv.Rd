@@ -4,7 +4,7 @@
 \alias{predict.ggmncv}
 \title{Predict method for \code{ggmncv} Objects}
 \usage{
-\method{predict}{ggmncv}(object, newdata = NULL, scale = "training")
+\method{predict}{ggmncv}(object, newdata = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{ggmncv}}
@@ -12,9 +12,7 @@
 \item{newdata}{An optional data frame in which to look for variables with which to predict.
 If omitted, the fitted values are used.}
 
-\item{scale}{Character string. How should the new data (or test data) be centered and scaled ? The
-default is to use the means and standard deviations of the trainging data. If set to anything other than
-\code{training}, the new data is standardized with the \code{scale} function in based \code{R}.}
+\item{...}{Currently ignored}
 }
 \value{
 A matrix of predicted values
@@ -23,6 +21,19 @@ A matrix of predicted values
 Predicted values based on a \code{ggmncv} object
 }
 \examples{
+# data
+Y <- scale(Sachs)
 
+# test data
+Ytest <- Y[1:100,]
 
+# training data
+Ytrain <- Y[101:nrow(Y),]
+
+fit <- GGMncv(Ytrain, n = nrow(Ytrain))
+
+pred <- predict(fit,
+                newdata = Ytest)
+
+round(apply((pred - Ytest)^2, 2, mean), 2)
 }

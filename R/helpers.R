@@ -200,4 +200,13 @@ coef_helper <- function(Theta){
   return(betas)
 }
 
-globalVariables(c("VIP", "new1", "Y", "cs", "value", "X1", "X2", "ic", "lambda"))
+globalVariables(c("VIP",
+                  "new1",
+                  "Y",
+                  "cs",
+                  "value",
+                  "X1",
+                  "X2",
+                  "ic",
+                  "lambda",
+                  "coef"))
