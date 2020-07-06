@@ -308,7 +308,7 @@ al. 2016). And note that:
 
 Supporting these claims would require a valid confidence interval that
 has been corrected for model selection and/or regularization. With these
-caveats in mind, these methods can be used for explicit data mining or
+caveats in mind, **GGMncv** can be used for explicit data mining or
 prediction.
 
 ## Citing **GGMncv**

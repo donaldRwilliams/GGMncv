@@ -269,7 +269,7 @@ And note that:
 that was not detected. 
 
 Supporting these claims would require a valid confidence interval that has been corrected 
-for model selection and/or regularization. With these caveats in mind, these methods can 
+for model selection and/or regularization. With these caveats in mind, **GGMncv** can 
 be used for explicit data mining or prediction.
 
 ## Citing **GGMncv**
