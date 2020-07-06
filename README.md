@@ -306,8 +306,10 @@ al. 2016). And note that:
 2.  There is **not** necessarily a difference between an effect that was
     and an effect that was not detected.
 
-With these caveats in mind, these methods can be used for explicit data
-mining or prediction.
+Supporting these claims would require a valid confidence interval that
+has been corrected for model selection and/or regularization. With these
+caveats in mind, these methods can be used for explicit data mining or
+prediction.
 
 ## Citing **GGMncv**
 
