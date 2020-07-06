@@ -257,6 +257,19 @@ plot(fit, size = 4, type = "vip")
 ![](man/figures/vip.png)
 
 
+## A Note on Statistical Inference
+It might be tempting to think these approaches lead to rich *inference*. 
+This would be a mistake, as they suffer from all of the problems of 
+any automated procedure for model selection [e.g., @berk2013valid; @lee2016exact]. 
+And note that:
+
+1. Simply **not** detecting an effect does not provide evidence for the null hypothesis.
+
+2. There is **not** necessarily a difference between an effect that was and an effect 
+that was not detected. 
+
+With these caveats in mind, these methods can be used for explicit data mining or prediction.
+
 ## Citing **GGMncv**
 It is important to note that **GGMncv** merely provides a software implementation of other researchers 
 work. There are no methological innovations, although this is the most comprehensive `R` package

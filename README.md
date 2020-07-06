@@ -293,6 +293,22 @@ plot(fit, size = 4, type = "vip")
 
 ![](man/figures/vip.png)
 
+## A Note on Statistical Inference
+
+It might be tempting to think these approaches lead to rich *inference*.
+This would be a mistake, as they suffer from all of the problems of any
+automated procedure for model selection (e.g., Berk et al. 2013; Lee et
+al. 2016). And note that:
+
+1.  Simply **not** detecting an effect does not provide evidence for the
+    null hypothesis.
+
+2.  There is **not** necessarily a difference between an effect that was
+    and an effect that was not detected.
+
+With these caveats in mind, these methods can be used for explicit data
+mining or prediction.
+
 ## Citing **GGMncv**
 
 It is important to note that **GGMncv** merely provides a software
@@ -322,6 +338,14 @@ primary sources. The references can be found in
 ## References
 
 <div id="refs" class="references">
+
+<div id="ref-berk2013valid">
+
+Berk, Richard, Lawrence Brown, Andreas Buja, Kai Zhang, Linda Zhao, and
+others. 2013. “Valid Post-Selection Inference.” *The Annals of
+Statistics* 41 (2): 802–37.
+
+</div>
 
 <div id="ref-bunea2011penalized">
 
@@ -407,6 +431,14 @@ Estimators.” *Annals of Statistics*, 1356–78.
 Kwan, Clarence CY. 2014. “A Regression-Based Interpretation of the
 Inverse of the Sample Covariance Matrix.” *Spreadsheets in Education* 7
 (1): 4613.
+
+</div>
+
+<div id="ref-lee2016exact">
+
+Lee, Jason D, Dennis L Sun, Yuekai Sun, Jonathan E Taylor, and others.
+2016. “Exact Post-Selection Inference, with Application to the Lasso.”
+*The Annals of Statistics* 44 (3): 907–27.
 
 </div>
 
