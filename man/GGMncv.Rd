@@ -147,10 +147,9 @@ Note that this is most useful in datasets that have more nodes than variables
 
 The local linear approximate is for non-covex penalties is described in \insertCite{fan2009network}{GGMncv}.
 This is essentially a weighted (g)lasso. Note that by default \code{LLA = TRUE}. This can be set to
-\code{FALSE} when \italic{n} is sufficiently larger than \italic{p} (e.g., \emph{p} / \emph{n} < 0.10),
-which can improve power. This is due to the work of \insertCite{zou2008one}{GGMncv}, which suggested that, so
-long as the starting values are good,
-then it is possible to use a one-step estimator. In the case of low-dimensional data, the sample based
+\code{FALSE} when \italic{n} is much larger than \italic{p} (e.g., this can improve power).
+This is due to the work of \insertCite{zou2008one}{GGMncv}, which suggested that, so long as the
+starting values are good, then it is possible to use a one-step estimator. In the case of low-dimensional data, the sample based
 inverse covariance matrix is used to compute the lambda matrix. This is expected to work well, assuming
 that \emph{n} is sufficiently larger than \emph{p}. For high-dimensional data, the initial values for obtaining
 the lambda matrix are obtained from glasso.
