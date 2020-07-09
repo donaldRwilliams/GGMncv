@@ -1,6 +1,5 @@
 #' @importFrom numDeriv grad
 #' @importFrom Rcpp sourceCpp
-#' @importFrom GGMridge lambda.TargetD
 #' @importFrom MASS mvrnorm
 #' @useDynLib GGMncv, .registration=TRUE
 
