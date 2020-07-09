@@ -73,7 +73,8 @@ The following are implemented in `GGMncv`:
 
 5.  Log (`penalty = "log"`; Mazumder, Friedman, and Hastie 2011)
 
-6.  *L*<sub>q</sub> (`penalty = "lq"`; e.g., Knight and Fu 2000)
+6.  *L*<sub>q</sub> (`penalty = "lq"`, *0* \< *q* \< *1*; e.g., Knight
+    and Fu 2000)
 
 7.  Smoothly clipped absolute deviation (`penalty = "scad"`; Fan and Li
     2001)

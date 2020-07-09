@@ -20,13 +20,13 @@ scad_pen <- function(Theta, lambda, gamma = 3.7){
 
 # Wang, Y., & Zhu, L. (2016). Variable selection and parameter estimation
 # with the Atan regularization method. Journal of Probability and Statistics, 2016.
-atan_deriv <- function(Theta, lambda, gamma = 0.1){
+atan_deriv <- function(Theta, lambda, gamma = 0.01){
   Theta <- abs(Theta)
   lambda_mat <- lambda * ((gamma * (gamma + 2/pi)) / (gamma^2 + Theta^2))
   return(lambda_mat)
 }
 
-atan_pen <- function(Theta, lambda, gamma = 0.1){
+atan_pen <- function(Theta, lambda, gamma = 0.01){
   Theta <- abs(Theta)
   pen_mat <- lambda * (gamma + 2/pi) * atan(Theta/gamma)
   return(pen_mat)
@@ -34,13 +34,13 @@ atan_pen <- function(Theta, lambda, gamma = 0.1){
 
 # Dicker, L., Huang, B., & Lin, X. (2013). Variable selection and estimation
 # with the seamless-L0 penalty. Statistica Sinica, 929-962.
-selo_pen <- function(Theta, lambda, gamma = 0.1) {
+selo_pen <- function(Theta, lambda, gamma = 0.01) {
   Theta <- abs(Theta)
   pen_mat <- (lambda / log(2)) * log((Theta / (Theta + gamma)) + 1)
   return(pen_mat)
 }
 
-selo_deriv <- function(Theta, lambda, gamma = 0.1){
+selo_deriv <- function(Theta, lambda, gamma = 0.01){
   p <- ncol(Theta)
   Theta <- abs(Theta)
   Theta <- ifelse(Theta == 0, 1e-5, Theta)
@@ -66,7 +66,7 @@ mcp_pen <- function(Theta, lambda, gamma = 3){
 # Wang, Y., Fan, Q., & Zhu, L. (2018). Variable selection and estimation using a
 # continuous approximation to the $$ L_0 $$ penalty. Annals of the
 # Institute of Statistical Mathematics, 70(1), 191-214.
-exp_deriv <- function(Theta, lambda, gamma = 0.1){
+exp_deriv <- function(Theta, lambda, gamma = 0.01){
   Theta <- abs(Theta)
   lambda_mat <- (lambda/gamma) * exp(-(Theta/gamma))
   return(lambda_mat)
@@ -76,12 +76,12 @@ exp_deriv <- function(Theta, lambda, gamma = 0.1){
 # with nonconvex penalties. Journal of the American Statistical Association, 106(495), 1125-1138.
 log_pen <- function(x, lambda, gamma){
   gamma <- 1/gamma
-  inv <- abs(x)
+  inv <- abs(x + 0.0001)
   pen_mat <- ((lambda / log(gamma+ 1)) * log(gamma * inv + 1))
   return(pen_mat)
 }
 
-log_deriv <- function(Theta, lambda, gamma = 0.1){
+log_deriv <- function(Theta, lambda, gamma = 0.01){
   p <- ncol(Theta)
   Theta <- abs(Theta)
   lambda_mat <- matrix(numDeriv::grad(log_pen, x = Theta, lambda = lambda, gamma = gamma), p, p)
@@ -105,12 +105,12 @@ lq_deriv <- function(Theta, lambda, gamma = 0.5){
 # regularized least squares. The Annals of Statistics, 37(6A), 3498-3528.
 sica_pen <- function(x, lambda, gamma){
   Theta <- x
-  Theta <- abs(Theta)
+  Theta <- abs(Theta + 0.0001)
   pen_mat <- lambda * (((gamma + 1) * Theta) /(Theta+gamma))
   return(pen_mat)
 }
 
-sica_deriv <- function(Theta, lambda, gamma = 0.1){
+sica_deriv <- function(Theta, lambda, gamma = 0.01){
   p <- ncol(Theta)
   Theta <- abs(Theta)
   lambda_mat <- matrix(numDeriv::grad(sica_pen, x = Theta, lambda = lambda, gamma = gamma), p, p)
@@ -199,6 +199,8 @@ coef_helper <- function(Theta){
   betas <- round(t(sapply(1:p, function(x) Theta[x,-x] / Theta[x,x])), 3)  * -1
   return(betas)
 }
+
+
 
 globalVariables(c("VIP",
                   "new1",

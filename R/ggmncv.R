@@ -35,7 +35,7 @@
 #'               maximum likelihood estimate with constraints.
 #'
 #' @param LLA Logical. Should the local linear approximation be used for maximizing the penalized likelihood ?
-#'            The default is \code{FALSE} (see details).
+#'            The default is \code{TRUE} (see details).
 #'
 #' @param method Character string. Which correlation coefficient should be computed.
 #'               One of "pearson" (default), "spearman", or  "polychoric".
@@ -127,9 +127,11 @@
 #' \strong{LLA}
 #'
 #' The local linear approximate is for non-covex penalties is described in \insertCite{fan2009network}{GGMncv}.
-#' This is essentially a weighted (g)lasso. Note that by default \code{LLA = FALSE}. This is due to the
-#' work of \insertCite{zou2008one}{GGMncv}, which suggested that, so long as the starting values are good,
-#' then it is possible to use a one-step estimator. In the case of low-dimensional data , the sample based
+#' This is essentially a weighted (g)lasso. Note that by default \code{LLA = TRUE}. This can be set to
+#' \code{FALSE} when \italic{n} is sufficiently larger than \italic{p} (e.g., \emph{p} / \emph{n} < 0.10),
+#' which can improve power. This is due to the work of \insertCite{zou2008one}{GGMncv}, which suggested that, so
+#' long as the starting values are good,
+#' then it is possible to use a one-step estimator. In the case of low-dimensional data, the sample based
 #' inverse covariance matrix is used to compute the lambda matrix. This is expected to work well, assuming
 #' that \emph{n} is sufficiently larger than \emph{p}. For high-dimensional data, the initial values for obtaining
 #' the lambda matrix are obtained from glasso.
@@ -167,7 +169,7 @@ GGMncv <- function(x, n,
                    select = FALSE,
                    L0_learn = FALSE,
                    refit = FALSE,
-                   LLA = FALSE,
+                   LLA = TRUE,
                    method = "pearson",
                    progress = TRUE,
                    store = TRUE,
@@ -197,6 +199,7 @@ GGMncv <- function(x, n,
     )
     } else {
       R <- stats::cor(x, method = method)
+
       }
   }
 
@@ -221,7 +224,7 @@ GGMncv <- function(x, n,
       gamma <- 3
 
     } else {
-      gamma <- 0.1
+      gamma <- 0.01
       }
     }
 
@@ -359,13 +362,9 @@ GGMncv <- function(x, n,
 
    if(store){
      fitted_models <- fits
-
-   } else {
-
-     fitted_models <- NULL
-
-   }
-
+     } else {
+       fitted_models <- NULL
+     }
    }
 
   adj <- ifelse(fit$wi == 0, 0, 1)
