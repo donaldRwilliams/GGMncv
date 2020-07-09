@@ -79,7 +79,7 @@ The following are implemented in `GGMncv`:
 10. Lasso [`penalty = "lasso"`; @tibshirani1996regression]
 
 
-Options 1-4 are continuous approximations to the *L*<sub>0</sub> penalty, that is, best subsets 
+Options 1-5 are continuous approximations to the *L*<sub>0</sub> penalty, that is, best subsets 
 model selection. However, the solution is computationally efficient and solved with the local 
 linear approximation described in @fan2009network or the one-step approach described in @zou2008one. 
 
