@@ -81,7 +81,9 @@ The following are implemented in `GGMncv`:
 
 8.  Minimax concave penalty (`penalty = "mcp"`; Zhang 2010)
 
-9.  Lasso (`penalty = "lasso"`; Tibshirani 1996)
+9.  Adaptive lasso (`penalty = "adapt"`; Zou 2006)
+
+10. Lasso (`penalty = "lasso"`; Tibshirani 1996)
 
 Options 1-4 are continuous approximations to the *L*<sub>0</sub>
 penalty, that is, best subsets model selection. However, the solution is

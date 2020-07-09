@@ -35,7 +35,13 @@
 #'               maximum likelihood estimate with constraints.
 #'
 #' @param LLA Logical. Should the local linear approximation be used for maximizing the penalized likelihood ?
-#'            The default is \code{TRUE} (see details).
+#'            The default is \code{TRUE} (see details). Setting to \code{FALSE} results in the so-called
+#'            one-step approach.
+#'
+#' @param initial Character string. Which initial values should be used for the one-step approach
+#'                (i.e., \code{LLA = FALSE}) ? Default is the sample inverse
+#'                covariance matrix (\code{sicm}). Options include \code{sicm} and \code{lw}
+#'                \insertCite{@Ledoit and Wolf shrinkage estimator; @ledoit2004well}{GGMncv}.
 #'
 #' @param method Character string. Which correlation coefficient should be computed.
 #'               One of "pearson" (default), "spearman", or  "polychoric".
@@ -90,13 +96,23 @@
 #'
 #' \item Log: \code{penalty = "log"} \insertCite{mazumder2011sparsenet}{GGMncv}.
 #'
+#' \item Sica: \code{penalty = "sica"}  \insertCite{lv2009unified}{GGMncv}
+#'
+#' }
+#'
+#' Additional penalties:
+#'
+#' \itemize{
+#'
 #' \item SCAD: \code{penalty = "scad"}  \insertCite{fan2001variable}{GGMncv}.
 #'
 #' \item MCP: \code{penalty = "mcp"} \insertCite{zhang2010nearly}{GGMncv}.
 #'
-#' }
+#' \item Adaptive lasso \code{penalty = "adapt"}  \insertCite{zou2006adaptive}{GGMncv}
 #'
-#' Also note that lasso can be used (\code{penalty = "lasso"}).
+#' \item Lasso  \code{penalty = "lasso"}  \insertCite{tibshirani1996regression}{GGMncv}
+#'
+#' }
 #'
 #' \strong{Gamma}
 #'
@@ -126,12 +142,13 @@
 #'
 #' \strong{LLA}
 #'
-#' The local linear approximate is for non-covex penalties is described in \insertCite{fan2009network}{GGMncv}.
-#' This is essentially a weighted (g)lasso. Note that by default \code{LLA = TRUE}. This can be set to
-#' \code{FALSE} when \italic{n} is much larger than \italic{p} (e.g., this can improve power).
-#' This is due to the work of \insertCite{zou2008one}{GGMncv}, which suggested that, so long as the
-#' starting values are good, then it is possible to use a one-step estimator. In the case of low-dimensional data, the sample based
-#' inverse covariance matrix is used to compute the lambda matrix. This is expected to work well, assuming
+#' The local linear approximate is for non-covex penalties is described in
+#' \insertCite{fan2009network}{GGMncv}. This is essentially a weighted (g)lasso.
+#' Note that by default \code{LLA = TRUE}. This can be set to \code{FALSE} when \emph{n} is
+#' much larger than \emph{p} (e.g., this can improve power). This is due to the work
+#' of \insertCite{zou2008one}{GGMncv}, which suggested that, so long as the starting
+#' values are good, then it is possible to use a one-step estimator. In the case of low-dimensional data,
+#' the sample based inverse covariance matrix is used to compute the lambda matrix. This is expected to work well, assuming
 #' that \emph{n} is sufficiently larger than \emph{p}. For high-dimensional data, the initial values for obtaining
 #' the lambda matrix are obtained from glasso.
 #'
@@ -169,6 +186,7 @@ GGMncv <- function(x, n,
                    L0_learn = FALSE,
                    refit = FALSE,
                    LLA = TRUE,
+                   initial = "sicm",
                    method = "pearson",
                    progress = TRUE,
                    store = TRUE,
@@ -184,7 +202,8 @@ GGMncv <- function(x, n,
                       "log",
                       "lasso",
                       "sica",
-                      "lq")){
+                      "lq",
+                      "adapt")){
     stop("penalty not found. \ncurrent options: atan, mcp, scad, exp, selo, or log")
   }
 
@@ -193,14 +212,13 @@ GGMncv <- function(x, n,
     R <- x
   } else {
     if (method == "polychoric") {
-    suppressWarnings(
+      suppressWarnings(
       R <- psych::polychoric(x)$rho
-    )
+      )
     } else {
       R <- stats::cor(x, method = method)
-
-      }
-  }
+    }
+    }
 
   # nodes
   p <- ncol(R)
@@ -212,25 +230,31 @@ GGMncv <- function(x, n,
     # tuning
     lambda_no_select <- sqrt(log(p)/n)
   } else {
-      lambda_no_select <- lambda
+    lambda_no_select <- lambda
     }
 
-
   if(is.null(gamma)) {
-    if(penalty == "scad") {
+    if (penalty == "scad") {
       gamma <- 3.7
     } else if (penalty == "mcp") {
       gamma <- 3
-
+    } else if (penalty == "adapt") {
+      gamma <- 0.5
     } else {
       gamma <- 0.01
-      }
     }
+  }
 
   # high dimensional ?
   if(n > p){
     # inverse covariance matrix
-    Theta <- solve(R)
+    if(initial == "sicm"){
+      Theta <- solve(R)
+    } else if (initial == "lw"){
+      Theta <- lw_helper(x, n)
+    } else {
+        stop("initial not supported. must be 'sicm' or 'lw'.")
+      }
   } else {
     Theta <- glassoFast::glassoFast(R,  rho = lambda_no_select)$wi
   }

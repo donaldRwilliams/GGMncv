@@ -74,7 +74,9 @@ The following are implemented in `GGMncv`:
 
 8. Minimax concave penalty [`penalty = "mcp"`; @zhang2010nearly]
 
-9. Lasso [`penalty = "lasso"`; @tibshirani1996regression]
+9. Adaptive lasso [`penalty = "adapt"`; @zou2006adaptive]
+
+10. Lasso [`penalty = "lasso"`; @tibshirani1996regression]
 
 
 Options 1-4 are continuous approximations to the *L*<sub>0</sub> penalty, that is, best subsets 
