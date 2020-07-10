@@ -94,12 +94,10 @@ indicates that the one-step approach is a viable **approximation** for a variety
 ### Tuning Free
 
 
-The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to `sqrt(log(p)/n)` [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence]. $\sqrt{log(p)/n}$ 
-
-<img src="https://latex.codecogs.com/gif.latex?\sqrt{log(p)/n}" title="\sqrt{log(p)/n}" dpi = 1200 />
+The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to ![](https://latex.codecogs.com/svg.latex?%5Csqrt%7Blog%28p%29/n%7D) [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence].
 
 
-![](https://latex.codecogs.com/svg.latex?%5Csqrt%7Blog%28p%29/n%7D)
+
 
 ### Selection
 It is also possible to select the tuning parameter with several information criterion (IC), 
