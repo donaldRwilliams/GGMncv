@@ -34,10 +34,10 @@ approach in **GGMncv**, on the other hand, selects the graph with
 non-convex penalization (with *L*<sub>1</sub> as a special case).
 
 An additional goal of **GGMncv** is to provide methods for making
-statistical inference in *regularized* Gaussian graphical models. This
+statistical inference in **regularized** Gaussian graphical models. This
 is accomplished with the de-sparsified graphical lasso estimator
 introduced in Jankova and Van De Geer (2015). This is described in the
-section [De-Sparsified Estimator](#de-sparsified-estimator)
+section [De-Sparsified Estimator](#de-sparsified-estimator).
 
 ## Installation
 
@@ -116,6 +116,20 @@ section 5 of Kim, Kwon, and Choi (2012). There are 6 GICs in total that
 are specified as `gic_1` to `gic_6`. Note that `gic_1` is BIC, whereas
 `gic_3` is RIC. Information criterion can be understood as penalizing
 the likelihood, with the difference being the severity of the penalty.
+
+With the -2 times the log-likelihood defined as
+
+![](https://latex.codecogs.com/gif.latex?-2l_n%28%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%3D%20-2%20%5CBig%5B%5Cfrac%7Bn%7D%7B2%7D%20%5Ctext%7Blogdet%7D%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20-%20%5Ctext%7Btr%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BS%7D%7D%7D%20%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%5CBig%5D)
+
+the criterion add the following penalties:
+
+  - ![](https://latex.codecogs.com/gif.latex?%5Ctext%7BGIC%7D_1) (BIC)
+
+![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29)
+. Note that
+![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C)
+refers to the cardinality of the edge set, that is, the number of edges.
+
 Lambda is selected by setting `select = TRUE` and then the desired IC
 with, for example, `ic = "gic_3"`.
 
@@ -352,13 +366,13 @@ This is implemented with
 
 ``` r
 # data
-Y <- ptsd
+Y <- ptsd[,1:5]
 
 # fit model
 fit <- GGMncv(cor(Y), n = nrow(Y))
 
 # make inference
-fdr_ggm <- continference(fit, method = "fdr")
+fdr_ggm <- inference(fit, method = "fdr")
 
 # print
 fdr_ggm
@@ -393,13 +407,16 @@ fdr_ggm
 Note that the object `fdr_ggm` includes the de-sparsified precision
 matrix and the partial correlation matrix. Furthermore, there is a
 function called `desparsified` that can be used to obtain the
-de-sparsified estimator without computing the *p*-values. \#\# Citing
-**GGMncv** It is important to note that **GGMncv** merely provides a
-software implementation of other researchers work. There are no
-methological innovations, although this is the most comprehensive `R`
-package for estimating GGMs with non-convex penalties. Hence, in
-addition to citing the package `citation("GGMncv")`, it is important to
-give credit to the primary sources. The references can be found in
+de-sparsified estimator without computing the *p*-values.
+
+## Citing **GGMncv**
+
+It is important to note that **GGMncv** merely provides a software
+implementation of other researchers work. There are no methological
+innovations, although this is the most comprehensive `R` package for
+estimating GGMs with non-convex penalties. Hence, in addition to citing
+the package `citation("GGMncv")`, it is important to give credit to the
+primary sources. The references can be found in
 [(Penalties)](#penalties).
 
 ## Footnotes
