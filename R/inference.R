@@ -42,7 +42,7 @@
 #' Y <- GGMncv::ptsd
 #'
 #' # fit model
-#' fit <- GGMncv::GGMncv(cor(Y), n = nrow(Y))
+#' fit <- GGMncv(cor(Y), n = nrow(Y))
 #'
 #'
 #' # statistical inference
@@ -59,16 +59,22 @@ inference <- function(object,
   }
   # columns
   p <- ncol(object$Theta)
+
   # corrected adjacency matrix
   adj_new <- corrected <- matrix(0, p, p)
+
   # observations
   n <- object$n
+
   # precision matrix (sparsified)
   Theta <- object$Theta
+
   # variance
   vars <- sqrt((tcrossprod(diag(Theta)) + Theta^2))
+
   # desparsify
   Theta <- desparsify(object)$Theta
+
   # z stats
   z_stat <- sapply(1:p, function(x){
     Theta[x,]/(vars[x,] /sqrt(n))
@@ -94,7 +100,8 @@ inference <- function(object,
                           method = method,
                           alpha = alpha)
 
-  class(returned_object) <- c("ggmncv", "inference")
+  class(returned_object) <- c("ggmncv",
+                              "inference")
   return(returned_object)
 }
 

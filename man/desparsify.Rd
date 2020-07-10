@@ -34,7 +34,7 @@ This assumes the Gaussian data.
 Y <- GGMncv::ptsd
 
 # fit model
-fit <- GGMncv::GGMncv(cor(Y), n = nrow(Y))
+fit <- GGMncv(cor(Y), n = nrow(Y))
 
 desparsify(fit)
 
