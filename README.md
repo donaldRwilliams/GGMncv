@@ -106,7 +106,11 @@ by setting the tuning parameter to `sqrt(log(p)/n)` (see for example
 Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van De Geer
 2015).
 ![\\sqrt{log(p)/n}](https://latex.codecogs.com/png.latex?%5Csqrt%7Blog%28p%29%2Fn%7D
-"\\sqrt{log(p)/n}") test
+"\\sqrt{log(p)/n}")
+
+<img src="https://latex.codecogs.com/gif.latex?\sqrt{log(p)/n}" title="\sqrt{log(p)/n}" dpi = 1200 />
+
+![](https://latex.codecogs.com/svg.latex?y%3Dx%5E2)
 
 ### Selection
 
