@@ -106,7 +106,7 @@ by setting the tuning parameter to `sqrt(log(p)/n)` (see for example
 Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van De Geer
 2015).
 ![\\sqrt{log(p)/n}](https://latex.codecogs.com/png.latex?%5Csqrt%7Blog%28p%29%2Fn%7D
-"\\sqrt{log(p)/n}") d
+"\\sqrt{log(p)/n}") test
 
 ### Selection
 
