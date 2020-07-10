@@ -110,7 +110,7 @@ Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van De Geer
 
 <img src="https://latex.codecogs.com/gif.latex?\sqrt{log(p)/n}" title="\sqrt{log(p)/n}" dpi = 1200 />
 
-![](https://latex.codecogs.com/svg.latex?y%3Dx%5E2)
+![](https://latex.codecogs.com/svg.latex?%5Csqrt%7Blog%28p%29/n%7D)
 
 ### Selection
 

@@ -99,7 +99,7 @@ The default approach in **GGMncv** is tuning free. This is accomplished by setti
 <img src="https://latex.codecogs.com/gif.latex?\sqrt{log(p)/n}" title="\sqrt{log(p)/n}" dpi = 1200 />
 
 
-![](https://latex.codecogs.com/svg.latex?y%3Dx%5E2)
+![](https://latex.codecogs.com/svg.latex?%5Csqrt%7Blog%28p%29/n%7D)
 
 ### Selection
 It is also possible to select the tuning parameter with several information criterion (IC), 
