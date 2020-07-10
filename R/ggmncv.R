@@ -460,7 +460,9 @@ GGMncv <- function(x, n,
                           vip_results = vip_results,
                           fitted_models = fitted_models,
                           penalty = penalty,
-                          x = x)
+                          x = x,
+                          R = R,
+                          n = n)
 
   class(returned_object) <- c("ggmncv", "default")
   return(returned_object)
@@ -486,6 +488,11 @@ print.ggmncv <- function(x,...){
 
     print_coef(x,...)
   }
+
+  if(methods::is(x, "inference")){
+    print_inference(x, ...)
+  }
+
 
 }
 

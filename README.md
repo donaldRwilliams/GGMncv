@@ -11,13 +11,13 @@ Version](http://www.r-pkg.org/badges/version/GGMncv)](https://cran.r-project.org
 [![Build
 Status](https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master)](https://travis-ci.org/donaldRwilliams/GGMncv)
 
-The goal of GGMncv is to provide non-convex penalties for estimating
-Gaussian graphical models. These are known to overcome the various
-limitations of lasso (least absolute shrinkage “screening” operator),
-including inconsistent model selection (Zhao and Yu 2006), biased
-estimates (Zhang 2010)<span id="a1">[\[1\]](#f1)</span>, and a high
-false positive rate (see for example Williams and Rast 2020; Williams et
-al. 2019).
+The primary goal of GGMncv is to provide non-convex penalties for
+estimating Gaussian graphical models. These are known to overcome the
+various limitations of lasso (least absolute shrinkage “screening”
+operator), including inconsistent model selection (Zhao and Yu 2006),
+biased estimates (Zhang 2010)<span id="a1">[\[1\]](#f1)</span>, and a
+high false positive rate (see for example Williams and Rast 2020;
+Williams et al. 2019).
 
 Note that these limitations of lasso are well-known. In the case of
 false positives, for example, it has been noted that
@@ -33,11 +33,17 @@ and Wainwright 2012) and two-step procedures lasso (Zou 2006). The
 approach in **GGMncv**, on the other hand, selects the graph with
 non-convex penalization (with *L*<sub>1</sub> as a special case).
 
+An additional goal of **GGMncv** is to provide methods for making
+statistical inference in Gaussian graphical models. This is accomplished
+with the de-sparsified graphical lasso estimator introduced in Jankova
+and Van De Geer (2015). This is described in
+[De-Sparsified](#de-sparsified-estimator)
+
 An example of how these penalties address the bias of *L*<sub>1</sub>
 regularization is provided in [Solution Path](#solution-path).
 
 Important caveats relating to statistical inference are provided
-[below](#a-note-on-statistical-inference).
+[below](#statistical-inference).
 
 ## Installation
 
@@ -114,8 +120,10 @@ information criterion (IC), including `aic`, `bic`,`ebic`, `ric`, in
 addition to any of the *generalized* information criteria provided in
 section 5 of Kim, Kwon, and Choi (2012). There are 6 GICs in total that
 are specified as `gic_1` to `gic_6`. Note that `gic_1` is BIC, whereas
-`gic_3` is RIC. Lambda is selected by setting `select = TRUE` and then
-the desired IC with, for example, `ic = "gic_3"`.
+`gic_3` is RIC. Information criterion can be understood as penalizing
+the likelihood, with the difference being the severity of the penalty.
+Lambda is selected by setting `select = TRUE` and then the desired IC
+with, for example, `ic = "gic_3"`.
 
 ## Example: Structure Learning
 
@@ -300,7 +308,7 @@ plot(fit, size = 4, type = "vip")
 
 ![](man/figures/vip.png)
 
-## A Note on Statistical Inference
+## Statistical Inference
 
 It might be tempting to think these approaches lead to rich *inference*.
 This would be a mistake–they suffer from all of the problems inherent to
@@ -317,8 +325,75 @@ And note that:
 
 Supporting these claims would require a valid confidence interval that
 has been corrected for model selection and/or regularization. With these
-caveats in mind, **GGMncv** can be used for explicit data mining or
-prediction.
+caveats in mind, data driven model selection in **GGMncv** can be used
+for explicit data mining or prediction.
+
+### De-Sparsified Estimator
+
+To make inference, **GGMncv** computes the de-sparsified estimator,
+![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D),
+introduced in Jankova and Van De Geer (2015), that is
+
+![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%20%3D%202%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20-%20%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20%5Chat%7B%5Ctext%7B%5Cbf%7BR%7D%7D%7D%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D)
+
+where
+![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D)
+is the estimated precision matrix and \[\] is the sample based
+correlation matrix. The asymptotic variance is then given as
+
+![](https://latex.codecogs.com/gif.latex?%5Ctext%7BVar%7D%5B%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5D%20%3D%20%7B%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%20%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%5E%5Cprime%20+%20%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5E2%7D)
+
+which readily allows for computing
+![](https://latex.codecogs.com/gif.latex?p-%5Ctext%7Bvalues%7D)  
+for each off-diagonal element of the de-sparsified estimator.
+
+This is implemented with
+
+``` r
+# data
+Y <- ptsd
+
+# fit model
+fit <- GGMncv(cor(Y), n = nrow(Y))
+
+# make inference
+fdr_ggm <- continference(fit, method = "fdr")
+
+# print
+fdr_ggm
+
+#> Statistical Inference
+#> fdr: 0.05
+#> ---
+
+#>   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+#> 1  0 1 0 1 0 0 0 0 0  0  1  0  0  0  0  0  0  0  0  0
+#> 2  1 0 1 0 0 0 0 0 0  0  0  0  0  0  0  1  0  0  0  0
+#> 3  0 1 0 1 0 0 0 0 0  0  0  0  0  0  0  0  0  0  0  0
+#> 4  1 0 1 0 1 0 0 0 0  0  0  0  0  0  0  0  0  0  0  0
+#> 5  0 0 0 1 0 1 0 0 0  0  0  0  0  0  1  0  0  1  0  0
+#> 6  0 0 0 0 1 0 1 0 0  0  0  0  0  0  0  0  0  0  0  0
+#> 7  0 0 0 0 0 1 0 0 0  0  0  1  0  0  0  0  0  0  0  0
+#> 8  0 0 0 0 0 0 0 0 0  0  0  0  0  0  0  0  0  0  0  0
+#> 9  0 0 0 0 0 0 0 0 0  0  1  1  0  0  0  0  0  0  0  0
+#> 10 0 0 0 0 0 0 0 0 0  0  1  0  0  0  0  0  0  0  0  0
+#> 11 1 0 0 0 0 0 0 0 1  1  0  0  0  0  1  0  0  0  0  0
+#> 12 0 0 0 0 0 0 1 0 1  0  0  0  1  0  0  0  0  0  1  0
+#> 13 0 0 0 0 0 0 0 0 0  0  0  1  0  1  0  0  0  0  1  0
+#> 14 0 0 0 0 0 0 0 0 0  0  0  0  1  0  0  0  0  0  0  0
+#> 15 0 0 0 0 1 0 0 0 0  0  1  0  0  0  0  1  0  0  0  0
+#> 16 0 1 0 0 0 0 0 0 0  0  0  0  0  0  1  0  0  0  0  0
+#> 17 0 0 0 0 0 0 0 0 0  0  0  0  0  0  0  0  0  1  0  0
+#> 18 0 0 0 0 1 0 0 0 0  0  0  0  0  0  0  0  1  0  0  0
+#> 19 0 0 0 0 0 0 0 0 0  0  0  1  1  0  0  0  0  0  0  1
+#> 20 0 0 0 0 0 0 0 0 0  0  0  0  0  0  0  0  0  0  1  0
+```
+
+Note that the object `fdr_ggm` includes the de-sparsified precision
+matrix and the partial correlation matrix. Furthermore, there is a
+function called `desparsified` that can be used to obtain the
+de-sparsified estimator without computing the
+![](https://latex.codecogs.com/gif.latex?p-%5Ctext%7Bvalues%7D).
 
 ## Citing **GGMncv**
 
