@@ -117,10 +117,25 @@ the included criterion add the following penalties:
 Note that ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C) refers to the cardinality of the edge set, that is, the number of edges.
 
 
+* GIC<sub>2</sub>: ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20p%5E%7B1/3%7D)
 
+*p* denotes the number of nodes or columns in the data matrix.
 
+* GIC<sub>3</sub> (RIC): ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%202%20%5Ctext%7Blog%7D%28p%29)
 
+* GIC<sub>4</sub>: ![](https://latex.codecogs.com/gif.latex?2%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%5Ctext%7Blog%7D%28p%29%20&plus;%20%5Ctext%7Bloglog%7D%28p%29)
 
+* GIC<sub>5</sub> (BIC with divergent dimensions): ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Bloglog%7D%28n%29%5Ctext%7Blog%7D%28p%29)
+
+* GIC<sub>6</sub>: ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29%5Ctext%7Blog%7D%28p%29)
+
+* AIC: ![](https://latex.codecogs.com/gif.latex?2%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C)
+
+Although cross-validation is not implemented for selecting the tuning parameter, AIC can be used to approximate leave-one-out cross-validation.
+
+* EBIC: ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%5Ctext%7Blog%7D%28n%29%20&plus;%204%20%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Cgamma%20%5Ctext%7Blog%7D%28p%29%2C%5C%3B%20%5C0%20%5Cleq%20%5Cgamma%20%5Cleq%201)
+
+Note that when gamma is zero this provides BIC.
 
 
 Lambda is selected by setting `select = TRUE` and 
