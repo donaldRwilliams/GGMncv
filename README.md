@@ -27,11 +27,11 @@ false positives, for example, it has been noted that
 > ‘selection’. Once we have the screening property, the task is to
 > remove the false positive selections (p. 278, Tibshirani 2011).
 
-There are various ways to remove the false positives, including
-thresholding after model selection (i.e., removing small relations, Loh
-and Wainwright 2012) and two-step procedures lasso (Zou 2006). The
-approach in **GGMncv**, on the other hand, selects the graph with
-non-convex penalization (with *L*<sub>1</sub> as a special case).
+<!-- There are various ways to remove the false positives, including thresholding after model selection [i.e., removing small relations, @loh2012structure] and two-step procedures -->
+
+<!-- lasso [@zou2006adaptive]. The approach in **GGMncv**, on the other hand,  -->
+
+<!-- selects the graph with non-convex penalization (with *L*<sub>1</sub> as a special case). -->
 
 An additional goal of **GGMncv** is to provide methods for making
 statistical inference in **regularized** Gaussian graphical models. This
@@ -121,12 +121,12 @@ With the -2 times the log-likelihood defined as
 
 ![](https://latex.codecogs.com/gif.latex?-2l_n%28%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%3D%20-2%20%5CBig%5B%5Cfrac%7Bn%7D%7B2%7D%20%5Ctext%7Blogdet%7D%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20-%20%5Ctext%7Btr%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BS%7D%7D%7D%20%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%5CBig%5D)
 
-the criterion add the following penalties:
+the included criterion add the following penalties:
 
-  - ![](https://latex.codecogs.com/gif.latex?%5Ctext%7BGIC%7D_1) (BIC)
+  - GIC<sub>1</sub> (BIC):
+    ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29)
 
-![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29)
-. Note that
+Note that
 ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C)
 refers to the cardinality of the edge set, that is, the number of edges.
 
@@ -547,15 +547,6 @@ Lee, Jason D, Dennis L Sun, Yuekai Sun, Jonathan E Taylor, and others.
 Li, Xingguo, Tuo Zhao, Xiaoming Yuan, and Han Liu. 2015. “The Flare
 Package for High Dimensional Linear Regression and Precision Matrix
 Estimation in R.” *Journal of Machine Learning Research: JMLR* 16: 553.
-
-</div>
-
-<div id="ref-loh2012structure">
-
-Loh, Po-Ling, and Martin J Wainwright. 2012. “Structure Estimation for
-Discrete Graphical Models: Generalized Covariance Matrices and Their
-Inverses.” In *Advances in Neural Information Processing Systems*,
-2087–95.
 
 </div>
 

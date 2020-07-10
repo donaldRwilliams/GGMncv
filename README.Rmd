@@ -34,9 +34,9 @@ Note that these limitations of lasso are well-known. In the case of false positi
 positive selections [p. 278, @tibshirani2011regression].
 
 
-There are various ways to remove the false positives, including thresholding after model selection [i.e., removing small relations, @loh2012structure] and two-step procedures
-lasso [@zou2006adaptive]. The approach in **GGMncv**, on the other hand, 
-selects the graph with non-convex penalization (with *L*<sub>1</sub> as a special case).
+<!-- There are various ways to remove the false positives, including thresholding after model selection [i.e., removing small relations, @loh2012structure] and two-step procedures -->
+<!-- lasso [@zou2006adaptive]. The approach in **GGMncv**, on the other hand,  -->
+<!-- selects the graph with non-convex penalization (with *L*<sub>1</sub> as a special case). -->
 
 
 An additional goal of **GGMncv** is to provide methods for making statistical 
@@ -110,11 +110,11 @@ With the -2 times the log-likelihood defined as
 
 ![](https://latex.codecogs.com/gif.latex?-2l_n%28%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%3D%20-2%20%5CBig%5B%5Cfrac%7Bn%7D%7B2%7D%20%5Ctext%7Blogdet%7D%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20-%20%5Ctext%7Btr%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BS%7D%7D%7D%20%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%5CBig%5D)
 
-the criterion add the following penalties:
+the included criterion add the following penalties:
 
-* ![](https://latex.codecogs.com/gif.latex?%5Ctext%7BGIC%7D_1) (BIC)
+* GIC<sub>1</sub> (BIC):  ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29)
 
-![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29) . Note that ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C) refers to the cardinality of the edge set, that is, the number of edges.
+Note that ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C) refers to the cardinality of the edge set, that is, the number of edges.
 
 
 
