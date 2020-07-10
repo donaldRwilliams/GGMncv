@@ -94,7 +94,7 @@ indicates that the one-step approach is a viable **approximation** for a variety
 ### Tuning Free
 
 
-The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to ![](https://latex.codecogs.com/svg.latex?%5Csqrt%7Blog%28p%29/n%7D) [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence].
+The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to ![](https://latex.codecogs.com/svg.latex?%5Csmall%20%5Csqrt%7Blog%28p%29/n%7D) [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence].
 
 
 

@@ -103,9 +103,9 @@ enough”<span id="a2">[\[2\]](#f2)</span>.
 
 The default approach in **GGMncv** is tuning free. This is accomplished
 by setting the tuning parameter to
-![](https://latex.codecogs.com/svg.latex?%5Csqrt%7Blog%28p%29/n%7D) (see
-for example Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van
-De Geer 2015).
+![](https://latex.codecogs.com/svg.latex?%5Csmall%20%5Csqrt%7Blog%28p%29/n%7D)
+(see for example Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and
+Van De Geer 2015).
 
 ### Selection
 
