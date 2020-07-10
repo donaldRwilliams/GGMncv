@@ -258,9 +258,10 @@ Also notice that the atan penalty provides a sparser solution.
 
 ## Bootstrapping
 
-**GGMncv** does not provide confidence intervals. This is because, in
-general, “confidence” intervals from penalized approaches do not have
-the correct properties to be considered confidence intervals [(see
+**GGMncv** does not provide confidence intervals based on bootstrapping.
+This is because, in general, these kinds “confidence” intervals from
+penalized approaches do not have the correct properties to be considered
+confidence intervals [(see
 Wikipedia)](https://en.wikipedia.org/wiki/Confidence_interval). This
 sentiment is echoed in Section 3.1, “Why standard bootstrapping and
 subsampling do not work,” of Bühlmann, Kalisch, and Meier (2014):
@@ -272,8 +273,8 @@ subsampling do not work,” of Bühlmann, Kalisch, and Meier (2014):
 
 For this reason, it is common to **not** provide standard errors (and
 thus confidence intervals) for penalized models
-<span id="a3">[\[3\]](#f3)</span>. **GGMncv** follows the idea of behind
-the **penalized** `R` package:
+<span id="a3">[\[3\]](#f3)</span>. For example, this is from the
+**penalized** `R` package:
 
 > It is a very natural question to ask for standard errors of regression
 > coefficients or other estimated quantities. In principle such standard
@@ -287,6 +288,12 @@ However, **GGMncv** does include the so-called variable inclusion
 “probability” for each relation (see p. 1523 in Bunea et al. 2011; and
 Figure 6.7 in Hastie, Tibshirani, and Wainwright 2015). These are
 computed using a non-parametric bootstrap strategy.
+
+Additionally, more recent work does allow for obtaining confidence
+intervals and p-values with the de-sparsified method. For the graphical
+lasso, these are not available for the partial correlations so currently
+only ![](https://latex.codecogs.com/gif.latex?p-%5Ctext%7Bvalues%7D) are
+provided.
 
 ### Variable Inclusion “Probability”
 
@@ -338,14 +345,16 @@ introduced in Jankova and Van De Geer (2015), that is
 
 where
 ![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D)
-is the estimated precision matrix and \[\] is the sample based
-correlation matrix. The asymptotic variance is then given as
+is the estimated precision matrix and
+![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BR%7D%7D%7D)
+is the sample based correlation matrix. The asymptotic variance is then
+given as
 
 ![](https://latex.codecogs.com/gif.latex?%5Ctext%7BVar%7D%5B%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5D%20%3D%20%7B%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%20%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%5E%5Cprime%20+%20%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5E2%7D)
 
 which readily allows for computing
-![](https://latex.codecogs.com/gif.latex?p-%5Ctext%7Bvalues%7D)  
-for each off-diagonal element of the de-sparsified estimator.
+![](https://latex.codecogs.com/gif.latex?p-%5Ctext%7Bvalues%7D) for each
+off-diagonal element of the de-sparsified estimator.
 
 This is implemented with
 
