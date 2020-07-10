@@ -29,9 +29,9 @@ false positives, for example, it has been noted that
 
 There are various ways to remove the false positives, including
 thresholding after model selection (i.e., removing small relations, Loh
-and Wainwright 2012) and two-stage procedures (Zou 2006). The approach
-in **GGMncv**, on the other hand, selects the graph with non-convex
-penalization (with *L*<sub>1</sub> as a special case).
+and Wainwright 2012) and two-step procedures lasso (Zou 2006). The
+approach in **GGMncv**, on the other hand, selects the graph with
+non-convex penalization (with *L*<sub>1</sub> as a special case).
 
 An example of how these penalties address the bias of *L*<sub>1</sub>
 regularization is provided in [Solution Path](#solution-path).
@@ -105,6 +105,8 @@ The default approach in **GGMncv** is tuning free. This is accomplished
 by setting the tuning parameter to `sqrt(log(p)/n)` (see for example
 Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van De Geer
 2015).
+![\\sqrt{log(p)/n}](https://latex.codecogs.com/png.latex?%5Csqrt%7Blog%28p%29%2Fn%7D
+"\\sqrt{log(p)/n}")
 
 ### Selection
 

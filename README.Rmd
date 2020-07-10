@@ -1,5 +1,7 @@
 ---
-output: github_document
+output: 
+  github_document:
+    pandoc_args: --webtex
 bibliography: inst/REFERENCES.bib
 ---
 
@@ -31,9 +33,11 @@ Note that these limitations of lasso are well-known. In the case of false positi
 > Once we have the screening property, the task is to remove the false 
 positive selections [p. 278, @tibshirani2011regression].
 
+
 There are various ways to remove the false positives, including thresholding after model selection 
-[i.e., removing small relations, @loh2012structure] and two-stage procedures [@zou2006adaptive]. The approach in **GGMncv**, on the other hand, selects the graph with non-convex penalization 
-(with *L*<sub>1</sub> as a special case).
+[i.e., removing small relations, @loh2012structure] and two-step procedures
+lasso [@zou2006adaptive]. The approach in **GGMncv**, on the other hand, 
+selects the graph with non-convex penalization (with *L*<sub>1</sub> as a special case).
 
 An example of how these penalties address the bias of *L*<sub>1</sub> regularization is provided in [Solution Path](#solution-path).
 
@@ -89,13 +93,12 @@ indicates that the one-step approach is a viable **approximation** for a variety
 ## Tuning Parameter
 ### Tuning Free
 
-The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to `sqrt(log(p)/n)` [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence].
+The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to `sqrt(log(p)/n)` [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence]. $\sqrt{log(p)/n}$
 
 ### Selection
 It is also possible to select the tuning parameter with several information criterion (IC), 
 including `aic`, `bic`,`ebic`, `ric`, in addition to any of the *generalized* information criteria 
-provided in section 5 of @kim2012consistent. There are 6 GICs in total that are specified as  `gic_1` to `gic_6`.
-Note that `gic_1` is BIC, whereas `gic_3` is RIC. Lambda is selected by setting `select = TRUE` and 
+provided in section 5 of @kim2012consistent. There are 6 GICs in total that are specified as  `gic_1` to `gic_6`. Note that `gic_1` is BIC, whereas `gic_3` is RIC. Lambda is selected by setting `select = TRUE` and 
 then the desired IC with, for example, `ic = "gic_3"`.
 
 
