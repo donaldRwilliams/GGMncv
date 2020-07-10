@@ -34,16 +34,10 @@ approach in **GGMncv**, on the other hand, selects the graph with
 non-convex penalization (with *L*<sub>1</sub> as a special case).
 
 An additional goal of **GGMncv** is to provide methods for making
-statistical inference in Gaussian graphical models. This is accomplished
-with the de-sparsified graphical lasso estimator introduced in Jankova
-and Van De Geer (2015). This is described in
-[De-Sparsified](#de-sparsified-estimator)
-
-An example of how these penalties address the bias of *L*<sub>1</sub>
-regularization is provided in [Solution Path](#solution-path).
-
-Important caveats relating to statistical inference are provided
-[below](#statistical-inference).
+statistical inference in *regularized* Gaussian graphical models. This
+is accomplished with the de-sparsified graphical lasso estimator
+introduced in Jankova and Van De Geer (2015). This is described in the
+section [De-Sparsified Estimator](#de-sparsified-estimator)
 
 ## Installation
 
@@ -292,8 +286,7 @@ computed using a non-parametric bootstrap strategy.
 Additionally, more recent work does allow for obtaining confidence
 intervals and p-values with the de-sparsified method. For the graphical
 lasso, these are not available for the partial correlations so currently
-only ![](https://latex.codecogs.com/gif.latex?p-%5Ctext%7Bvalues%7D) are
-provided.
+only *p*-values are provided.
 
 ### Variable Inclusion “Probability”
 
@@ -352,9 +345,8 @@ given as
 
 ![](https://latex.codecogs.com/gif.latex?%5Ctext%7BVar%7D%5B%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5D%20%3D%20%7B%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%20%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%5E%5Cprime%20+%20%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5E2%7D)
 
-which readily allows for computing
-![](https://latex.codecogs.com/gif.latex?p-%5Ctext%7Bvalues%7D) for each
-off-diagonal element of the de-sparsified estimator.
+which readily allows for computing *p*-values for each off-diagonal
+element of the de-sparsified estimator.
 
 This is implemented with
 
@@ -401,17 +393,13 @@ fdr_ggm
 Note that the object `fdr_ggm` includes the de-sparsified precision
 matrix and the partial correlation matrix. Furthermore, there is a
 function called `desparsified` that can be used to obtain the
-de-sparsified estimator without computing the
-![](https://latex.codecogs.com/gif.latex?p-%5Ctext%7Bvalues%7D).
-
-## Citing **GGMncv**
-
-It is important to note that **GGMncv** merely provides a software
-implementation of other researchers work. There are no methological
-innovations, although this is the most comprehensive `R` package for
-estimating GGMs with non-convex penalties. Hence, in addition to citing
-the package `citation("GGMncv")`, it is important to give credit to the
-primary sources. The references can be found in
+de-sparsified estimator without computing the *p*-values. \#\# Citing
+**GGMncv** It is important to note that **GGMncv** merely provides a
+software implementation of other researchers work. There are no
+methological innovations, although this is the most comprehensive `R`
+package for estimating GGMs with non-convex penalties. Hence, in
+addition to citing the package `citation("GGMncv")`, it is important to
+give credit to the primary sources. The references can be found in
 [(Penalties)](#penalties).
 
 ## Footnotes
