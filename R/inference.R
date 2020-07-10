@@ -69,15 +69,15 @@ inference <- function(object,
   # precision matrix (sparsified)
   Theta <- object$Theta
 
-  # variance
-  vars <- sqrt((tcrossprod(diag(Theta)) + Theta^2))
+  # sd
+  sds <- sqrt((tcrossprod(diag(Theta)) + Theta^2))
 
   # desparsify
   Theta <- desparsify(object)$Theta
 
   # z stats
   z_stat <- sapply(1:p, function(x){
-    Theta[x,]/(vars[x,] /sqrt(n))
+    Theta[x,]/(sds[x,] /sqrt(n))
   })
 
   # p values
