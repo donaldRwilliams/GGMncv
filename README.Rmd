@@ -102,15 +102,15 @@ The default approach in **GGMncv** is tuning free. This is accomplished by setti
 ### Selection
 It is also possible to select the tuning parameter with several information criterion (IC), 
 including `aic`, `bic`,`ebic`, `ric`, in addition to any of the *generalized* information criteria 
-provided in section 5 of @kim2012consistent. There are 6 GICs in total that are specified as  `gic_1` to `gic_6`. Note that `gic_1` is BIC, whereas `gic_3` is RIC. Information criterion can be understood
-as penalizing the likelihood, with the difference being the severity of the penalty. 
+provided in section 5 of @kim2012consistent. There are 6 GICs in total that are specified as  `gic_1` to `gic_6`. Note that `gic_1` is BIC, whereas `gic_3` is RIC. 
 
-With the -2 times the log-likelihood defined as
+Information criterion can be understood as penalizing the likelihood, with the difference being in the
+severity of the penalty. -2 times the log-likelihood is defined as
 
 
 ![](https://latex.codecogs.com/gif.latex?-2l_n%28%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%3D%20-2%20%5CBig%5B%5Cfrac%7Bn%7D%7B2%7D%20%5Ctext%7Blogdet%7D%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20-%20%5Ctext%7Btr%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BS%7D%7D%7D%20%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%5CBig%5D)
 
-the included criterion add the following penalties:
+where ![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D) is the estimated precision matrix and ![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BS%7D%7D%7D) is the sample based covariance matrix. The included criterion then add the following penalty:
 
 * GIC<sub>1</sub> (BIC):  ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29)
 
