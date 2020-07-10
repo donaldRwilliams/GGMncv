@@ -127,7 +127,7 @@ where
 is the estimated precision matrix and
 ![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BS%7D%7D%7D)
 is the sample based covariance matrix. The included criterion then add
-the following penalty:
+the following penalties:
 
   - GIC<sub>1</sub> (BIC):
     ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29)
@@ -163,10 +163,8 @@ cross-validation.
   - EBIC:
     ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%5Ctext%7Blog%7D%28n%29%20+%204%20%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Cgamma%20%5Ctext%7Blog%7D%28p%29%2C%5C%3B%20%5C0%20%5Cleq%20%5Cgamma%20%5Cleq%201)
 
-Note that when gamma is zero this provides BIC.
-
-Lambda is selected by setting `select = TRUE` and then the desired IC
-with, for example, `ic = "gic_3"`.
+The tuning parameter is selected by setting `select = TRUE` and then the
+desired IC with, for example, `ic = "gic_3"`.
 
 ## Example: Structure Learning
 
