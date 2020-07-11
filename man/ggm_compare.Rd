@@ -16,8 +16,9 @@ Can be abbreviated. See \link[stats]{p.adjust}.}
 
 \item{alpha}{Numeric. Significance level (defaults to \code{0.05}).}
 
-\item{...}{Currently ignored.
-
+\item{...}{Currently ignored.}
+}
+\value{
 \itemize{
 
 \item \code{P_diff} De-sparsified partial correlation matrix differences
@@ -31,7 +32,7 @@ Can be abbreviated. See \link[stats]{p.adjust}.}
 \item \code{method} The approach used for multiple comparisons
 
 \item \code{alpha} Significance level
-}}
+}
 }
 \description{
 Compare Gaussian graphical models with the de-sparsified estimator of

@@ -14,6 +14,8 @@
 #'
 #' @param ... Currently ignored.
 #'
+#' @return
+#'
 #' \itemize{
 #'
 #' \item \code{P_diff} De-sparsified partial correlation matrix differences
