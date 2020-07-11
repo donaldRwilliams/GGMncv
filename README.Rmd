@@ -97,7 +97,7 @@ for large effects.
 
 
 ### Computation
-Note that computing the non-convex solution is a challenging task. However, section 3.3 in @zou2008one 
+Computing the non-convex solution is a challenging task. However, section 3.3 in @zou2008one 
 indicates that the one-step approach is a viable **approximation** for a variety of non-convex penalties, assuming the initial estimates are "good enough"<span id="a2">[[2]](#f2)</span>. To this end, the initial 
 values can either be the sample based inverse covariance matrix (`initial = "sicm"`) or the Ledoit and Wolf
 shrinkage estimator [`initial = "lw"`, @ledoit2004well].

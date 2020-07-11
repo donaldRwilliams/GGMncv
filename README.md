@@ -103,10 +103,10 @@ regularization; and (2) the penalty “tapers” off for large effects.
 
 ### Computation
 
-Note that computing the non-convex solution is a challenging task.
-However, section 3.3 in Zou and Li (2008) indicates that the one-step
-approach is a viable **approximation** for a variety of non-convex
-penalties, assuming the initial estimates are “good
+Computing the non-convex solution is a challenging task. However,
+section 3.3 in Zou and Li (2008) indicates that the one-step approach is
+a viable **approximation** for a variety of non-convex penalties,
+assuming the initial estimates are “good
 enough”<span id="a2">[\[2\]](#f2)</span>. To this end, the initial
 values can either be the sample based inverse covariance matrix
 (`initial = "sicm"`) or the Ledoit and Wolf shrinkage estimator
