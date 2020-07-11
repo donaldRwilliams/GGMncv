@@ -110,7 +110,7 @@ penalties, assuming the initial estimates are “good
 enough”<span id="a2">[\[2\]](#f2)</span>. To this end, the initial
 values can either be the sample based inverse covariance matrix
 (`initial = "sicm"`) or the Ledoit and Wolf shrinkage estimator
-(`initial = "lw`, Ledoit and Wolf 2004).
+(`initial = "lw"`, Ledoit and Wolf 2004).
 
 ## Tuning Parameter
 
