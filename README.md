@@ -92,7 +92,7 @@ in Zou and Li (2008).
 The basic idea of these penalties is to provide “tapering,” in which
 regularization is less severe for large effects. The following is an
 example for the Atan penalty
-(\[\]<https://latex.codecogs.com/svg.latex?%5Cgamma> is the
+(![](https://latex.codecogs.com/svg.latex?%5Cgamma) is the
 hyperparameter)
 
 ![](man/figures/pen_func.png)
