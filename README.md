@@ -120,48 +120,48 @@ Information criterion can be understood as penalizing the likelihood,
 with the difference being in the severity of the penalty. -2 times the
 log-likelihood is defined as
 
-![](https://latex.codecogs.com/gif.latex?-2l_n%28%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%3D%20-2%20%5CBig%5B%5Cfrac%7Bn%7D%7B2%7D%20%5Ctext%7Blogdet%7D%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20-%20%5Ctext%7Btr%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BS%7D%7D%7D%20%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%5CBig%5D)
+![](https://latex.codecogs.com/svg.latex?-2l_n%28%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%3D%20-2%20%5CBig%5B%5Cfrac%7Bn%7D%7B2%7D%20%5Ctext%7Blogdet%7D%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20-%20%5Ctext%7Btr%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BS%7D%7D%7D%20%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%29%20%5CBig%5D)
 
 where
-![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D)
+![](https://latex.codecogs.com/svg.latex?%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D)
 is the estimated precision matrix and
-![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BS%7D%7D%7D)
+![](https://latex.codecogs.com/svg.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BS%7D%7D%7D)
 is the sample based covariance matrix. The included criterion then add
 the following penalties:
 
   - GIC<sub>1</sub> (BIC):
-    ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29)
+    ![](https://latex.codecogs.com/svg.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29)
 
 Note that
-![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C)
+![](https://latex.codecogs.com/svg.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C)
 refers to the cardinality of the edge set, that is, the number of edges.
 
   - GIC<sub>2</sub>:
-    ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20p%5E%7B1/3%7D)
+    ![](https://latex.codecogs.com/svg.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20p%5E%7B1/3%7D)
 
 *p* denotes the number of nodes or columns in the data matrix.
 
   - GIC<sub>3</sub> (RIC):
-    ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%202%20%5Ctext%7Blog%7D%28p%29)
+    ![](https://latex.codecogs.com/svg.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%202%20%5Ctext%7Blog%7D%28p%29)
 
   - GIC<sub>4</sub>:
-    ![](https://latex.codecogs.com/gif.latex?2%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%5Ctext%7Blog%7D%28p%29%20+%20%5Ctext%7Bloglog%7D%28p%29)
+    ![](https://latex.codecogs.com/svg.latex?2%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%5Ctext%7Blog%7D%28p%29%20+%20%5Ctext%7Bloglog%7D%28p%29)
 
   - GIC<sub>5</sub> (BIC with divergent dimensions):
-    ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Bloglog%7D%28n%29%5Ctext%7Blog%7D%28p%29)
+    ![](https://latex.codecogs.com/svg.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Bloglog%7D%28n%29%5Ctext%7Blog%7D%28p%29)
 
   - GIC<sub>6</sub>:
-    ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29%5Ctext%7Blog%7D%28p%29)
+    ![](https://latex.codecogs.com/svg.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Ctext%7Blog%7D%28n%29%5Ctext%7Blog%7D%28p%29)
 
   - AIC:
-    ![](https://latex.codecogs.com/gif.latex?2%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C)
+    ![](https://latex.codecogs.com/svg.latex?2%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C)
 
 Although cross-validation is not implemented for selecting the tuning
 parameter, AIC can be used to approximate leave-one-out
 cross-validation.
 
   - EBIC:
-    ![](https://latex.codecogs.com/gif.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%5Ctext%7Blog%7D%28n%29%20+%204%20%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Cgamma%20%5Ctext%7Blog%7D%28p%29%2C%5C%3B%20%5C0%20%5Cleq%20%5Cgamma%20%5Cleq%201)
+    ![](https://latex.codecogs.com/svg.latex?%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%5Ctext%7Blog%7D%28n%29%20+%204%20%7C%5Ctext%7B%5Cbf%7BE%7D%7D%7C%20%5Cgamma%20%5Ctext%7Blog%7D%28p%29%2C%5C%3B%20%5C0%20%5Cleq%20%5Cgamma%20%5Cleq%201)
 
 The tuning parameter is selected by setting `select = TRUE` and then the
 desired IC with, for example, `ic = "gic_3"`.
@@ -378,15 +378,15 @@ for explicit data mining or prediction.
 ### De-Sparsified Estimator
 
 To make inference, **GGMncv** computes the de-sparsified estimator,
-![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D),
+![](https://latex.codecogs.com/svg.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D),
 introduced in Jankova and Van De Geer (2015), that is
 
-![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%20%3D%202%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20-%20%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20%5Chat%7B%5Ctext%7B%5Cbf%7BR%7D%7D%7D%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D)
+![](https://latex.codecogs.com/svg.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%20%3D%202%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20-%20%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D%20%5Chat%7B%5Ctext%7B%5Cbf%7BR%7D%7D%7D%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D)
 
 where
-![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D)
+![](https://latex.codecogs.com/svg.latex?%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D)
 is the estimated precision matrix and
-![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BR%7D%7D%7D)
+![](https://latex.codecogs.com/svg.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BR%7D%7D%7D)
 is the sample based correlation matrix. The asymptotic variance is then
 given as
 
