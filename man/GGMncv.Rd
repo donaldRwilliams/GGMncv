@@ -38,7 +38,7 @@ GGMncv(
 (ebic_gamma defaults to \code{0.5}; see details), \code{ric},
 or any generalized information criterion provided in section 5 of
 \insertCite{kim2012consistent;textual}{GGMncv}.
-The options are \code{gic_1} (i.e., \code{bic}) to \code{gic_7}.}
+The options are \code{gic_1} (i.e., \code{bic}) to \code{gic_6}.}
 
 \item{lambda}{Numeric. Tuning parameter governing the degrees of penalization. Defaults to
 \code{NULL} which results in fixing lambda to \code{sqrt(log(p)/n)}.}
