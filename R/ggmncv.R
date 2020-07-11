@@ -493,6 +493,9 @@ print.ggmncv <- function(x,...){
     print_inference(x, ...)
   }
 
+  if(methods::is(x, "ggm_compare")){
+    print_compare(x,...)
+  }
 
 }
 

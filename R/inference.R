@@ -98,7 +98,8 @@ inference <- function(object,
                           uncorrect = p_values,
                           corrected = corrected,
                           method = method,
-                          alpha = alpha)
+                          alpha = alpha,
+                          sds = sds, n = n)
 
   class(returned_object) <- c("ggmncv",
                               "inference")

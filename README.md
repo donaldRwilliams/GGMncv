@@ -37,7 +37,9 @@ An additional goal of **GGMncv** is to provide methods for making
 statistical inference in **regularized** Gaussian graphical models. This
 is accomplished with the de-sparsified graphical lasso estimator
 introduced in Jankova and Van De Geer (2015). This is described in the
-section [De-Sparsified Estimator](#de-sparsified-estimator).
+section [De-Sparsified Estimator](#de-sparsified-estimator). The follow
+section, [Comparing GGMs](#comparing-ggms), then shows how the
+de-sparsified estimator can be used to compare GGMs.
 
 ## Installation
 
@@ -110,11 +112,11 @@ Van De Geer 2015).
 ### Selection
 
 It is also possible to select the tuning parameter with several
-information criterion (IC), including `aic`, `bic`,`ebic`, `ric`, in
-addition to any of the *generalized* information criteria provided in
-section 5 of Kim, Kwon, and Choi (2012). There are 6 GICs in total that
-are specified as `gic_1` to `gic_6`. Note that `gic_1` is BIC, whereas
-`gic_3` is RIC.
+information criterion (IC), including `aic`, `bic` (currently the
+default),`ebic`, `ric`, in addition to any of the *generalized*
+information criteria provided in section 5 of Kim, Kwon, and Choi
+(2012). There are 6 GICs in total that are specified as `gic_1` to
+`gic_6`. Note that `gic_1` is BIC, whereas `gic_3` is RIC.
 
 Information criterion can be understood as penalizing the likelihood,
 with the difference being in the severity of the penalty. -2 times the
@@ -331,9 +333,10 @@ Figure 6.7 in Hastie, Tibshirani, and Wainwright 2015). These are
 computed using a non-parametric bootstrap strategy.
 
 Additionally, more recent work does allow for obtaining confidence
-intervals and p-values with the de-sparsified method. For the graphical
-lasso, these are not available for the partial correlations so currently
-only *p*-values are provided.
+intervals and *p*-values with the de-sparsified method. For the
+graphical lasso, the former are not available for the partial
+correlations so currently only *p*-values are provided [Statistical
+Inferece](#statistical-inference).
 
 ### Variable Inclusion “Probability”
 
@@ -387,8 +390,9 @@ where
 ![](https://latex.codecogs.com/svg.latex?%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D)
 is the estimated precision matrix and
 ![](https://latex.codecogs.com/svg.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BR%7D%7D%7D)
-is the sample based correlation matrix. The asymptotic variance is then
-given as
+is the sample based correlation matrix. As the name implies, this
+removes the zeros and corrects the bias from regularization. The
+asymptotic variance is then given as
 
 ![](https://latex.codecogs.com/svg.latex?%5Ctext%7BVar%7D%5B%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5D%20%3D%20%7B%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%20%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%5E%5Cprime%20+%20%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5E2%7D)
 
@@ -442,6 +446,24 @@ matrix, the partial correlation matrix, and *p*-values for each
 relation. Furthermore, there is a function called `desparsified` that
 can be used to obtain the de-sparsified estimator without computing the
 *p*-values.
+
+## Comparing GGMs
+
+Because the de-sparsified estimator provides the variance for each
+relation, this readily allows for comparing GGMs. This is accomplished
+by computing the difference and then the variance of that difference.
+Assuming there is two groups, `Y_g1` and `Y_g2`, this is implemented
+with
+
+``` r
+fit1 <- GGMncv(Y_g1, n = nrow(Y_g1))
+fit2 <- GGMncv(Y_g2, n = nrow(Y_g2))
+
+ggm_diff <- ggm_compare(fit1, fit2)
+```
+
+The object `ggm_diff` includes the partial correlation differences,
+*p*-values, and the adjacency matrix.
 
 ## Citing **GGMncv**
 

@@ -9,7 +9,7 @@ constrained(Sigma, adj)
 \arguments{
 \item{Sigma}{Covariance matrix}
 
-\item{adj}{Matrix with contraints. A one indicates that element
+\item{adj}{Matrix with contraints. A zero indicates that element
 should be constrained to zero.}
 }
 \value{

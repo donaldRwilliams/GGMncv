@@ -5,7 +5,7 @@
 #'
 #' @param Sigma Covariance matrix
 #'
-#' @param adj Matrix with contraints. A one indicates that element
+#' @param adj Matrix with contraints. A zero indicates that element
 #'            should be constrained to zero.
 #'
 #' @return  A list containing the inverse covariance matrix and the covariance matrix.
@@ -34,13 +34,13 @@
 #' @export
 constrained <- function(Sigma, adj){
   # change to zeros
-  adj <- ifelse(adj == 1, 0, 1)
+  # adj <- ifelse(adj == 1, 0, 1)
 
   # include diagonal!
   diag(adj) <- 1
 
   # call c++
-  fit <- hft_algorithm(Sigma, adj, tol = 1e10, max_iter = 100)
+  fit <- hft_algorithm(Sigma, adj, tol = 1e-10, max_iter = 100)
 
   Theta <- round(fit$Theta, 3)
   Sigma <- round(fit$Sigma, 3)
