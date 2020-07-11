@@ -41,7 +41,11 @@
 #' # compare
 #' compare_ggms <- ggm_compare(fit1, fit2)
 #' @export
-ggm_compare <- function(object_1, object_2, method = "fdr", alpha = 0.05) {
+ggm_compare <- function(object_1,
+                        object_2,
+                        method = "fdr",
+                        alpha = 0.05,
+                        ...) {
 
   # columns
   p <- ncol(object_1$Theta)
