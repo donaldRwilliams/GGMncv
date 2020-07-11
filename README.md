@@ -27,12 +27,6 @@ false positives, for example, it has been noted that
 > ‘selection’. Once we have the screening property, the task is to
 > remove the false positive selections (p. 278, Tibshirani 2011).
 
-<!-- There are various ways to remove the false positives, including thresholding after model selection [i.e., removing small relations, @loh2012structure] and two-step procedures -->
-
-<!-- lasso [@zou2006adaptive]. The approach in **GGMncv**, on the other hand,  -->
-
-<!-- selects the graph with non-convex penalization (with *L*<sub>1</sub> as a special case). -->
-
 An additional goal of **GGMncv** is to provide methods for making
 statistical inference in **regularized** Gaussian graphical models. This
 is accomplished with the de-sparsified graphical lasso estimator
@@ -93,11 +87,30 @@ computationally efficient and solved with the local linear approximation
 described in Fan, Feng, and Wu (2009) or the one-step approach described
 in Zou and Li (2008).
 
+### Penalty Function
+
+The basic idea of these penalties is to provide “tapering,” in which
+regularization is less severe for large effects. The following is an
+example for the Atan penalty
+(\[\]<https://latex.codecogs.com/svg.latex?%5Cgamma> is the
+hyperparameter)
+
+![](man/figures/pen_func.png)
+
+Note that the penalty provides a “smooth” function that ranges from
+*L*<sub>0</sub> (best subsets) and *L*<sub>1</sub> (lasso)
+regularization (lasso).
+
+### Computation
+
 Note that computing the non-convex solution is a challenging task.
 However, section 3.3 in Zou and Li (2008) indicates that the one-step
 approach is a viable **approximation** for a variety of non-convex
 penalties, assuming the initial estimates are “good
-enough”<span id="a2">[\[2\]](#f2)</span>.
+enough”<span id="a2">[\[2\]](#f2)</span>. To this end, the initial
+values can either be the sample based inverse covariance matrix
+(`initial = "sicm"`) or the Ledoit and Wolf shrinkage estimator
+(`initial = "lw`, Ledoit and Wolf 2004).
 
 ## Tuning Parameter
 
@@ -115,8 +128,7 @@ It is also possible to select the tuning parameter with several
 information criterion (IC), including `aic`, `bic` (currently the
 default),`ebic`, `ric`, in addition to any of the *generalized*
 information criteria provided in section 5 of Kim, Kwon, and Choi
-(2012). There are 6 GICs in total that are specified as `gic_1` to
-`gic_6`. Note that `gic_1` is BIC, whereas `gic_3` is RIC.
+(2012).
 
 Information criterion can be understood as penalizing the likelihood,
 with the difference being in the severity of the penalty. -2 times the
@@ -203,7 +215,7 @@ fit
 ```
 
 Note that the object `fit` can be plotted with the `R` package
-[**qgraph**](https://cran.r-project.org/web/packages/qgraph/qgraph.pdf).
+[**qgraph**](https://CRAN.R-project.org/package=qgraph).
 
 ## Example: Out-of-Sample Prediction
 
@@ -335,8 +347,8 @@ computed using a non-parametric bootstrap strategy.
 Additionally, more recent work does allow for obtaining confidence
 intervals and *p*-values with the de-sparsified method. For the
 graphical lasso, the former are not available for the partial
-correlations so currently only *p*-values are provided [Statistical
-Inferece](#statistical-inference).
+correlations so currently only *p*-values are provided [(Statistical
+Inferece)](#statistical-inference).
 
 ### Variable Inclusion “Probability”
 
@@ -587,6 +599,14 @@ Estimators.” *Annals of Statistics*, 1356–78.
 Kwan, Clarence CY. 2014. “A Regression-Based Interpretation of the
 Inverse of the Sample Covariance Matrix.” *Spreadsheets in Education* 7
 (1): 4613.
+
+</div>
+
+<div id="ref-ledoit2004well">
+
+Ledoit, Olivier, and Michael Wolf. 2004. “A Well-Conditioned Estimator
+for Large-Dimensional Covariance Matrices.” *Journal of Multivariate
+Analysis* 88 (2): 365–411.
 
 </div>
 

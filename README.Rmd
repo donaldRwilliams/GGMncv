@@ -26,17 +26,13 @@ knitr::opts_chunk$set(
 
 The primary goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known to overcome the various limitations of lasso (least absolute shrinkage "screening" operator), including inconsistent model selection [@zhao2006model], biased estimates [@zhang2010nearly]<span id="a1">[[1]](#f1)</span>, and a high false positive rate [see for example @williams2020back; @williams2019nonregularized].
 
-Note that these limitations of lasso are well-known. In the case of false positives, for example, it has been noted that 
+Note that these limitations of lasso are well-known. In the case of false positives, for example, 
+it has been noted that 
 
 >The lasso is doing variable screening and, hence, I suggest that we interpret
 > the second ‘s’ in lasso as ‘screening’ rather than ‘selection’. 
 > Once we have the screening property, the task is to remove the false 
 positive selections [p. 278, @tibshirani2011regression].
-
-
-<!-- There are various ways to remove the false positives, including thresholding after model selection [i.e., removing small relations, @loh2012structure] and two-step procedures -->
-<!-- lasso [@zou2006adaptive]. The approach in **GGMncv**, on the other hand,  -->
-<!-- selects the graph with non-convex penalization (with *L*<sub>1</sub> as a special case). -->
 
 
 An additional goal of **GGMncv** is to provide methods for making statistical 
@@ -89,8 +85,23 @@ Options 1-5 are continuous approximations to the *L*<sub>0</sub> penalty, that i
 model selection. However, the solution is computationally efficient and solved with the local 
 linear approximation described in @fan2009network or the one-step approach described in @zou2008one. 
 
+
+### Penalty Function
+The basic idea of these penalties is to provide "tapering," in which regularization is 
+less severe for large effects. The following is an example for the Atan penalty (![]https://latex.codecogs.com/svg.latex?%5Cgamma is the hyperparameter)
+
+![](man/figures/pen_func.png)
+
+Note that the penalty provides a "smooth" function that ranges from *L*<sub>0</sub> (best subsets)
+and *L*<sub>1</sub> (lasso) regularization (lasso).
+
+
+### Computation
+
 Note that computing the non-convex solution is a challenging task. However, section 3.3 in @zou2008one 
-indicates that the one-step approach is a viable **approximation** for a variety of non-convex penalties, assuming the initial estimates are "good enough"<span id="a2">[[2]](#f2)</span>. 
+indicates that the one-step approach is a viable **approximation** for a variety of non-convex penalties, assuming the initial estimates are "good enough"<span id="a2">[[2]](#f2)</span>. To this end, the initial 
+values can either be the sample based inverse covariance matrix (`initial = "sicm"`) or the Ledoit and Wolf
+shrinkage estimator [`initial = "lw`, @ledoit2004well].
 
 ## Tuning Parameter
 ### Tuning Free
@@ -99,12 +110,9 @@ indicates that the one-step approach is a viable **approximation** for a variety
 The default approach in **GGMncv** is tuning free. This is accomplished by setting the tuning parameter to ![](https://latex.codecogs.com/svg.latex?%5Csmall%20%5Csqrt%7Blog%28p%29/n%7D) [see for example @zhang2018silggm; @li2015flare; @jankova2015confidence].
 
 
-
-
 ### Selection
 It is also possible to select the tuning parameter with several information criterion (IC), 
-including `aic`, `bic` (currently the default),`ebic`, `ric`, in addition to any of the *generalized* information criteria 
-provided in section 5 of @kim2012consistent. There are 6 GICs in total that are specified as  `gic_1` to `gic_6`. Note that `gic_1` is BIC, whereas `gic_3` is RIC. 
+including `aic`, `bic` (currently the default),`ebic`, `ric`, in addition to any of the *generalized* information criteria provided in section 5 of @kim2012consistent. 
 
 Information criterion can be understood as penalizing the likelihood, with the difference being in the
 severity of the penalty. -2 times the log-likelihood is defined as
@@ -174,7 +182,8 @@ fit
 #> 10 0.000 0.000 0.000 0.243 0.000 0.000 0.000 0.114 0.261 0.000
 ```
 
-Note that the object `fit` can be plotted with the `R` package [**qgraph**](https://cran.r-project.org/web/packages/qgraph/qgraph.pdf). 
+Note that the object `fit` can be plotted with the `R` package 
+[**qgraph**](https://CRAN.R-project.org/package=qgraph). 
 
 ## Example: Out-of-Sample Prediction
 The **GGMncv** package can also be used for prediction, given the correspondence 
@@ -284,7 +293,7 @@ However, **GGMncv**  does include the so-called variable inclusion "probability"
 and Figure 6.7 in @hastie2015statistical]. These are computed using a non-parametric bootstrap strategy. 
 
 Additionally, more recent work does allow for obtaining confidence intervals and *p*-values with 
-the de-sparsified method. For the graphical lasso, the former are not available for the partial correlations so currently only *p*-values are provided [Statistical Inferece](#statistical-inference).
+the de-sparsified method. For the graphical lasso, the former are not available for the partial correlations so currently only *p*-values are provided [(Statistical Inferece)](#statistical-inference).
 
 ### Variable Inclusion "Probability"
 
