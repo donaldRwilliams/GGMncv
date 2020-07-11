@@ -37,9 +37,9 @@ An additional goal of **GGMncv** is to provide methods for making
 statistical inference in **regularized** Gaussian graphical models. This
 is accomplished with the de-sparsified graphical lasso estimator
 introduced in Jankova and Van De Geer (2015). This is described in the
-section [De-Sparsified Estimator](#de-sparsified-estimator). The follow
-section, [Comparing GGMs](#comparing-ggms), then shows how the
-de-sparsified estimator can be used to compare GGMs.
+section [De-Sparsified Estimator](#de-sparsified-estimator). The next
+section, [Comparing GGMs](#comparing-ggms), shows how the de-sparsified
+estimator can be used to compare GGMs.
 
 ## Installation
 
