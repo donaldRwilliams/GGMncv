@@ -438,9 +438,10 @@ fdr_ggm
 ```
 
 Note that the object `fdr_ggm` includes the de-sparsified precision
-matrix and the partial correlation matrix. Furthermore, there is a
-function called `desparsified` that can be used to obtain the
-de-sparsified estimator without computing the *p*-values.
+matrix, the partial correlation matrix, and *p*-values for each
+relation. Furthermore, there is a function called `desparsified` that
+can be used to obtain the de-sparsified estimator without computing the
+*p*-values.
 
 ## Citing **GGMncv**
 

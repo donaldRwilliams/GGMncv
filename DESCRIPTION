@@ -12,7 +12,8 @@ Description: Estimate Gaussian graphical models with non-convex penalties, inclu
   logarithm Mazumder, Friedman, and Hastie (2011) <doi:10.1198/jasa.2011.tm09738>,
   Lq, smoothly clipped absolute deviation Fan and Li (2001) <doi:10.1198/016214501753382273>,
   and minimax concave penalty Zhang (2010) <doi:10.1214/09-AOS729>. There are also extensions
-  for computing variable inclusion probabilities and multiple regression coefficients.
+  for computing variable inclusion probabilities, multiple regression coefficients, and 
+  statistical inference <doi:10.1214/15-EJS1031>.
 License: GPL-2
 Depends: R (>= 4.0.0)
 Imports:
