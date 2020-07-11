@@ -330,7 +330,7 @@ To make inference, **GGMncv** computes the de-sparsified estimator, ![](https://
 
 where ![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Cboldsymbol%7B%5CTheta%7D%7D) is the estimated precision matrix and ![](https://latex.codecogs.com/gif.latex?%5Chat%7B%5Ctext%7B%5Cbf%7BR%7D%7D%7D) is the sample based correlation matrix. The asymptotic variance is then given as
 
-![](https://latex.codecogs.com/gif.latex?%5Ctext%7BVar%7D%5B%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5D%20%3D%20%7B%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%20%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%5E%5Cprime%20&plus;%20%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5E2%7D)
+![](https://latex.codecogs.com/svg.latex?%5Ctext%7BVar%7D%5B%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5D%20%3D%20%7B%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%20%5Ctext%7Bdiag%7D%28%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%29%5E%5Cprime%20&plus;%20%5Chat%7B%5Ctext%7B%5Cbf%7BT%7D%7D%7D%5E2%7D)
 
 which readily allows for computing *p*-values for each off-diagonal element of the de-sparsified estimator.
 
