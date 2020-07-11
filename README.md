@@ -32,8 +32,8 @@ statistical inference in **regularized** Gaussian graphical models. This
 is accomplished with the de-sparsified graphical lasso estimator
 introduced in Jankova and Van De Geer (2015). This is described in the
 section [De-Sparsified Estimator](#de-sparsified-estimator). The next
-section shows how the de-sparsified estimator can be used to [compare
-GGMs](#comparing-ggms).
+[section](#comparing-ggms) shows how the de-sparsified estimator can be
+used to compare GGMs.
 
 ## Installation
 
