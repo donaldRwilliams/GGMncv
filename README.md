@@ -99,8 +99,7 @@ hyperparameter)
 
 Note that (1) the penalty provides a “smooth” function that ranges from
 *L*<sub>0</sub> (best subsets) and *L*<sub>1</sub> (lasso)
-regularization (lasso); and (2) the penalty “tapers” off for large
-effects.
+regularization; and (2) the penalty “tapers” off for large effects.
 
 ### Computation
 
