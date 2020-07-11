@@ -4,7 +4,7 @@
 \alias{ggm_compare}
 \title{Compare Gaussian Graphical Models}
 \usage{
-ggm_compare(object_1, object_2, method = "fdr", alpha = 0.05)
+ggm_compare(object_1, object_2, method = "fdr", alpha = 0.05, ...)
 }
 \arguments{
 \item{object_1}{An object of class \code{ggmncv}}
