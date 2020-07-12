@@ -22,13 +22,14 @@
 #'
 #' @details
 #' According to \insertCite{jankova2015confidence;textual}{GGMncv}, the de-sparisifed estimator,
-#' \mjseqn{\hat{\textrm{T}}}, is defined as
+#' \mjseqn{\hat{\textrm{\textbf{T}}}}, is defined as
 #'
-#' \mjseqn{\hat{\text{T}} = 2\hat{\Theta} - \hat{\Theta}\hat{\text{R}}\hat{\Theta},}
+#' \mjseqn{\hat{\textrm{\textbf{T}}} = 2\hat{\boldsymbol{\Theta}} - \hat{\boldsymbol{\Theta}}\hat{\textrm{\textbf{R}}}\hat{\boldsymbol{\Theta}},}
 #'
-#' where \mjseqn{\hat{\Theta}} denotes the graphical lasso estimator of the precision matrix
-#' and \mjseqn{\hat{\text{R}}} is the sample correlation matrix. Further details can be
+#' where \mjseqn{\hat{\boldsymbol{\Theta}}} denotes the graphical lasso estimator of the precision matrix
+#' and \mjseqn{\hat{\textrm{\textbf{R}}}} is the sample correlation matrix. Further details can be
 #' found in section 2 ("Main Results") of \insertCite{jankova2015confidence;textual}{GGMncv}.
+#'
 #'
 #' @note
 #' This assumes (reasonably) Gaussian data.

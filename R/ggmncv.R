@@ -23,8 +23,8 @@
 #' @param n_lambda Numeric. The number of regularization/thresholding parameters
 #'                 (defaults to \code{100}).
 #'
-#' @param gamma Numeric. Hyperparameter for the penalty function. Defaults to \code{0.1}
-#'              which is the recommended value for the default penalty (see details).
+#' @param gamma Numeric. Hyperparameter for the penalty function. Defaults to
+#'              the recommended value for each penalty (see details).
 #'
 #' @param select Logical. Should lambda be selected with BIC (defaults to \code{FALSE})?
 #'

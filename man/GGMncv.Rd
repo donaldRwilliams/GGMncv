@@ -46,8 +46,8 @@ The options are \code{gic_1} (i.e., \code{bic}) to \code{gic_6}. See details.}
 \item{n_lambda}{Numeric. The number of regularization/thresholding parameters
 (defaults to \code{100}).}
 
-\item{gamma}{Numeric. Hyperparameter for the penalty function. Defaults to \code{0.1}
-which is the recommended value for the default penalty (see details).}
+\item{gamma}{Numeric. Hyperparameter for the penalty function. Defaults to
+the recommended value for each penalty (see details).}
 
 \item{select}{Logical. Should lambda be selected with BIC (defaults to \code{FALSE})?}
 
