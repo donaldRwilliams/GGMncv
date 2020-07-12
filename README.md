@@ -415,7 +415,7 @@ This is implemented with
 
 ``` r
 # data
-Y <- ptsd[,1:5]
+Y <- ptsd
 
 # fit model
 fit <- GGMncv(cor(Y), n = nrow(Y))

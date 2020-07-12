@@ -2,7 +2,7 @@
 % Please edit documentation in R/desparsify.R
 \name{desparsify}
 \alias{desparsify}
-\title{De-sparsified Graphical Lasso Estimator}
+\title{De-Sparsified Graphical Lasso Estimator}
 \usage{
 desparsify(object, ...)
 }
@@ -16,28 +16,42 @@ The de-sparsified estimates, including
 
 \itemize{
 
-\item \code{Theta} De-sparsified precision matrix
+\item \code{Theta}:  De-sparsified precision matrix
 
-\item \code{P} De-sparsified partial correlation matrix
+\item \code{P}:  De-sparsified partial correlation matrix
 
 }
 }
 \description{
-Compute the desparsified glasso estimator with the approach
+\loadmathjax
+Compute the de-sparsified glasso estimator with the approach
 described in Equation 7 of \insertCite{jankova2015confidence;textual}{GGMncv}.
 }
+\details{
+According to \insertCite{jankova2015confidence;textual}{GGMncv}, the de-sparisifed estimator,
+\mjseqn{\hat{\text{T}}}, is defined as
+
+\mjseqn{\hat{\text{T}} = 2\hat{\Theta} - \hat{\Theta}\hat{\text{R}}\hat{\Theta},}
+
+where \mjseqn{\hat{\Theta}} denotes the graphical lasso estimator of the precision matrix
+and \mjseqn{\hat{\text{R}}} is the sample correlation matrix. Further details can be
+found in section 2 ("Main Results") of \insertCite{jankova2015confidence;textual}{GGMncv}.
+}
 \note{
-This assumes the Gaussian data.
+This assumes (reasonably) Gaussian data.
 }
 \examples{
 # data
-Y <- GGMncv::ptsd
+Y <- GGMncv::Sachs
 
 # fit model
 fit <- GGMncv(cor(Y), n = nrow(Y))
 
-desparsify(fit)
+# remove (some) bias and sparsity
+That <- desparsify(fit)
 
+# de-sparsified partial correlations
+That$P
 }
 \references{
 \insertAllCited{}

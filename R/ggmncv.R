@@ -1,6 +1,7 @@
 #' GGMncv
 #'
-#' @description Estimate Gaussian graphical models with non-convex penalties.
+#' @description
+#' Estimate Gaussian graphical models with non-convex penalties.
 #'
 #' @param x There are 2 options: either a \code{n} by \code{p} data matrix or a
 #'          \code{p} by \code{p} correlation matrix.
@@ -14,7 +15,7 @@
 #'           (ebic_gamma defaults to \code{0.5}; see details), \code{ric},
 #'           or any generalized information criterion provided in section 5 of
 #'           \insertCite{kim2012consistent;textual}{GGMncv}.
-#'           The options are \code{gic_1} (i.e., \code{bic}) to \code{gic_6}.
+#'           The options are \code{gic_1} (i.e., \code{bic}) to \code{gic_6}. See details.
 #'
 #' @param lambda Numeric. Tuning parameter governing the degrees of penalization. Defaults to
 #'               \code{NULL} which results in fixing lambda to \code{sqrt(log(p)/n)}.
@@ -100,7 +101,7 @@
 #'
 #' }
 #'
-#' Additional penalties:
+#' \strong{Additional penalties}:
 #'
 #' \itemize{
 #'

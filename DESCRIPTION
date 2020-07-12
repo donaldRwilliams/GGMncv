@@ -23,6 +23,7 @@ Imports:
   ggplot2 (>= 3.3.0),
   glassoFast (>= 1.0),
   numDeriv (>= 2016.8-1.1),
+  mathjaxr (>= 1.0-1),
   MASS (>= 7.3-51.5),
   methods,
   psych (>= 1.9.12.31),
@@ -35,5 +36,7 @@ LazyData: true
 RoxygenNote: 7.1.0
 LinkingTo: Rcpp, 
            RcppArmadillo
-RdMacros: Rdpack
+RdMacros: 
+  Rdpack,
+  mathjaxr
 BugReports: https://github.com/donaldRwilliams/GGMncv/issues
