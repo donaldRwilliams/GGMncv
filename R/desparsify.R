@@ -22,7 +22,7 @@
 #'
 #' @details
 #' According to \insertCite{jankova2015confidence;textual}{GGMncv}, the de-sparisifed estimator,
-#' \mjseqn{\hat{\text{T}}}, is defined as
+#' \mjseqn{\hat{\textrm{T}}}, is defined as
 #'
 #' \mjseqn{\hat{\text{T}} = 2\hat{\Theta} - \hat{\Theta}\hat{\text{R}}\hat{\Theta},}
 #'
