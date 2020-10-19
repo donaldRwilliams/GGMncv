@@ -1,6 +1,7 @@
 #' GGMncv
 #'
 #' @description
+#' \loadmathjax
 #' Estimate Gaussian graphical models with non-convex penalties.
 #'
 #' @param x There are 2 options: either a \code{n} by \code{p} data matrix or a
@@ -36,7 +37,7 @@
 #'               maximum likelihood estimate with constraints.
 #'
 #' @param LLA Logical. Should the local linear approximation be used for maximizing the penalized likelihood ?
-#'            The default is \code{TRUE} (see details). Setting to \code{FALSE} results in the so-called
+#'            The default is \code{FALSE} (see details). Setting to \code{FALSE} results in the so-called
 #'            one-step approach.
 #'
 #' @param initial Character string. Which initial values should be used for the one-step approach
@@ -81,11 +82,11 @@
 #' }
 #'
 #'
-#' @details Several of the penalties are (continuous) approximations to the L0 penalty, that is,
+#' @details Several of the penalties are (continuous) approximations to the \mjseqn{L_0} penalty, that is,
 #' best subsets model selection. However, the solution does not require enumerating
 #' all possible models which results in a computationally efficient algorithm.
 #'
-#' L0 approximations:
+#' \strong{L0 Approximations}
 #'
 #' \itemize{
 #'
@@ -109,37 +110,45 @@
 #'
 #' \item MCP: \code{penalty = "mcp"} \insertCite{zhang2010nearly}{GGMncv}.
 #'
-#' \item Adaptive lasso \code{penalty = "adapt"}  \insertCite{zou2006adaptive}{GGMncv}
+#' \item Adaptive lasso (\code{penalty = "adapt"}): Defaults to  \mjseqn{\gamma = 0.5}
+#'  \insertCite{zou2006adaptive}{GGMncv}. Note that for consistency with the
+#'  other penalties, \mjseqn{\gamma \rightarrow 0} provides more penalization and
+#'  \mjseqn{\gamma = 1} results in \mjseqn{L_1} regularization.
 #'
-#' \item Lasso  \code{penalty = "lasso"}  \insertCite{tibshirani1996regression}{GGMncv}
+#' \item Lasso:  \code{penalty = "lasso"}  \insertCite{tibshirani1996regression}{GGMncv}.
 #'
 #' }
 #'
-#' \strong{Gamma}
+#' \strong{Gamma} (\mjseqn{\gamma}):
 #'
-#' The \code{code} gamma argument corresponds to additional hyperparameter for each penalty.
+#' The \code{gamma} argument corresponds to additional hyperparameter for each penalty.
 #' The defaults are set to the recommended values from the respective papers.
 #'
-#' \strong{L0_learn}
+#'  \strong{L0 learn}:
 #'
 #' \code{L0_learn} is perhaps a misnomer, in that best subsets solution is not computed.
 #' This option corresponds to the following steps, assuming \code{select = TRUE}:
 #'
 #' \enumerate{
 #'
-#' \item Estimte the graph for a given lambda value
+#' \item Estimte the glasso based precision matrix, \mjseqn{\hat{\Theta}_{\lambda}^{gl}},
+#' for a given \mjseqn{\lambda} value.
 #'
-#' \item Refit the precision matrix, given the contraints from step 1. This results
-#' in the maximum likelihood estimate (non-regularized).
+#' \item Refit the precision matrix, given the adjacency matrix,
+#' \mjseqn{\hat{\mathrm{\bf A}}}, from step 1 (with \code{\link{constrained}}).
+#' This results in the maximum likelihood
+#' (non-regularized) estimate, i.e., \mjseqn{\hat{\Theta}_{\lambda}^{mle}}.
 #'
-#' \item Compute BIC for the refitted graph from step 2.
+#' \item Compute the information criterion for \mjseqn{\hat{\Theta}_{\lambda}^{mle}} from step 2.
 #'
-#' \item After repeating steps 1-3 for lambda value, select the graph according to BIC.
+#' \item After repeating steps 1-3 for each \mjseqn{\lambda}, select the
+#' graph that minimized the information criterion.
 #'
 #' }
 #'
-#' Note that this is most useful in datasets that have more nodes than variables
-#' (i.e., low-dimensional).
+#' This provide a computationally efficient approximation for selecting
+#' the graph with the \mjseqn{L_0} penalty. Note that this is most useful in datasets
+#' that have more nodes than variables (i.e., low-dimensional).
 #'
 #' \strong{LLA}
 #'
@@ -186,7 +195,7 @@ GGMncv <- function(x, n,
                    select = FALSE,
                    L0_learn = FALSE,
                    refit = FALSE,
-                   LLA = TRUE,
+                   LLA = FALSE,
                    initial = "sicm",
                    method = "pearson",
                    progress = TRUE,
@@ -586,10 +595,6 @@ plot.ggmncv <- function(x,
 
       geom_line(show.legend = FALSE, size = size,
                 alpha = alpha) +
-      geom_vline(xintercept = lambda_min,
-                 linetype = "dotted",
-                 size = 1,
-                 alpha = 0.75) +
       geom_hline(yintercept = 0,  color = "black") +
       xlab(expression(lambda)) +
       ylab(expression(hat(rho))) +
