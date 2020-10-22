@@ -251,7 +251,7 @@ GGMncv <- function(x, n,
     } else if (penalty == "adapt") {
       gamma <- 0.5
     } else {
-      gamma <- 0.01
+      gamma <- 0.1
     }
   }
 
@@ -282,8 +282,6 @@ GGMncv <- function(x, n,
             "_deriv(Theta = Theta, lambda =  lambda_no_select, gamma = gamma)"
           )
         ))
-
-      diag(lambda_mat) <-  lambda_no_select
 
       fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
 
