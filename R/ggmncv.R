@@ -297,7 +297,7 @@ GGMncv <- function(x, n,
           )
         ))
 
-      diag(lambda_mat) <-  lambda_no_select
+      # diag(lambda_mat) <-  lambda_no_select
 
       fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
 
@@ -336,7 +336,7 @@ GGMncv <- function(x, n,
             )
           ))
 
-        diag(lambda_mat) <- lambda[i]
+        # diag(lambda_mat) <- lambda[i]
 
         fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
         adj <- ifelse(fit$wi == 0, 0, 1)
@@ -353,7 +353,7 @@ GGMncv <- function(x, n,
             )
           ))
 
-        diag(lambda_mat) <- lambda[i]
+        # diag(lambda_mat) <- lambda[i]
 
         fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
         adj <- ifelse(fit$wi == 0, 0, 1)
