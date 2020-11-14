@@ -42,7 +42,7 @@
 #' Y <- GGMncv::Sachs
 #'
 #' # fit model
-#' fit <- GGMncv(cor(Y), n = nrow(Y))
+#' fit <- ggmncv(cor(Y), n = nrow(Y))
 #'
 #' # remove (some) bias and sparsity
 #' That <- desparsify(fit)
@@ -58,7 +58,7 @@ desparsify <- function(object, ...){
   # Equation 7 in
   # Jankova, J., & Van De Geer, S. (2015). Confidence intervals for high-dimensional
   # inverse covariance estimation. Electronic Journal of Statistics, 9(1), 1205-1229.
-  Theta <- 2 * object$Theta - object$Theta%*% object$R %*% object$Theta
+  Theta <- 2 * object$Theta - object$Theta %*% object$R %*% object$Theta
 
   # partials
   P <- -(cov2cor(Theta) - diag(p))

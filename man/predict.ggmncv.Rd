@@ -4,10 +4,12 @@
 \alias{predict.ggmncv}
 \title{Predict method for \code{ggmncv} Objects}
 \usage{
-\method{predict}{ggmncv}(object, newdata = NULL, ...)
+\method{predict}{ggmncv}(object, train_data, newdata = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{ggmncv}}
+
+\item{train_data}{Data used for model fitting.}
 
 \item{newdata}{An optional data frame in which to look for variables with which to predict.
 If omitted, the fitted values are used.}
@@ -30,9 +32,9 @@ Ytest <- Y[1:100,]
 # training data
 Ytrain <- Y[101:nrow(Y),]
 
-fit <- GGMncv(Ytrain, n = nrow(Ytrain))
+fit <- ggmncv(cor(Ytrain), n = nrow(Ytrain))
 
-pred <- predict(fit,
+pred <- predict(fit, train_data = Y,
                 newdata = Ytest)
 
 round(apply((pred - Ytest)^2, 2, mean), 2)

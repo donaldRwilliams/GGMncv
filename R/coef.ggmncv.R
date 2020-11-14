@@ -21,7 +21,7 @@
 #' S <- cor(Y)
 #'
 #' # fit model
-#' fit <- GGMncv(S, n = nrow(Y))
+#' fit <- ggmncv(S, n = nrow(Y))
 #'
 #' coefs <- coef(fit)
 #'

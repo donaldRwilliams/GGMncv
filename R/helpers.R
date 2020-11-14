@@ -210,7 +210,23 @@ coef_helper <- function(Theta){
   return(betas)
 }
 
+check_gamma <- function(penalty, gamma){
 
+  if (penalty == "scad") {
+    if (any(gamma <= 3)) {
+      stop("gamma must be greater than 3")
+    }
+  } else if (penalty == "mcp") {
+    if (any(gamma <= 1)) {
+      stop("gamma must be greater than 1")
+    }
+
+  } else {
+    if (any(gamma < 0)) {
+      stop("gamma must be positive")
+    }
+  }
+}
 
 # taken from
 # Kuismin, M., & Sillanpää, M. J. (2016). Use of Wishart prior and simple extensions for
@@ -313,4 +329,5 @@ globalVariables(c("VIP",
                   "X2",
                   "ic",
                   "lambda",
-                  "coef"))
+                  "coef",
+                  "EIP"))
