@@ -776,13 +776,11 @@ print.ggmncv <- function(x,...){
 
 #' Plot \code{ggmncv} Objects
 #'
-#' @description Plot the solution path for the partial correlations, the information criterion solution path, or
-#' the variable inclusion 'probabilities'.
+#' @description Plot the solution path for the partial correlations.
 #'
 #' @param x An object of class \code{ggmncv}
 #'
-#' @param size Numeric. The size of the points (\code{vip})  or lines (\code{pcor_path} or \code{ic_path})
-#' The default is \code{1}.
+#' @param size Numeric. The size of the points (\code{eip}).
 #'
 #' @param alpha Numeric. The transparency of the lines. Only for the solution path options.
 #'

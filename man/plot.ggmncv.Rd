@@ -9,8 +9,7 @@
 \arguments{
 \item{x}{An object of class \code{ggmncv}}
 
-\item{size}{Numeric. The size of the points (\code{vip})  or lines (\code{pcor_path} or \code{ic_path})
-The default is \code{1}.}
+\item{size}{Numeric. The size of the points (\code{eip}).}
 
 \item{alpha}{Numeric. The transparency of the lines. Only for the solution path options.}
 
@@ -20,8 +19,7 @@ The default is \code{1}.}
 A \code{ggplot} object
 }
 \description{
-Plot the solution path for the partial correlations, the information criterion solution path, or
-the variable inclusion 'probabilities'.
+Plot the solution path for the partial correlations.
 }
 \examples{
 
