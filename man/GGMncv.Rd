@@ -67,7 +67,7 @@ nonconvex regularization, as opposed to the \mjseqn{\ell_1}-penalty.}
 \item{maxit}{Numeric. The maximum number of iterations for determining convergence of the LLA
 algorithm (defaults to \code{1e4}). Note this can be changed to, say,
 \code{2} or \code{3}, which will provide  two and three-step estimators
-with convergence check.}
+without convergence check.}
 
 \item{thr}{Numeric. Threshold for determining convergence of the LLA algorithm
 (defaults to \code{1.0e-4}).}

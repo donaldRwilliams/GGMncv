@@ -1,7 +1,9 @@
 #' Edge Inclusion 'Probabilities'
 #'
 #'
-#' @description Compute edge inclusion 'probabilities' with a non-parametric bootstrap.
+#' @description
+#' \loadmathjax
+#' Compute edge inclusion 'probabilities' with a non-parametric bootstrap.
 #'
 #' @param Y Matrix. A matrix of dimensions \emph{n} by \emph{p}.
 #'
@@ -121,7 +123,7 @@ boot_eip <- function(Y,
 
 
 
-#' Plot Edge Inclusion 'Probabiliites'
+#' Plot Edge Inclusion 'Probabilities'
 #'
 #' @param x An object of class \code{eip}
 #'

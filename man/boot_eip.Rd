@@ -63,6 +63,7 @@ with \code{ebic_gamma = 1}.}
 An object of class \code{eip}
 }
 \description{
+\loadmathjax
 Compute edge inclusion 'probabilities' with a non-parametric bootstrap.
 }
 \examples{

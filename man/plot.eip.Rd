@@ -2,7 +2,7 @@
 % Please edit documentation in R/eip.R
 \name{plot.eip}
 \alias{plot.eip}
-\title{Plot Edge Inclusion 'Probabiliites'}
+\title{Plot Edge Inclusion 'Probabilities'}
 \usage{
 \method{plot}{eip}(x, color = "black", size = 1, ...)
 }
@@ -19,7 +19,7 @@
 An object of class \code{ggplot}
 }
 \description{
-Plot Edge Inclusion 'Probabiliites'
+Plot Edge Inclusion 'Probabilities'
 }
 \examples{
 # data
