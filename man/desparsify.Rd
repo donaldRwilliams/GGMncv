@@ -45,7 +45,7 @@ This assumes (reasonably) Gaussian data.
 Y <- GGMncv::Sachs
 
 # fit model
-fit <- GGMncv(cor(Y), n = nrow(Y))
+fit <- ggmncv(cor(Y), n = nrow(Y))
 
 # remove (some) bias and sparsity
 That <- desparsify(fit)

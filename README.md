@@ -108,27 +108,17 @@ section 3.3 in Zou and Li (2008) indicates that the one-step approach is
 a viable **approximation** for a variety of non-convex penalties,
 assuming the initial estimates are “good
 enough”<span id="a2">[\[2\]](#f2)</span>. To this end, the initial
-values can either be the sample based inverse covariance matrix
-(`initial = "sicm"`) or the Ledoit and Wolf shrinkage estimator
-(`initial = "lw"`, Ledoit and Wolf 2004).
+values can either be the sample based inverse covariance matrix or a
+custom matrix specified with `initial`.
 
 ## Tuning Parameter
 
-### Tuning Free
-
-The default approach in **GGMncv** is tuning free. This is accomplished
-by setting the tuning parameter to
-![](https://latex.codecogs.com/svg.latex?%5Csmall%20%5Csqrt%7Blog%28p%29/n%7D)
-(see for example Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and
-Van De Geer 2015).
-
 ### Selection
 
-It is also possible to select the tuning parameter with several
-information criterion (IC), including `aic`, `bic` (currently the
-default),`ebic`, `ric`, in addition to any of the *generalized*
-information criteria provided in section 5 of Kim, Kwon, and Choi
-(2012).
+The tuning parameter can be selected with several information criteria
+(IC), including `aic`, `bic` (currently the default),`ebic`, `ric`, in
+addition to any of the *generalized* information criteria provided in
+section 5 of Kim, Kwon, and Choi (2012).
 
 Information criterion can be understood as penalizing the likelihood,
 with the difference being in the severity of the penalty. -2 times the
@@ -180,6 +170,15 @@ cross-validation.
 The tuning parameter is selected by setting `select = TRUE` and then the
 desired IC with, for example, `ic = "gic_3"`.
 
+### Tuning Free
+
+A tuning free option is also available. This is accomplished by setting
+the tuning parameter to
+![](https://latex.codecogs.com/svg.latex?%5Csmall%20%5Csqrt%7Blog%28p%29/n%7D)
+(see for example Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and
+Van De Geer 2015) and then selecting
+![](https://latex.codecogs.com/svg.latex?%5Cgamma)
+
 ## Example: Structure Learning
 
 A GGM can be fitted as follows
@@ -191,12 +190,11 @@ library(GGMncv)
 Y <- GGMncv::ptsd[,1:10]
 
 # polychoric
-S <- psych::polychoric(Y)$rho
+R <- cor(Y, method = "spearman")
 
 # fit model
-fit <- GGMncv(S, n = nrow(Y), 
-              penalty = "atan", 
-              LLA = TRUE)
+fit <- ggmncv(R = R, n = nrow(Y), 
+              penalty = "atan")
 
 # print
 fit
@@ -224,7 +222,6 @@ correspondence between the inverse covariance matrix and multiple
 regression (Kwan 2014).
 
 ``` r
-# protein expression data
 Y <- scale(Sachs)
 
 # test data
@@ -234,24 +231,23 @@ Ytest <- Y[1:100,]
 Ytrain <- Y[101:nrow(Y),]
 
 # default: atan and tuning free
-fit <- GGMncv(Ytrain, 
+fit <- ggmncv(cor(Ytrain), 
               n = nrow(Ytrain))
 
 # predict
-pred <- predict(fit, newdata = Ytest)
+pred <- predict(fit, train_data = Ytrain, newdata = Ytest)
 
 # print mse
 round(apply((pred - Ytest)^2, 2, mean), 2)
 
-#> Raf  Erk Plcg  PKC  PKA PIP2 PIP3  Mek  P38  Jnk  Akt 
-#> 0.16 0.27 0.60 0.42 0.40 0.47 0.70 0.15 0.14 0.69 0.26 
+#>  Raf  Erk Plcg  PKC  PKA PIP2 PIP3  Mek  P38  Jnk  Akt 
+#> 0.18 0.27 0.59 0.42 0.39 0.47 0.69 0.16 0.15 0.69 0.26 
 ```
 
 ## Solution Path
 
-When `select = TRUE`, the solution path for either the partial
-correlations (`code = "pcor_path"`) or the information criterion (`code
-= "ic_path"`) can be plotted.
+When `select = 'lambda'`, the solution path for the partial correlations
+can be plotted.
 
 ### Atan Penalty
 
@@ -268,8 +264,7 @@ fit <- GGMncv(cor(Y), n = nrow(Y),
               
 # plot path
 plot(fit, 
-     alpha = 0.75, 
-     type = "pcor_path") 
+     alpha = 0.75)
 ```
 
 ![](man/figures/atan_path.png)
@@ -289,14 +284,12 @@ Y <- ptsd
 
 # fit model
 fit <- GGMncv(cor(Y), n = nrow(Y), 
-              select = TRUE, 
               penalty = "lasso"
               store = TRUE)
 
 # plot path
 plot(fit, 
-     alpha = 0.75, 
-     type = "pcor_path") 
+     alpha = 0.75)
 ```
 
 ![](man/figures/lasso_path.png)
@@ -354,18 +347,13 @@ Inferece)](#statistical-inference).
 
 ``` r
 # data
-Y <- GGMncv::ptsd[,1:10]
+Y <- GGMncv::ptsd[,1:5]
 
-# polychoric
-S <- psych::polychoric(Y)$rho
-
-# fit model
-fit <- GGMncv(S, n = nrow(Y), 
-              penalty = "atan", 
-              vip = TRUE)
+# edge inclusion
+eips <- boot_eip(Y)
 
 # plot
-plot(fit, size = 4, type = "vip")
+plot(eips, size = 4)
 ```
 
 ![](man/figures/vip.png)
@@ -418,7 +406,7 @@ This is implemented with
 Y <- ptsd
 
 # fit model
-fit <- GGMncv(cor(Y), n = nrow(Y))
+fit <- ggmncv(cor(Y), n = nrow(Y))
 
 # make inference
 fdr_ggm <- inference(fit, method = "fdr")
@@ -468,8 +456,8 @@ Assuming there is two groups, `Y_g1` and `Y_g2`, this is implemented
 with
 
 ``` r
-fit1 <- GGMncv(Y_g1, n = nrow(Y_g1))
-fit2 <- GGMncv(Y_g2, n = nrow(Y_g2))
+fit1 <- ggmncv(Y_g1, n = nrow(Y_g1))
+fit2 <- ggmncv(Y_g2, n = nrow(Y_g2))
 
 ggm_diff <- ggm_compare(fit1, fit2)
 ```
@@ -486,6 +474,9 @@ estimating GGMs with non-convex penalties. Hence, in addition to citing
 the package `citation("GGMncv")`, it is important to give credit to the
 primary sources. The references can be found in
 [(Penalties)](#penalties).
+
+Additionally, please cite Williams (2020) which is survey of these
+approaches that is meant to accompany **GGMncv**.
 
 ## Footnotes
 
@@ -602,14 +593,6 @@ Inverse of the Sample Covariance Matrix.” *Spreadsheets in Education* 7
 
 </div>
 
-<div id="ref-ledoit2004well">
-
-Ledoit, Olivier, and Michael Wolf. 2004. “A Well-Conditioned Estimator
-for Large-Dimensional Covariance Matrices.” *Journal of Multivariate
-Analysis* 88 (2): 365–411.
-
-</div>
-
 <div id="ref-lee2016exact">
 
 Lee, Jason D, Dennis L Sun, Yuekai Sun, Jonathan E Taylor, and others.
@@ -671,6 +654,13 @@ of the Institute of Statistical Mathematics* 70 (1): 191–214.
 Wang, Yanxin, and Li Zhu. 2016. “Variable Selection and Parameter
 Estimation with the Atan Regularization Method.” *Journal of Probability
 and Statistics*.
+
+</div>
+
+<div id="ref-williams2020beyond">
+
+Williams, Donald R. 2020. “Beyond Lasso: A Survey of Nonconvex
+Regularization in Gaussian Graphical Models.” *PsyArXiv*.
 
 </div>
 

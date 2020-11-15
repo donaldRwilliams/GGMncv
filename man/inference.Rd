@@ -44,7 +44,7 @@ This assumes the Gaussian data.
 Y <- GGMncv::ptsd
 
 # fit model
-fit <- GGMncv(cor(Y), n = nrow(Y))
+fit <- ggmncv(cor(Y), n = nrow(Y))
 
 
 # statistical inference

@@ -2,72 +2,68 @@
 #'
 #' @description
 #' \loadmathjax
-#' Estimate Gaussian graphical models with non-convex penalties.
-#'
-#' @param x There are 2 options: either a \code{n} by \code{p} data matrix or a
-#'          \code{p} by \code{p} correlation matrix.
-#'
-#' @param n Numeric. Sample size.
-#'
-#' @param penalty Character string. Which penalty should be used (defaults to \code{atan}).
-#'
-#' @param ic Character string. Which information criterion should be used (defaults to \code{bic}), give
-#'           \code{select = TRUE}. The options include \code{aic}, \code{ebic}
-#'           (ebic_gamma defaults to \code{0.5}; see details), \code{ric},
-#'           or any generalized information criterion provided in section 5 of
-#'           \insertCite{kim2012consistent;textual}{GGMncv}.
-#'           The options are \code{gic_1} (i.e., \code{bic}) to \code{gic_6}. See details.
-#'
-#' @param lambda Numeric. Tuning parameter governing the degrees of penalization. Defaults to
-#'               \code{NULL} which results in fixing lambda to \code{sqrt(log(p)/n)}.
-#'
-#' @param n_lambda Numeric. The number of regularization/thresholding parameters
-#'                 (defaults to \code{100}).
-#'
-#' @param gamma Numeric. Hyperparameter for the penalty function. Defaults to
-#'              the recommended value for each penalty (see details).
-#'
-#' @param select Logical. Should lambda be selected with BIC (defaults to \code{FALSE})?
-#'
-#' @param L0_learn Logical. Should lambda be selected based on the non-regularized
-#'                 precision matrix (defaults to \code{FALSE}; see details).
-#'
-#' @param refit Logical. Should the precision matrix be refitted, given the adjacency matrix
-#'               (defaults to \code{FALSE})? When set to \code{TRUE}, this provides the \strong{non-regularized},
-#'               maximum likelihood estimate with constraints.
-#'
-#' @param LLA Logical. Should the local linear approximation be used for maximizing the penalized likelihood ?
-#'            The default is \code{FALSE} (see details). Setting to \code{FALSE} results in the so-called
-#'            one-step approach.
-#'
-#' @param initial Character string. Which initial values should be used for the one-step approach
-#'                (i.e., \code{LLA = FALSE}) ? Default is the sample inverse
-#'                covariance matrix (\code{sicm}). Options include \code{sicm} and \code{lw}
-#'                \insertCite{@Ledoit and Wolf shrinkage estimator; @ledoit2004well}{GGMncv}.
-#'
-#' @param method Character string. Which correlation coefficient should be computed.
-#'               One of "pearson" (default), "spearman", or  "polychoric".
+#' Gaussian graphical models with nonconvex regularization. A survey of these approaches is provided
+#' in \insertCite{williams2020beyond;textual}{GGMncv}.
 #'
 #'
-#' @param progress Logical. Should a progress bar be included (defaults to \code{TRUE}) ? Note that
-#'                 this only applies when \code{select = TRUE}.
+#' @param R Matrix. A correlation matrix of dimensions \emph{p} by \emph{p}.
 #'
-#' @param store Logical. Should all of the fitted models be saved (defaults to \code{NULL}). Note
-#'              this only applies when \code{select = TRUE}. and ignored otherwise
-#'              (the one model is saved.)
+#' @param n Numeric. The sample size used to compute the information criterion.
 #'
-#' @param vip Logical. Should variable inclusion "probabilities" be computed (defaults to \code{FALSE})?
+#' @param penalty Character string. Which penalty should be used (defaults to \code{"atan"})?
 #'
-#' @param vip_iter Numeric. How many bootstrap sample for computing \code{vip} (defaults to 1000) ? Note
-#'                 also that only the default lambda is implemented (select is not implemented).
+#' @param ic Character string. Which information criterion should be used (defaults to \code{"bic"})?
+#'           The options include \code{aic}, \code{ebic} (ebic_gamma defaults to \code{0.5}; see details),
+#'           \code{ric}, or any of the generalized information criteria provided in section 5 of
+#'           \insertCite{kim2012consistent;textual}{GGMncv}. The options are \code{gic_1}
+#'           (i.e., \code{bic}) to \code{gic_6}.
 #'
-#' @param ... Currently ignored.
+#' @param select Character string. Which tuning parameter should be selected (defaults to \code{"lambda"})?.
+#'               The options include \code{"lambda"} (the regularization parameter),
+#'               \code{"gamma"} (governs the 'shape'), and \code{"both"}. See details.
+#'
+#' @param gamma Numeric vector. Hyperparameter for the penalty function. Defaults to 3.7 (\code{SCAD}),
+#'              2 (\code{MCP}), 0.5 (\code{adapt}), and 0.01 otherwise with \code{select = "lambda"}.
+#'
+#' @param lambda Numeric vector. Regularization parameter. Defaults to \code{NULL} that provides default
+#'               values with  \code{select = "lambda"} and \code{sqrt(log(p)/n)} with
+#'               \code{select = "gamma"}.
+#'
+#' @param n_lambda Numeric. The number of \mjseqn{\lambda}'s to be evaluated. Defaults to 50.
+#'                 This is disregarded if custom values are provided in \code{lambda}.
+#'
+#' @param n_gamma Numeric. The number of \mjseqn{\gamma}'s to be evaluated. Defaults to 50.
+#'                This is disregarded if custom values are provided in \code{lambda}.
+#'
+#' @param initial Matrix. The initial inverse correlation matrix for computing the penalty
+#'                derivative. Defaults to \code{NULL} which uses the inverse of \code{R}.
+#'
+#' @param LLA Logical. Should the local linear approximation be used (default to \code{FALSE})?
+#'
+#' @param unreg Logical. Should the models be refitted (or unregularized) with maximum likelihood
+#'              (defaults to \code{FALSE})? Setting to \code{TRUE} results in the approach of
+#'              \insertCite{Foygel2010;textual}{GGMncv}, but with the regularization path obtained from
+#'              nonconvex regularization, as opposed to the \mjseqn{\ell_1}-penalty.
+#'
+#'
+#' @param maxit Numeric. The maximum number of iterations for determining convergence of the LLA
+#'              algorithm (defaults to \code{1e4}). Note this can be changed to, say,
+#'              \code{2} or \code{3}, which will provide  two and three-step estimators
+#'              without convergence check.
+#'
+#' @param thr Numeric. Threshold for determining convergence of the LLA algorithm
+#'            (defaults to \code{1.0e-4}).
+#'
+#' @param store Logical. Should all of the fitted models be saved (defaults to \code{TRUE})?.
+#'
+#' @param progress  Logical. Should a progress bar be included (defaults to \code{TRUE})?
+#'
+#' @param ... Additional arguments. Currently gamma in EBIC (\code{ic = "ebic"}) can be set
+#'            with \code{ebic_gamma = 1}.
 #'
 #' @references
 #' \insertAllCited{}
 #'
-#' @importFrom stats cor cov2cor
-#' @importFrom psych polychoric
 #' @importFrom glassoFast glassoFast
 #'
 #' @return An object of class \code{ggmncv}, including:
@@ -77,14 +73,13 @@
 #' \item \code{Sigma} Covariance matrix
 #' \item \code{P} Weighted adjacency matrix
 #' \item \code{adj} Adjacency matrix
-#' \item \code{lambda} Tuning parameter (i.e., sqrt(log(p)/n))
+#' \item \code{lambda} Tuning parameter
 #' \item \code{fit} glasso fitted model (a list)
 #' }
 #'
-#'
-#' @details Several of the penalties are (continuous) approximations to the \mjseqn{L_0} penalty, that is,
-#' best subsets model selection. However, the solution does not require enumerating
-#' all possible models which results in a computationally efficient algorithm.
+#' @details Several of the penalties are (continuous) approximations to the \mjseqn{\ell_0} penalty,
+#' that is, best subset selection. However, the solution does not require enumerating
+#' all possible models which results in a computationally efficient solution.
 #'
 #' \strong{L0 Approximations}
 #'
@@ -92,7 +87,7 @@
 #'
 #' \item Atan: \code{penalty = "atan"} \insertCite{wang2016variable}{GGMncv}. This is currently the default.
 #'
-#' \item Seamless L0: \code{penalty = "selo"} \insertCite{dicker2013variable}{GGMncv}.
+#' \item Seamless \mjseqn{\ell_0}: \code{penalty = "selo"} \insertCite{dicker2013variable}{GGMncv}.
 #'
 #' \item Exponential: \code{penalty = "exp"}  \insertCite{wang2018variable}{GGMncv}
 #'
@@ -113,7 +108,7 @@
 #' \item Adaptive lasso (\code{penalty = "adapt"}): Defaults to  \mjseqn{\gamma = 0.5}
 #'  \insertCite{zou2006adaptive}{GGMncv}. Note that for consistency with the
 #'  other penalties, \mjseqn{\gamma \rightarrow 0} provides more penalization and
-#'  \mjseqn{\gamma = 1} results in \mjseqn{L_1} regularization.
+#'  \mjseqn{\gamma = 1} results in \mjseqn{\ell_1} regularization.
 #'
 #' \item Lasso:  \code{penalty = "lasso"}  \insertCite{tibshirani1996regression}{GGMncv}.
 #'
@@ -124,55 +119,25 @@
 #' The \code{gamma} argument corresponds to additional hyperparameter for each penalty.
 #' The defaults are set to the recommended values from the respective papers.
 #'
-#'  \strong{L0 learn}:
-#'
-#' \code{L0_learn} is perhaps a misnomer, in that best subsets solution is not computed.
-#' This option corresponds to the following steps, assuming \code{select = TRUE}:
-#'
-#' \enumerate{
-#'
-#' \item Estimte the glasso based precision matrix, \mjseqn{\hat{\Theta}_{\lambda}^{gl}},
-#' for a given \mjseqn{\lambda} value.
-#'
-#' \item Refit the precision matrix, given the adjacency matrix,
-#' \mjseqn{\hat{\mathrm{\bf A}}}, from step 1 (with \code{\link{constrained}}).
-#' This results in the maximum likelihood
-#' (non-regularized) estimate, i.e., \mjseqn{\hat{\Theta}_{\lambda}^{mle}}.
-#'
-#' \item Compute the information criterion for \mjseqn{\hat{\Theta}_{\lambda}^{mle}} from step 2.
-#'
-#' \item After repeating steps 1-3 for each \mjseqn{\lambda}, select the
-#' graph that minimized the information criterion.
-#'
-#' }
-#'
-#' This provide a computationally efficient approximation for selecting
-#' the graph with the \mjseqn{L_0} penalty. Note that this is most useful in datasets
-#' that have more nodes than variables (i.e., low-dimensional).
-#'
 #' \strong{LLA}
 #'
-#' The local linear approximate is for non-covex penalties is described in
-#' \insertCite{fan2009network}{GGMncv}. This is essentially a weighted (g)lasso.
-#' Note that by default \code{LLA = TRUE}. This can be set to \code{FALSE} when \emph{n} is
-#' much larger than \emph{p} (e.g., this can improve power). This is due to the work
-#' of \insertCite{zou2008one}{GGMncv}, which suggested that, so long as the starting
-#' values are good, then it is possible to use a one-step estimator. In the case of low-dimensional data,
-#' the sample based inverse covariance matrix is used to compute the lambda matrix. This is expected to work well, assuming
-#' that \emph{n} is sufficiently larger than \emph{p}. For high-dimensional data, the initial values for obtaining
-#' the lambda matrix are obtained from glasso.
-#'
-#' \strong{Model Selection}
-#'
-#' It is common to select lambda. However, in more recent approaches (see references above), lambda is fixed to
-#' \code{sqrt(log(p)/n)}. This has the advantage of being tuning free and this value is expected
-#' to provide competitive performance. It is possible to select lambda by setting \code{select = TRUE}.
+#' The local linear approximate is noncovex penalties was described in
+#' \insertCite{fan2009network}{GGMncv}. This is essentially a iteratively reweighted (g)lasso.
+#' Note that by default \code{LLA = FALSE}. This is due to the work
+#' of \insertCite{zou2008one;textual}{GGMncv}, which suggested that, so long as the starting
+#' values are good enough, then a one-step estimator is sufficient. In the case of low-dimensional data,
+#' the sample based inverse covariance matrix is used to compute the penalty.
+#' This is expected to work well, assuming that \mjseqn{n} is sufficiently larger than  \mjseqn{p}.
 #'
 #' \strong{EBIC}
 #'
-#' When setting \code{ic = "ebic"}, the additional parameter that determines the additional penalty to BIC is
-#' passed via the \code{...} argument. This must be specificed as \code{ebic_gamma = 1}, with the default set
-#' to \code{0.5}.
+#' When setting \code{ic = "ebic"}  the hyperparameter that determines the additional penalty to BIC is
+#' passed via the \code{...} argument. This must be specified as \code{ebic_gamma = 1}. The  default is
+#' \code{0.5}.
+#'
+#' @importFrom stats cor cov2cor
+#'
+#' @export
 #'
 #' @examples
 #' # data
@@ -181,30 +146,29 @@
 #' S <- cor(Y)
 #'
 #' # fit model
-#' fit <- GGMncv(S, n = nrow(Y))
+#' fit <- ggmncv(S, n = nrow(Y))
 #'
 #' # plot
 #' qgraph::qgraph(fit$P)
-#' @export
-GGMncv <- function(x, n,
+ggmncv <- function(R,
+                   n,
                    penalty = "atan",
                    ic = "bic",
+                   select = "lambda",
+                   gamma = NULL,
                    lambda = NULL,
                    n_lambda = 50,
-                   gamma = NULL,
-                   select = FALSE,
-                   L0_learn = FALSE,
-                   refit = FALSE,
+                   n_gamma = 50,
+                   initial = NULL,
                    LLA = FALSE,
-                   initial = "sicm",
-                   method = "pearson",
-                   progress = TRUE,
+                   unreg = FALSE,
+                   maxit = 1e4,
+                   thr = 1.0e-4,
                    store = TRUE,
-                   vip = FALSE,
-                   vip_iter = 1000,
-                   ...){
+                   progress = TRUE,
+                   ...) {
 
-  if(! penalty %in% c("atan",
+  if (!penalty %in% c("atan",
                       "mcp",
                       "scad",
                       "exp",
@@ -213,120 +177,65 @@ GGMncv <- function(x, n,
                       "lasso",
                       "sica",
                       "lq",
-                      "adapt")){
+                      "adapt")) {
     stop("penalty not found. \ncurrent options: atan, mcp, scad, exp, selo, or log")
   }
+  if (select == "lambda") {
 
+    # nodes
+    p <- ncol(R)
 
-  if (base::isSymmetric(as.matrix(x))) {
-    R <- x
-  } else {
-    if (method == "polychoric") {
-      suppressWarnings(
-      R <- psych::polychoric(x)$rho
-      )
-    } else {
-      R <- stats::cor(x, method = method)
-    }
-    }
+    # identity matrix
+    I_p <- diag(p)
 
-  # nodes
-  p <- ncol(R)
-
-  # identity matrix
-  I_p <- diag(p)
-
-  if(is.null(lambda)){
-    # tuning
-    lambda_no_select <- sqrt(log(p)/n)
-  } else {
-    lambda_no_select <- lambda
-    }
-
-  if(is.null(gamma)) {
-    if (penalty == "scad") {
-      gamma <- 3.7
-    } else if (penalty == "mcp") {
-      gamma <- 3
-    } else if (penalty == "adapt") {
-      gamma <- 0.5
-    } else {
-      gamma <- 0.1
-    }
-  }
-
-  # high dimensional ?
-  if(n > p){
-    # inverse covariance matrix
-    if(initial == "sicm"){
+    if (is.null(initial)) {
       Theta <- solve(R)
-    } else if (initial == "lw"){
-      Theta <- lw_helper(x, n)
-    } else {
-        stop("initial not supported. must be 'sicm' or 'lw'.")
-      }
-  } else {
-    Theta <- glassoFast::glassoFast(R,  rho = lambda_no_select)$wi
-  }
-
-  # no selection
-  if(!select) {
-
-    if (!LLA) {
-
-      # lambda matrix
-      lambda_mat <-
-        eval(parse(
-          text =  paste0(
-            penalty,
-            "_deriv(Theta = Theta, lambda =  lambda_no_select, gamma = gamma)"
-          )
-        ))
-
-      fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
 
     } else {
 
-      Theta <- glassoFast::glassoFast(S = R, rho =  lambda_no_select)$wi
-
-      lambda_mat <-
-        eval(parse(
-          text =  paste0(
-            penalty,
-            "_deriv(Theta = Theta, lambda =  lambda_no_select, gamma = gamma)"
-          )
-        ))
-
-      # diag(lambda_mat) <-  lambda_no_select
-
-      fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+      Theta <- initial
 
     }
+    if (is.null(gamma)) {
+      if (penalty == "scad") {
+        gamma <- 3.7
 
-    fitted_models <- NULL
-    } else {
+      } else if (penalty == "mcp") {
+        gamma <- 2
 
-    if(is.null(lambda)){
+      } else if (penalty == "adapt") {
+        gamma <- 0.5
+
+      } else {
+        gamma <- 0.01
+
+      }
+    }
+
+    if (is.null(lambda)) {
       # take from the huge package:
       # Zhao, T., Liu, H., Roeder, K., Lafferty, J., & Wasserman, L. (2012).
       # The huge package for high-dimensional undirected graph estimation in R.
       # The Journal of Machine Learning Research, 13(1), 1059-1062.
-      lambda.max <- max(max(R - I_p), -min(R - I_p))
+      lambda.max <- max(max(R - I_p),-min(R - I_p))
       lambda.min = 0.01 * lambda.max
-      lambda <- exp(seq(log(lambda.min), log(lambda.max), length.out = n_lambda))
-      }
+      lambda <-
+        exp(seq(log(lambda.min), log(lambda.max), length.out = n_lambda))
+    }
 
-     n_lambda <- length(lambda)
+    n_lambda <- length(lambda)
 
-     if(progress){
-       message("selecting lambda")
-       pb <- utils::txtProgressBar(min = 0, max = n_lambda, style = 3)
-     }
+    if (progress) {
+      message("selecting lambda")
+      pb <- utils::txtProgressBar(min = 0,
+                                  max = n_lambda,
+                                  style = 3)
+    }
 
-     fits <- lapply(1:n_lambda, function(i){
+    iterations <- 0
 
+    fits <- lapply(1:n_lambda, function(i) {
       if (!LLA) {
-
         # lambda matrix
         lambda_mat <-
           eval(parse(
@@ -336,145 +245,501 @@ GGMncv <- function(x, n,
             )
           ))
 
-        # diag(lambda_mat) <- lambda[i]
-
         fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+
+        Theta <- fit$wi
+
         adj <- ifelse(fit$wi == 0, 0, 1)
 
       } else {
+        Theta_new <- glassoFast::glassoFast(S = R, rho = lambda[i])$wi
 
-        Theta <- glassoFast::glassoFast(S = R, rho = lambda[i])$wi
+        convergence <- 1
 
+        iterations <- 0
+
+        while (convergence > thr & iterations < maxit) {
+
+          Theta_old <- Theta_new
+
+          lambda_mat <-
+            eval(parse(
+              text =  paste0(
+                penalty,
+                "_deriv(Theta = Theta_old, lambda = lambda[i], gamma = gamma)"
+              )
+            ))
+
+          fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+
+          Theta_new <- fit$wi
+
+          Theta <- fit$wi
+
+          iterations <- iterations + 1
+
+          convergence <- mean(abs(Theta_new -  Theta_old))
+
+          fit$iterations <- iterations
+
+        }
+
+        adj <- ifelse(fit$wi == 0, 0, 1)
+
+      }
+
+      if(unreg){
+
+        refit <-  constrained(R, adj)
+        fit$wi <- refit$Theta
+        fit$w  <- refit$Sigma
+        Theta  <- refit$Theta
+      }
+
+      edges <- sum(adj[upper.tri(adj)] != 0)
+
+      fit$ic <- gic_helper(
+        Theta = Theta,
+        R = R,
+        edges = edges,
+        n = n,
+        p = p,
+        type = ic, ...
+      )
+
+      fit$lambda <- lambda[i]
+      fit$gamma <- gamma
+
+      if (progress) {
+        utils::setTxtProgressBar(pb, i)
+      }
+
+      fit
+
+    })
+
+    if (store) {
+      fitted_models <- fits
+
+    } else {
+      fitted_models <- NULL
+    }
+
+    which_min <- which.min(sapply(fits, "[[", "ic"))
+
+    fit <-  fits[[which_min]]
+
+    Theta <- fit$wi
+
+    Sigma <- fit$w
+
+    adj <- ifelse(fit$wi == 0, 0, 1)
+
+    P <- -(stats::cov2cor(Theta) - I_p)
+
+    returned_object <- list(
+      Theta = Theta,
+      Sigma = Sigma,
+      P = P,
+      fit = fit,
+      adj = adj,
+      lambda = lambda,
+      lambda_min = lambda[which_min],
+      fitted_models = fitted_models,
+      penalty = penalty,
+      n = n,
+      iterations =  iterations,
+      select = select,
+      R = R
+    )
+
+    class(returned_object) <- c("ggmncv",
+                                "default")
+
+    }  else if(select == "gamma") {
+
+    R <- cor(Y)
+
+    initial <- NULL
+
+    if (is.null(initial)) {
+
+      Theta <- solve(R)
+
+    } else {
+
+      Theta <- initial
+
+    }
+
+
+    # nodes
+    p <- ncol(R)
+
+    # identity matrix
+    I_p <- diag(p)
+
+    if(is.null(gamma)) {
+
+      if (penalty == "scad") {
+
+        gamma <- seq(2.001, 5, n_gamma)
+
+      } else if (penalty == "mcp") {
+
+        gamma <- seq(1.001, 4, n_gamma)
+
+      } else if (penalty == "adapt") {
+
+        gamma <- seq(0.1, 1, n_gamma)
+
+      } else {
+
+        gamma <- seq(0.001, 0.1, length.out =  n_gamma)
+
+      }
+    }
+
+
+    check_error <- check_gamma(penalty, gamma)
+
+    n_gamma <- length(gamma)
+
+    if (progress) {
+      message("selecting gamma")
+      pb <- utils::txtProgressBar(min = 0,
+                                  max = n_gamma,
+                                  style = 3)
+    }
+
+    iterations <- 0
+
+    lambda <- sqrt(log(p) / n)
+
+    fits <- lapply(1:n_gamma, function(i) {
+
+      if (!LLA) {
+        # lambda matrix
         lambda_mat <-
           eval(parse(
             text =  paste0(
               penalty,
-              "_deriv(Theta = Theta, lambda = lambda[i], gamma = gamma)"
+              "_deriv(Theta = Theta, lambda = lambda, gamma = gamma[i])"
             )
           ))
 
-        # diag(lambda_mat) <- lambda[i]
-
         fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
-        adj <- ifelse(fit$wi == 0, 0, 1)
-      }
 
-
-      if(L0_learn){
-
-        Theta <- hft_algorithm(Sigma = R,
-                               adj = adj,
-                               tol = 0.00001,
-                               max_iter = 10)$Theta
-
-      } else {
         Theta <- fit$wi
-      }
 
-       edges <- sum(adj[upper.tri(adj)] != 0)
+        adj <- ifelse(fit$wi == 0, 0, 1)
 
-       fit$ic <- gic_helper(Theta = Theta,
-                             R = R,
-                             edges = edges,
-                             n = n,
-                             p = p,
-                             type = ic,
-                             ...)
-
-       fit$lambda <- lambda[i]
-
-      if(progress){
-        utils::setTxtProgressBar(pb, i)
-      }
-      fit
-    })
-
-   fit <-  fits[[which.min(  sapply(fits, "[[", "ic"))]]
-
-   if(store){
-     fitted_models <- fits
-     } else {
-       fitted_models <- NULL
-     }
-   }
-
-  adj <- ifelse(fit$wi == 0, 0, 1)
-
-  if(refit) {
-    rest <- hft_algorithm(Sigma = R,
-                          adj = adj,
-                          tol =  0.00001,
-                          max_iter = 100)
-    Theta <- rest$Theta
-    Sigma <- rest$Sigma
-    P <- -(stats::cov2cor(Theta) - I_p)
-  } else {
-    Theta <- fit$wi
-    Sigma <- fit$w
-    P <- -(stats::cov2cor(Theta) - I_p)
-  }
-
-
-  if(vip){
-    if(progress){
-      message("\ncomputing vip")
-      pb <- utils::txtProgressBar(min = 0, max = vip_iter, style = 3)
-    }
-
-    vip_results <-sapply(1:vip_iter, function(i){
-      Yboot <- Y[sample(1:n, size = n, replace = TRUE),]
-      if(method == "polychoric"){
-        suppressWarnings(
-          R <- psych::polychoric(Yboot)$rho
-        )
       } else {
-        R <- cor(Yboot, method = method)
+
+        Theta_new <- glassoFast::glassoFast(S = R, rho = lambda)$wi
+
+        convergence <- 1
+
+        iterations <- 0
+
+        while (convergence > thr & iterations < maxit) {
+
+          Theta_old <- Theta_new
+
+          lambda_mat <-
+            eval(parse(
+              text =  paste0(
+                penalty,
+                "_deriv(Theta = Theta_old, lambda = lambda, gamma = gamma[i])"
+              )
+            ))
+
+          fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+
+          Theta_new <- fit$wi
+
+          Theta <- fit$wi
+
+          iterations <- iterations + 1
+
+          convergence <- mean(abs(Theta_new -  Theta_old))
+
+          fit$iterations <- iterations
+
+        }
+
+        adj <- ifelse(fit$wi == 0, 0, 1)
+
       }
-      lambda <- sqrt(log(p)/n)
-      Theta <- solve(R)
-      lambda_mat <-
-        eval(parse(text =  paste0(
-          penalty, "_deriv(Theta = Theta, lambda = lambda, gamma = gamma)"
-        )))
-      diag(lambda_mat) <- lambda
-      fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
-      adj <- ifelse(fit$wi == 0, 0, 1)
-      if(progress){
+
+      if(unreg){
+
+        refit <-  constrained(R, adj)
+        fit$wi <- refit$Theta
+        fit$w  <- refit$Sigma
+      }
+
+      edges <- sum(adj[upper.tri(adj)] != 0)
+
+      fit$ic <- gic_helper(
+        Theta = Theta,
+        R = R,
+        edges = edges,
+        n = n,
+        p = p,
+        type = ic, ...
+      )
+
+      fit$gamma <- gamma[i]
+      fit$lambda <- lambda
+
+      if (progress) {
         utils::setTxtProgressBar(pb, i)
       }
-      adj[upper.tri(adj)]
+
+      fit
+
     })
-    if(is.null( colnames(Y))){
-      cn <- 1:p
+
+    if (store) {
+      fitted_models <- fits
+
     } else {
-      cn <- colnames(Y)
+      fitted_models <- NULL
     }
-    vip_results <-
-      data.frame(Relation =  sapply(1:p, function(x)
-        paste0(cn, "--", cn[x]))[upper.tri(I_p)],
-        VIP = rowMeans(vip_results))
+
+    which_min <- which.min(sapply(fits, "[[", "ic"))
+
+    fit <-  fits[[which_min]]
+
+    Theta <- fit$wi
+
+    Sigma <- fit$w
+
+    adj <- ifelse(fit$wi == 0, 0, 1)
+
+    P <- -(stats::cov2cor(Theta) - I_p)
+
+    returned_object <- list(
+      Theta = Theta,
+      Sigma = Sigma,
+      P = P,
+      fit = fit,
+      adj = adj,
+      lambda = lambda,
+      gamma_min = gamma[which_min],
+      fitted_models = fitted_models,
+      penalty = penalty,
+      n = n,
+      iterations =  iterations,
+      select = select,
+      R = R
+    )
+
+    class(returned_object) <- c("ggmncv",
+                                "default")
+
+  } else if (select == "both") {
+
+    # nodes
+    p <- ncol(R)
+
+    # identity matrix
+    I_p <- diag(p)
+
+
+
+    if (is.null(initial)) {
+      Theta <- solve(R)
+
+    } else {
+
+      Theta <- initial
+
+    }
+
+    if (is.null(lambda)) {
+      # take from the huge package:
+      # Zhao, T., Liu, H., Roeder, K., Lafferty, J., & Wasserman, L. (2012).
+      # The huge package for high-dimensional undirected graph estimation in R.
+      # The Journal of Machine Learning Research, 13(1), 1059-1062.
+      lambda.max <- max(max(R - I_p),-min(R - I_p))
+      lambda.min = 0.01 * lambda.max
+      lambda <-
+        exp(seq(log(lambda.min), log(lambda.max), length.out = n_lambda))
+    }
+
+    n_lambda <- length(lambda)
+
+    if(is.null(gamma)) {
+
+      if (penalty == "scad") {
+
+        gamma <- seq(2.001, 5, n_gamma)
+
+      } else if (penalty == "mcp") {
+
+        gamma <- seq(1.001, 4, n_gamma)
+
+      } else if (penalty == "adapt") {
+
+        gamma <- seq(0.1, 1, n_gamma)
+
+      } else {
+
+        gamma <- seq(0.001, 0.1, length.out =  n_gamma)
+
+      }
+    }
+
+    if (progress) {
+      message("selecting lambda and gamma")
+      pb <- utils::txtProgressBar(min = 0,
+                                  max = n_lambda,
+                                  style = 3)
+    }
+    iterations <- 0
+
+    fits_all <-  lapply(1:n_lambda, function(x) {
+
+
+      fits <- lapply(1:n_gamma, function(i) {
+
+        if (!LLA) {
+          # lambda matrix
+          lambda_mat <-
+            eval(parse(
+              text =  paste0(
+                penalty,
+                "_deriv(Theta = Theta, lambda = lambda[x], gamma = gamma[i])"
+              )
+            ))
+
+          fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+
+          Theta <- fit$wi
+
+          adj <- ifelse(fit$wi == 0, 0, 1)
+
+        } else {
+
+          Theta_new <- glassoFast::glassoFast(S = R, rho = lambda[x])$wi
+
+          convergence <- 1
+
+          iterations <- 0
+
+          while (convergence > thr & iterations < maxit) {
+            Theta_old <- Theta_new
+
+            lambda_mat <-
+              eval(parse(
+                text =  paste0(
+                  penalty,
+                  "_deriv(Theta = Theta_old, lambda = lambda[x], gamma = gamma[i])"
+                )
+              ))
+
+            fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
+
+            Theta_new <- fit$wi
+
+            Theta <- fit$wi
+
+            iterations <- iterations + 1
+
+            convergence <- mean(abs(Theta_new -  Theta_old))
+
+            fit$iterations <- iterations
+
+          }
+
+          adj <- ifelse(fit$wi == 0, 0, 1)
+
+        }
+
+
+        if(isTRUE(unreg)){
+
+          refit <-  constrained(Sigma = R, adj = adj)
+          fit$wi <- refit$Theta
+          fit$w  <- refit$Sigma
+          Theta <- refit$Theta
+        }
+
+        edges <- sum(adj[upper.tri(adj)] != 0)
+
+        fit$ic <- gic_helper(
+          Theta = Theta,
+          R = R,
+          edges = edges,
+          n = n,
+          p = p,
+          type = ic
+        )
+
+        fit$gamma <- gamma[i]
+        fit$lambda <- lambda[x]
+
+
+        fit
+
+      })
+
+      if (progress) {
+        utils::setTxtProgressBar(pb, x)
+      }
+
+      fits
+    })
+
+
+    unnest <- fits_all[[1]]
+    for(i in 2:n_lambda){
+      unnest <- c(fits_all[[i]], unnest)
+    }
+
+    if (store) {
+      fitted_models <- unnest
+
+    } else {
+      fitted_models <- NULL
+    }
+
+    which_min <- which.min(sapply(unnest, "[[" , "ic"))
+
+    fit <-  unnest[[which_min]]
+
+    Theta <- fit$wi
+
+    Sigma <- fit$w
+
+    adj <- ifelse(fit$wi == 0, 0, 1)
+
+    P <- -(stats::cov2cor(Theta) - I_p)
+
+    returned_object <- list(
+      Theta = Theta,
+      Sigma = Sigma,
+      P = P,
+      fit = fit,
+      adj = adj,
+      lambda = lambda,
+      gamma_min = fit$gamma,
+      lambda_min = fit$lambda,
+      fitted_models = fitted_models,
+      penalty = penalty,
+      n = n,
+      iterations =  iterations,
+      select = select,
+      R = R
+    )
   } else {
-    vip_results <- NULL
+    stop("select must be 'lambda', 'gamma', or 'both'.")
   }
-
-
-
-  returned_object <- list(Theta = Theta,
-                          Sigma = Sigma,
-                          P = P,
-                          fit = fit,
-                          adj = adj,
-                          lambda = lambda,
-                          vip_results = vip_results,
-                          fitted_models = fitted_models,
-                          penalty = penalty,
-                          x = x,
-                          R = R,
-                          n = n)
-
-  class(returned_object) <- c("ggmncv", "default")
   return(returned_object)
 }
+
 
 #' Print \code{ggmncv} Objects
 #'
@@ -489,7 +754,7 @@ print.ggmncv <- function(x,...){
 
   if(methods::is(x, "default")){
 
-  print_ggmncv(x,...)
+    print_ggmncv(x,...)
 
   }
   if(methods::is(x, "coef")){
@@ -516,14 +781,8 @@ print.ggmncv <- function(x,...){
 #'
 #' @param x An object of class \code{ggmncv}
 #'
-#' @param type Character string. Which type should be plotted ? Options included
-#' \code{pcor_path}, \code{ic_path}, or \code{vip}.
-#'
 #' @param size Numeric. The size of the points (\code{vip})  or lines (\code{pcor_path} or \code{ic_path})
 #' The default is \code{1}.
-#'
-#' @param color Character string. The color of the points (\code{vip})  or lines
-#' (\code{pcor_path} or \code{ic_path}). The default is \code{black}.
 #'
 #' @param alpha Numeric. The transparency of the lines. Only for the solution path options.
 #'
@@ -545,132 +804,61 @@ print.ggmncv <- function(x,...){
 #' S <- cor(Y, method = "spearman")
 #'
 #' # fit model
-#' fit <- GGMncv(x = S, n = nrow(Y),
-#'               penalty = "atan",
-#'               vip = TRUE,
-#'               vip_iter = 50)
+#' fit <- ggmncv(R = S, n = nrow(Y))
 #'
 #' # plot
-#' plot(fit, size = 4, type = "vip")
+#' plot(fit)
 #'
 #' @export
-plot.ggmncv <- function(x,
-                        type = "pcor_path",
-                        size = 1,
-                        alpha = 0.5,
-                        color = "black",
-                        ...){
+plot.ggmncv <- function(x, size = 1, alpha = 0.5, ...){
 
-  if(type == "pcor_path"){
-
-    n_lambda <-  length(x$lambda)
-
-    if(n_lambda == 0) {
-      stop("solution path not found. must set 'select = TRUE'")
-    }
-
-
-    p <- ncol(x$Theta)
-    which_min <- which.min(sapply(x$fitted_models, "[[", "ic"))
-    lambda_min <- x$lambda[which_min]
-
-
-
-    Theta_std <- t(sapply(1:n_lambda, function(i)
-
-      cov2cor(x$fitted_models[[i]]$wi)[upper.tri(diag(p))]))
-
-    non_zero <- sum(Theta_std[which_min,] !=0)
-    dat_res <-  reshape::melt(Theta_std)
-    dat_res$X1 <- round(x$lambda, 3)
-    dat_res$penalty <- x$penalty
-
-    plt <- ggplot(dat_res, aes(y = -value,
-                               x = X1,
-                               group = as.factor(X2),
-                               color = as.factor(X2))) +
-      facet_grid(~ penalty) +
-
-      geom_line(show.legend = FALSE, size = size,
-                alpha = alpha) +
-      geom_hline(yintercept = 0,  color = "black") +
-      xlab(expression(lambda)) +
-      ylab(expression(hat(rho))) +
-      ggtitle(paste0(non_zero, " edges (",
-                     round(non_zero /  p*(p-1)*.5),
-                     "% connectivity)")) +
-      theme(axis.title  = element_text(size = 12),
-            strip.text = element_text(size = 12))
-
-
-  } else if (type == "ic_path"){
-    n_lambda <-  length(x$lambda)
-
-    if(n_lambda == 0) {
-      stop("solution path not found. must set 'select = TRUE'")
-    }
-
-
-
-    n_lambda <-  length(x$lambda)
-    p <- ncol(x$Theta)
-    which_min <- which.min(sapply(x$fitted_models, "[[", "ic"))
-    lambda_min <- x$lambda[which_min]
-
-
-    non_zero <- sum(x$adj[upper.tri(x$adj)] !=0)
-
-    dat_res <- data.frame(ic = sapply(x$fitted_models, "[[", "ic"),
-                          lambda = x$lambda)
-    dat_res$penalty <- x$penalty
-
-    plt <- ggplot(dat_res, aes(y = ic, x = lambda)) +
-      geom_line(size = size) +
-      geom_vline(xintercept = lambda_min,
-                 linetype = "dotted",
-                 size = 1,
-                 alpha = 0.75) +
-      facet_grid(~ penalty) +
-      xlab(expression(lambda)) +
-      ylab("IC") +
-      ggtitle(paste0(non_zero, " edges (",
-                     round(non_zero /  p*(p-1)*.5),
-                     "% connectivity)")) +
-      theme(axis.title  = element_text(size = 12),
-            strip.text = element_text(size = 12))
-
-
-  }  else if(type == "vip"){
-
-    if(is.null(x$vip_results)){
-      stop("variable inclusion 'probabilities' not found (set vip = TRUE)")
-    }
-
-    dat <- x$vip_results[order(x$vip_results$VIP),]
-
-    dat$new1 <- factor(dat$Relation,
-                       levels = dat$Relation,
-                       labels = dat$Relation)
-
-    dat$penalty <- x$penalty
-
-    plt <- ggplot(dat,aes(y= new1,
-                          x = VIP,
-                          group = new1)) +
-      facet_grid(~ penalty) +
-      geom_point(size = size,
-                 color = color)  +
-      ylab("Relation") +
-      theme(axis.title  = element_text(size = 12),
-            strip.text = element_text(size = 12))
-
-  } else {
-    stop("type not supported. must be 'pcor_path', 'ic_path', or 'vip'")
+  if(x$select != "lambda"){
+    stop("select must be 'lambda'.")
   }
+
+  if(is.null(x$fitted_models)){
+    stop("models not stored.")
+  }
+
+  n_lambda <-  length(x$lambda)
+
+  if(n_lambda == 0) {
+    stop("solution path not found. must set 'select = TRUE'.")
+  }
+
+  p <- ncol(x$Theta)
+  which_min <- which(x$lambda  == x$lambda_min)
+  lambda_min <- x$lambda[which_min]
+
+  Theta_std <- t(sapply(1:n_lambda, function(i)
+    cov2cor(x$fitted_models[[i]]$wi)[upper.tri(diag(p))]))
+
+  non_zero <- sum(Theta_std[which_min,] !=0)
+  dat_res <-  reshape::melt(Theta_std)
+  dat_res$X1 <- round(x$lambda, 3)
+  dat_res$penalty <- x$penalty
+
+  plt <- ggplot(dat_res, aes(y = -value,
+                             x = X1,
+                             group = as.factor(X2),
+                             color = as.factor(X2))) +
+    facet_grid(~ penalty) +
+
+    geom_line(show.legend = FALSE,
+              alpha = alpha,
+              size = size) +
+
+    geom_hline(yintercept = 0,  color = "black") +
+    xlab(expression(lambda)) +
+    ylab(expression(hat(rho))) +
+    ggtitle(paste0(non_zero, " edges (",
+                   round(non_zero /  p*(p-1)*.5),
+                   "% connectivity)")) +
+    theme(axis.title  = element_text(size = 12),
+          strip.text = element_text(size = 12))
 
   return(plt)
 }
-
 
 
 

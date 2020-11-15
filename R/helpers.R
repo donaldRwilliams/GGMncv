@@ -1,6 +1,7 @@
 #' @importFrom numDeriv grad
 #' @importFrom Rcpp sourceCpp
 #' @importFrom MASS mvrnorm
+#' @importFrom stats deriv
 #' @useDynLib GGMncv, .registration=TRUE
 
 # Fan, J., & Li, R. (2001). Variable selection via nonconcave penalized likelihood and
@@ -73,12 +74,18 @@ exp_deriv <- function(Theta, lambda, gamma = 0.01){
   return(lambda_mat)
   }
 
+exp_pen <- function(Theta, lambda, gamma = 0.01){
+  Theta <- abs(Theta)
+  pen_mat <- lambda * (1 - exp(-(Theta/gamma)))
+  return(pen_mat)
+}
+
 # Mazumder, R., Friedman, J. H., & Hastie, T. (2011). Sparsenet: Coordinate descent
 # with nonconvex penalties. Journal of the American Statistical Association, 106(495), 1125-1138.
-log_pen <- function(x, lambda, gamma){
+log_pen <- function(Theta, lambda, gamma = 0.01){
   gamma <- 1/gamma
-  inv <- abs(x + 0.0001)
-  pen_mat <- ((lambda / log(gamma+ 1)) * log(gamma * inv + 1))
+  Theta <- abs(Theta + 0.0001)
+  pen_mat <- ((lambda / log(gamma+ 1)) * log(gamma * Theta + 1))
   return(pen_mat)
 }
 
@@ -89,23 +96,28 @@ log_deriv <- function(Theta, lambda, gamma = 0.01){
   return(lambda_mat)
 }
 
-
 lasso_deriv <- function(Theta, lambda, gamma = 0){
   p <- ncol(Theta)
   lambda_mat <- matrix(lambda, p, p)
+}
+
+lq_pen <- function(Theta, lambda, gamma = 0.5){
+  Theta <- abs(Theta)
+  epsilon <- 0.0001
+  pen_mat <- lambda * ((Theta + epsilon)^gamma)
+  return(pen_mat)
 }
 
 lq_deriv <- function(Theta, lambda, gamma = 0.5){
   Theta <- abs(Theta)
   epsilon <- 0.0001
   lambda_mat <- lambda * gamma * (Theta + epsilon)^(gamma - 1)
-  lambda_mat
+  return(lambda_mat)
 }
 
 # Lv, J., & Fan, Y. (2009). A unified approach to model selection and sparse recovery using
 # regularized least squares. The Annals of Statistics, 37(6A), 3498-3528.
-sica_pen <- function(x, lambda, gamma){
-  Theta <- x
+sica_pen <- function(Theta, lambda, gamma){
   Theta <- abs(Theta + 0.0001)
   pen_mat <- lambda * (((gamma + 1) * Theta) /(Theta+gamma))
   return(pen_mat)
@@ -210,7 +222,23 @@ coef_helper <- function(Theta){
   return(betas)
 }
 
+check_gamma <- function(penalty, gamma){
 
+  if (penalty == "scad") {
+    if (any(gamma <= 3)) {
+      stop("gamma must be greater than 3")
+    }
+  } else if (penalty == "mcp") {
+    if (any(gamma <= 1)) {
+      stop("gamma must be greater than 1")
+    }
+
+  } else {
+    if (any(gamma < 0)) {
+      stop("gamma must be positive")
+    }
+  }
+}
 
 # taken from
 # Kuismin, M., & Sillanpää, M. J. (2016). Use of Wishart prior and simple extensions for
@@ -313,4 +341,8 @@ globalVariables(c("VIP",
                   "X2",
                   "ic",
                   "lambda",
-                  "coef"))
+                  "coef",
+                  "EIP",
+                  "dat",
+                  "thetas",
+                  "pen"))

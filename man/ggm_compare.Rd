@@ -44,8 +44,8 @@ Y1 <- MASS::mvrnorm(250, rep(0, 10), Sigma = diag(10))
 Y2 <- MASS::mvrnorm(250, rep(0, 10), Sigma = diag(10))
 
 # fit models
-fit1 <- GGMncv(Y1, n = nrow(Y1))
-fit2 <- GGMncv(Y2, n = nrow(Y2))
+fit1 <- ggmncv(cor(Y1), n = nrow(Y1))
+fit2 <- ggmncv(cor(Y2), n = nrow(Y2))
 
 # compare
 compare_ggms <- ggm_compare(fit1, fit2)
