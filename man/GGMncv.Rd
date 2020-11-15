@@ -87,7 +87,7 @@ An object of class \code{ggmncv}, including:
 \item \code{Sigma} Covariance matrix
 \item \code{P} Weighted adjacency matrix
 \item \code{adj} Adjacency matrix
-\item \code{lambda} Tuning parameter (i.e., \mjseqn{\sqrt{\text{log}(p)/n}})
+\item \code{lambda} Tuning parameter
 \item \code{fit} glasso fitted model (a list)
 }
 }
