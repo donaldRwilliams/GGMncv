@@ -1,4 +1,4 @@
-#' Edge Inclusion 'Probabilities'
+#' Bootstrapped Edge Inclusion 'Probabilities'
 #'
 #'
 #' @description

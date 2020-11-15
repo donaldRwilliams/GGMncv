@@ -2,7 +2,7 @@
 % Please edit documentation in R/eip.R
 \name{boot_eip}
 \alias{boot_eip}
-\title{Edge Inclusion 'Probabilities'}
+\title{Bootstrapped Edge Inclusion 'Probabilities'}
 \usage{
 boot_eip(
   Y,
