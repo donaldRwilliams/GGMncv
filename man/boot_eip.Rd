@@ -40,7 +40,7 @@ The options include \code{aic}, \code{ebic} (ebic_gamma defaults to \code{0.5}; 
 2 (\code{MCP}), 0.5 (\code{adapt}), and 0.01 otherwise with \code{select = "lambda"}.}
 
 \item{lambda}{Numeric vector. Regularization parameter. Defaults to \code{NULL} that provides default
-values with  \code{select = "lambda"} and  with
+values with  \code{select = "lambda"} and  \code{sqrt(log(p)/n)} with
 \code{select = "gamma"}.}
 
 \item{n_lambda}{Numeric. The number of \mjseqn{\lambda}'s to be evaluated. Defaults to 50.
