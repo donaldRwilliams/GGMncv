@@ -1,11 +1,11 @@
 Package: GGMncv
 Type: Package
 Title: Gaussian Graphical Models with Non-Convex Penalties
-Version: 1.1.0
-Date: 2020-07-03
+Version: 2.0.0
+Date: 2020-11-15
 Authors@R: person("Donald", "Williams", email = "drwwilliams@ucdavis.edu", role = c("aut", "cre"))
-Description: Estimate Gaussian graphical models with non-convex penalties, including 
-  the atan Wang and Zhu (2016) <doi:10.1155/2016/6495417>, 
+Description: Estimate Gaussian graphical models with nonconvex penalties <doi:10.31234/osf.io/ad57p>, 
+  including the atan Wang and Zhu (2016) <doi:10.1155/2016/6495417>, 
   seamless L0 Dicker, Huang, and Lin (2013) <doi:10.5705/ss.2011.074>,
   exponential Wang, Fan, and Zhu <doi:10.1007/s10463-016-0588-3>, 
   smooth integration of counting and absolute deviation Lv and Fan (2009) <doi:10.1214/09-AOS683>,
