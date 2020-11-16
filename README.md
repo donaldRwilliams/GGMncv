@@ -37,7 +37,7 @@ used to compare GGMs.
 
 ## Installation
 
-You can install the released version (`1.1.0`) of GGMncv from
+You can install the released version (`2.0.0`) of **GGMncv** from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
