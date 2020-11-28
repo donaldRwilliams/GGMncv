@@ -149,7 +149,7 @@
 #' fit <- ggmncv(S, n = nrow(Y))
 #'
 #' # plot
-#' qgraph::qgraph(fit$P)
+#' plot(get_graph(fit))
 ggmncv <- function(R,
                    n,
                    penalty = "atan",

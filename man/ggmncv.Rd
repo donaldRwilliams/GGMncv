@@ -165,7 +165,7 @@ S <- cor(Y)
 fit <- ggmncv(S, n = nrow(Y))
 
 # plot
-qgraph::qgraph(fit$P)
+plot(get_graph(fit))
 }
 \references{
 \insertAllCited{}

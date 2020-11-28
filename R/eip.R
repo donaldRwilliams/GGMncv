@@ -47,6 +47,8 @@
 #' @return An object of class \code{eip}
 #' @export
 #'
+
+#'
 #' @examples
 #' # data
 #' Y <- GGMncv::ptsd[,1:10]
@@ -180,4 +182,17 @@ print.eip <- function(x, ...){
                    EIP = x$eip_results$EIP),
         row.names = F)
   cat("-----")
+}
+
+#' Print the Head of \code{eip} Objects
+#'
+#' @param x An object of class \code{eip}
+#'
+#' @param n Numeric. Number of rows to print.
+#'
+#' @param ... Currently ignored.
+#'
+#' @export
+head.eip <- function(x, n = 5,...){
+  print(x$eip_results[1:n,], row.names = FALSE )
 }

@@ -1,0 +1,184 @@
+---
+title: "reproduce"
+author: "Donny Williams"
+date: "11/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Packages
+
+```{r}
+# need developmental version
+devtools::install_github("donaldRwilliams/GGMncv")
+library(GGMncv)
+library(ggplot2)
+library(cowplot)
+```
+
+
+# Penalty Function
+## ATAN
+This example was in the paper.
+```{r}
+theta <- seq(from = -5, to = 5, length.out = 10000)
+
+pen_func <- penalty_function(theta = theta, 
+                             penalty = "atan", 
+                             lambda = 1, 
+                             gamma = c(0.01, 0.1, 0.5, 100))
+
+plot(pen_func) + 
+  theme_bw() +
+  theme(panel.grid = element_blank()) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,0))
+```
+
+
+# Figure 1
+```{r}
+theta <- seq(from = -5, to = 5, length.out = 10000)
+
+# ATAN
+atan_func <- penalty_function(theta = theta, 
+                             penalty = "atan", 
+                             lambda = 1, 
+                             gamma = c(0.01, 0.1, 0.5, 100))
+
+atan_plot <- plot(atan_func) + 
+  theme_bw() +
+  theme(panel.grid = element_blank()) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,0)) +
+  ggtitle("ATAN")
+
+
+# SELO
+scad_func <- penalty_function(theta = theta, 
+                             penalty = "scad", 
+                             lambda = 1, 
+                             gamma = c(2, 3.7, 5, 10))
+
+scad_plot <- plot(scad_func) + 
+  theme_bw() +
+  theme(panel.grid = element_blank()) +
+  scale_y_continuous(expand = c(0,0), limits = c(0, 5)) +
+  scale_x_continuous(expand = c(0,0)) +
+  ggtitle("SCAD")
+
+
+cowplot::plot_grid(atan_plot, NULL, 
+                   scad_plot, 
+                   nrow = 1, 
+                   rel_widths = c(1, 0.15, 1))
+
+
+```
+
+
+# Figure 2
+```{r}
+# Illustrative Examples
+## Data-Driven Model Selection:
+
+Y <- na.omit(bfi[,1:25])
+
+fit <- ggmncv(R = cor(Y), 
+              n = nrow(Y), 
+              penalty = "atan", 
+              ic = "bic", 
+              select = "lambda",
+              LLA = FALSE)
+
+fit_lla <- ggmncv(R = cor(Y), 
+                  n = nrow(Y), 
+                  penalty = "atan", 
+                  ic = "bic", 
+                  select = "lambda",
+                  LLA = TRUE, 
+                  maxit = 2)
+
+### Regularization Paths:
+onestep_plot <- plot(fit) + 
+  geom_vline(xintercept = fit$lambda_min) +
+  ggtitle("One-Step Estimator")
+
+lla_plot <- plot(fit_lla) + 
+  geom_vline(xintercept = fit$lambda_min) +
+  ggtitle("Local Linear Approximation")
+
+top <-
+  cowplot::plot_grid(onestep_plot,
+                     NULL,
+                     lla_plot,
+                     rel_widths = c(1, 0.1, 1),
+                     nrow = 1)
+bottom <-
+  cowplot::plot_grid(net_plot,
+                     NULL,
+                     eip_plot,
+                     rel_widths = c(1, 0.1, 0.8),
+                     nrow = 1)
+
+cowplot::plot_grid(top, NULL, 
+                   bottom, 
+                   nrow = 3, 
+                   rel_heights = c(1, 0.1, 1))
+
+
+### Conditional Dependence Structure:
+net_plot <- plot(get_graph( fit), 
+     layout = "circle", 
+     edge_magnify = 5,
+     node_size = 10, 
+     node_names = colnames(Y),
+     palette = "Set3",  
+     node_groups = substr(colnames(Y), start = 1, 1)) +
+  ggtitle("Conditional Dependence Structure")
+
+
+### Edge Inclusion “Probabilities”:
+eip <- boot_eip(Y, samples = 500)
+
+head(eip)
+
+eip_plot <- plot(eip) + 
+  theme_bw() +
+  theme(axis.text.y = element_blank(), 
+        panel.grid = element_blank()) +
+  ggtitle("Edge Inclusion 'Probabilities'")
+  
+
+## False Discovery Control
+debiased_graph <- inference(object = fit, 
+                            method = "fdr", 
+                            alpha = 0.05)
+
+debiased_graph$P
+# debiased precision matrix
+debiased_graph$Theta
+# adjacency matrix
+debiased_graph$adj
+# uncorrected pvalues
+debiased_graph$uncorrect
+# correct pvlaues
+debiased_graph$correct
+
+
+## Confirmatory Testing
+Y_explore <- Y[1:1000,]
+Y_confirm <- Y[1001:nrow(Y),]
+
+fit <- ggmncv(cor(Y_explore), 
+              n = nrow(Y_explore))
+
+confirm <- confirm_edges(object,
+                         Rnew = cor(Y_confirm),
+                         method = "fdr",
+                         alpha = 0.05)
+
+```

@@ -2,6 +2,7 @@
 #' @importFrom Rcpp sourceCpp
 #' @importFrom MASS mvrnorm
 #' @importFrom stats deriv
+#' @importFrom utils head
 #' @useDynLib GGMncv, .registration=TRUE
 
 # Fan, J., & Li, R. (2001). Variable selection via nonconcave penalized likelihood and
@@ -331,6 +332,12 @@ lw_helper <- function(x, n){
   return(Theta)
 
 }
+
+symmetric_mat <- function (x) {
+  x[lower.tri(x)] <- t(x)[lower.tri(x)]
+  x
+}
+
 
 globalVariables(c("VIP",
                   "new1",

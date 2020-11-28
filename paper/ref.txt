@@ -1,0 +1,29 @@
+@article{giudici2016graphical,
+  title={Graphical network models for international financial flows},
+  author={Giudici, Paolo and Spelta, Alessandro},
+  journal={Journal of Business \& Economic Statistics},
+  volume={34},
+  number={1},
+  pages={128--138},
+  year={2016},
+  publisher={Taylor \& Francis}
+}
+
+@article{williams2020beyond,
+  title={Beyond Lasso: A Survey of Nonconvex Regularization in Gaussian Graphical Models},
+  author={Williams, Donald R},
+  publisher={PsyArXiv},
+  year={2020},
+  journal={PsyArXiv}
+}
+
+@article{schwarz1978estimating,
+  title={Estimating the dimension of a model},
+  author={Schwarz, Gideon and others},
+  journal={The annals of statistics},
+  volume={6},
+  number={2},
+  pages={461--464},
+  year={1978},
+  publisher={Institute of Mathematical Statistics}
+}

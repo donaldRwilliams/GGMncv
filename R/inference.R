@@ -92,8 +92,11 @@ inference <- function(object,
   adj_new[upper.tri(adj_new)] <-  ifelse(corrected_p_values < alpha, 1, 0)
   adj_new[lower.tri(adj_new)] <- t(adj_new)[lower.tri(adj_new)]
 
+  P <- -(cov2cor(Theta) - diag(p))
+  P <- P * adj_new
   # return object
   returned_object <- list(Theta = Theta,
+                          P = P,
                           adj = adj_new,
                           uncorrect = p_values,
                           corrected = corrected,
