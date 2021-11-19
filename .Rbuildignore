@@ -5,3 +5,6 @@
 ^testing$
 ^LICENSE$
 ^paper$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

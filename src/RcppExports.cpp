@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // hft_algorithm
 Rcpp::List hft_algorithm(arma::mat Sigma, arma::mat adj, double tol, double max_iter);
 RcppExport SEXP _GGMncv_hft_algorithm(SEXP SigmaSEXP, SEXP adjSEXP, SEXP tolSEXP, SEXP max_iterSEXP) {

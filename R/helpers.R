@@ -143,7 +143,9 @@ adapt_deriv <- function(Theta, lambda, gamma = 0.5){
 
 # Kim, Y., Kwon, S., & Choi, H. (2012). Consistent model selection criteria on high
 # dimensions. The Journal of Machine Learning Research, 13, 1037-1057.
-gic_helper <- function(Theta, R, edges, n, p, type = "bic", ...) {
+gic_helper <- function(Theta, R, edges, n, p,
+                       type = "bic",
+                       ebic_gamma = ebic_gamma) {
   log.like <- (n / 2) * (log(det(Theta)) - sum(diag(R %*% Theta)))
 
   neg_ll <- -2 * log.like
@@ -163,19 +165,11 @@ gic_helper <- function(Theta, R, edges, n, p, type = "bic", ...) {
   } else if (type == "gic_6") {
     ic <- neg_ll + edges * log(n) * log(p)
   } else if (type == "ebic") {
-    dots <- list(...)
-    if (is.null(dots$ebic_gamma)) {
-      gamma <- 0.5
-    } else {
-      gamma <- dots$ebic_gamma
-    }
-    ic <- neg_ll + edges * log(n) + 4 * edges * gamma * log(p)
+    ic <- neg_ll + edges * log(n) + 4 * edges * ebic_gamma * log(p)
   } else {
     stop("ic not found. see documentation")
   }
-
   return(ic)
-
 }
 
 
@@ -213,13 +207,14 @@ htf <- function(Sigma, adj, tol = 1e-10) {
       n_iter <- n_iter + 1
     }
   }
-  returned_object <- list(Theta = round(solve(W), 4), Sigma = round(W, 4))
+  returned_object <- list(Theta = round(solve(W), 4),
+                          Sigma = round(W, 4))
   returned_object
 }
 
 coef_helper <- function(Theta){
   p <- ncol(Theta)
-  betas <- round(t(sapply(1:p, function(x) Theta[x,-x] / Theta[x,x])), 3)  * -1
+  betas <- -round(t(sapply(1:p, function(x) Theta[x,-x] / Theta[x,x])), 3)
   return(betas)
 }
 
@@ -244,7 +239,9 @@ check_gamma <- function(penalty, gamma){
 # taken from
 # Kuismin, M., & Sillanpää, M. J. (2016). Use of Wishart prior and simple extensions for
 # sparse precision matrix estimation. PloS one, 11(2), e0148171.
-lw_helper <- function(x, n){
+lw_helper <- function(x, N){
+
+  n <- N
 
   p <- ncol(x)
 

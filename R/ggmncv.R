@@ -13,7 +13,7 @@
 #' @param penalty Character string. Which penalty should be used (defaults to \code{"atan"})?
 #'
 #' @param ic Character string. Which information criterion should be used (defaults to \code{"bic"})?
-#'           The options include \code{aic}, \code{ebic} (ebic_gamma defaults to \code{0.5}; see details),
+#'           The options include \code{aic}, \code{ebic} (ebic_gamma defaults to \code{0.5}),
 #'           \code{ric}, or any of the generalized information criteria provided in section 5 of
 #'           \insertCite{kim2012consistent;textual}{GGMncv}. The options are \code{gic_1}
 #'           (i.e., \code{bic}) to \code{gic_6}.
@@ -35,8 +35,9 @@
 #' @param n_gamma Numeric. The number of \mjseqn{\gamma}'s to be evaluated. Defaults to 50.
 #'                This is disregarded if custom values are provided in \code{lambda}.
 #'
-#' @param initial Matrix. The initial inverse correlation matrix for computing the penalty
-#'                derivative. Defaults to \code{NULL} which uses the inverse of \code{R}.
+#' @param initial A matrix or function. The initial inverse correlation matrix
+#'                for computing the penalty derivative. Defaults to \code{NULL}
+#'                which uses the inverse of \code{R} (see 'Note')
 #'
 #' @param LLA Logical. Should the local linear approximation be used (default to \code{FALSE})?
 #'
@@ -58,8 +59,13 @@
 #'
 #' @param progress  Logical. Should a progress bar be included (defaults to \code{TRUE})?
 #'
-#' @param ... Additional arguments. Currently gamma in EBIC (\code{ic = "ebic"}) can be set
-#'            with \code{ebic_gamma = 1}.
+#' @param ebic_gamma Numeric. Value for the additional hyper-parameter for the
+#'                   extended Bayesian information criterion (defaults to 0.5,
+#'                   must be between 0 and 1). Setting \code{ebic_gamma = 0} results
+#'                   in BIC.
+#'
+#' @param ... Additional arguments passed to \code{initial} if a
+#'            function is provided and ignored otherwise (see "examples").
 #'
 #' @references
 #' \insertAllCited{}
@@ -122,18 +128,28 @@
 #' \strong{LLA}
 #'
 #' The local linear approximate is noncovex penalties was described in
-#' \insertCite{fan2009network}{GGMncv}. This is essentially a iteratively reweighted (g)lasso.
-#' Note that by default \code{LLA = FALSE}. This is due to the work
-#' of \insertCite{zou2008one;textual}{GGMncv}, which suggested that, so long as the starting
-#' values are good enough, then a one-step estimator is sufficient. In the case of low-dimensional data,
-#' the sample based inverse covariance matrix is used to compute the penalty.
-#' This is expected to work well, assuming that \mjseqn{n} is sufficiently larger than  \mjseqn{p}.
+#' \insertCite{fan2009network}{GGMncv}. This is essentially a iteratively
+#' re-weighted (g)lasso. Note that by default \code{LLA = FALSE}. This is due to
+#' the work of \insertCite{zou2008one;textual}{GGMncv}, which suggested that,
+#' so long as the starting values are good enough, then a one-step estimator is
+#' sufficient. In the case of low-dimensional data, the sample based inverse
+#' covariance matrix is used to compute the penalty. This is expected to work well,
+#' assuming that \mjseqn{n} is sufficiently larger than  \mjseqn{p}.
 #'
-#' \strong{EBIC}
 #'
-#' When setting \code{ic = "ebic"}  the hyperparameter that determines the additional penalty to BIC is
-#' passed via the \code{...} argument. This must be specified as \code{ebic_gamma = 1}. The  default is
-#' \code{0.5}.
+#' @note
+#'
+#' \strong{initial}
+#'
+#' \code{initial} not only affects performance (to some degree) but also
+#' computational speed. In high dimensions (defined here as \emph{p} > \emph{n}),
+#' or when \emph{p} approaches \emph{n}, the precision matrix can become quite unstable.
+#' As a result, with \code{initial = NULL}, the algorithm can take a very (very) long time.
+#' If this occurs, provide a matrix for \code{initial} (e.g., using \code{lw}).
+#' Alternatively, the penalty can be changed to \code{"lasso"}, if desired.
+#'
+#'
+#'
 #'
 #' @importFrom stats cor cov2cor
 #'
@@ -166,6 +182,7 @@ ggmncv <- function(R,
                    thr = 1.0e-4,
                    store = TRUE,
                    progress = TRUE,
+                   ebic_gamma = 0.5,
                    ...) {
 
   if (!penalty %in% c("atan",
@@ -180,6 +197,11 @@ ggmncv <- function(R,
                       "adapt")) {
     stop("penalty not found. \ncurrent options: atan, mcp, scad, exp, selo, or log")
   }
+
+  if(is.null(n)){
+    stop("`n` must be provided.")
+  }
+
   if (select == "lambda") {
 
     # nodes
@@ -189,24 +211,42 @@ ggmncv <- function(R,
     I_p <- diag(p)
 
     if (is.null(initial)) {
+
       Theta <- solve(R)
 
     } else {
 
-      Theta <- initial
+      if(is(initial, "function")){
 
+        Theta <- initial(...)
+
+      } else if(is(initial, "matrix")){
+
+        Theta <- initial
+
+      } else {
+
+        stop("initial must be a matrix or function")
+
+        }
     }
+
     if (is.null(gamma)) {
+
       if (penalty == "scad") {
+
         gamma <- 3.7
 
       } else if (penalty == "mcp") {
+
         gamma <- 2
 
       } else if (penalty == "adapt") {
+
         gamma <- 0.5
 
       } else {
+
         gamma <- 0.01
 
       }
@@ -235,6 +275,7 @@ ggmncv <- function(R,
     iterations <- 0
 
     fits <- lapply(1:n_lambda, function(i) {
+
       if (!LLA) {
         # lambda matrix
         lambda_mat <-
@@ -252,6 +293,7 @@ ggmncv <- function(R,
         adj <- ifelse(fit$wi == 0, 0, 1)
 
       } else {
+
         Theta_new <- glassoFast::glassoFast(S = R, rho = lambda[i])$wi
 
         convergence <- 1
@@ -291,8 +333,11 @@ ggmncv <- function(R,
       if(unreg){
 
         refit <-  constrained(R, adj)
+
         fit$wi <- refit$Theta
+
         fit$w  <- refit$Sigma
+
         Theta  <- refit$Theta
       }
 
@@ -304,10 +349,12 @@ ggmncv <- function(R,
         edges = edges,
         n = n,
         p = p,
-        type = ic, ...
+        type = ic,
+        ebic_gamma = ebic_gamma
       )
 
       fit$lambda <- lambda[i]
+
       fit$gamma <- gamma
 
       if (progress) {
@@ -475,8 +522,11 @@ ggmncv <- function(R,
       if(unreg){
 
         refit <-  constrained(R, adj)
+
         fit$wi <- refit$Theta
+
         fit$w  <- refit$Sigma
+
       }
 
       edges <- sum(adj[upper.tri(adj)] != 0)
@@ -659,12 +709,16 @@ ggmncv <- function(R,
         }
 
 
-        if(isTRUE(unreg)){
+        if (isTRUE(unreg)) {
 
           refit <-  constrained(Sigma = R, adj = adj)
+
           fit$wi <- refit$Theta
+
           fit$w  <- refit$Sigma
+
           Theta <- refit$Theta
+
         }
 
         edges <- sum(adj[upper.tri(adj)] != 0)
@@ -681,7 +735,6 @@ ggmncv <- function(R,
         fit$gamma <- gamma[i]
         fit$lambda <- lambda[x]
 
-
         fit
 
       })
@@ -695,6 +748,7 @@ ggmncv <- function(R,
 
 
     unnest <- fits_all[[1]]
+
     for(i in 2:n_lambda){
       unnest <- c(fits_all[[i]], unnest)
     }
@@ -734,10 +788,15 @@ ggmncv <- function(R,
       select = select,
       R = R
     )
+
   } else {
+
     stop("select must be 'lambda', 'gamma', or 'both'.")
+
   }
+
   return(returned_object)
+
 }
 
 
