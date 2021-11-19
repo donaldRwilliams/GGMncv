@@ -1,18 +1,41 @@
-#' Confirm Edges
+#' @title Confirm Edges
 #'
-#' @description Confirmatory testing of edges detected with data-driven
-#'              model selection in an independent dataset.
+#' @description Confirmatory hypothesis testing of edges that were initially
+#'              detected with data-driven model selection.
 #'
-#' @param object An object of classo \code{ggmncv}
+#' @param object An object of class \code{ggmncv}
 #'
 #' @param Rnew  Matrix. A correlation matrix of dimensions \emph{p} by \emph{p}.
 #'
-#' @param method Character string. A correction method for multiple comparison (defaults to \code{fdr}).
-#' Can be abbreviated. See \link[stats]{p.adjust}.
+#' @param method Character string. A correction method for multiple comparison
+#'               (defaults to \code{fdr}). Can be abbreviated. See \link[stats]{p.adjust}.
 #'
 #' @param alpha Numeric. Significance level (defaults to \code{0.05}).
 #'
-#' @return An object of class \code{ggmncv}
+#' @references
+#' \insertAllCited{}
+#'
+#' @return An object of class \code{ggmncv}, including:
+#'
+#' \itemize{
+#'
+#' \item{\strong{P}}: Matrix of confirmed edges (partial correlations)
+#'
+#' \item{\strong{adj}}: Matrix of confirmed edges (adjacency)
+#'
+#' }
+#'
+#'
+#' @details
+#' The basic idea is to merge exploration with confirmation. This is accomplished
+#' by testing those edges (in an independent dataset) that were initially detected
+#' via data driven model selection.
+#'
+#' Confirmatory hypothesis testing follows the approach described in
+#' \insertCite{jankova2015confidence;textual}{GGMncv}: (1)
+#' graphical lasso is computed with lambda fixed to  \mjseqn{\lambda = \sqrt{log(p)/n}},
+#' (2) the de-sparsified estimator is computed, and then (3) \emph{p}-values are
+#' obtained for the de-sparsified estimator.
 #'
 #' @export
 #'
@@ -24,7 +47,8 @@
 #' Y_confirm <- Y[1001:nrow(Y),]
 #'
 #' fit <- ggmncv(cor(Y_explore),
-#'               n = nrow(Y_explore))
+#'               n = nrow(Y_explore),
+#'               progress = FALSE)
 #'
 #' confirm <- confirm_edges(fit,
 #'                          Rnew = cor(Y_confirm),
@@ -71,7 +95,9 @@ confirm_edges <- function(object, Rnew, method, alpha) {
 
   P_confirm <- confirm_mat * P
 
-  returned_object <- list(P = P_confirm, adj = confirm_mat)
+  returned_object <- list(P = P_confirm,
+                          adj = confirm_mat)
+
   class(returned_object) <- c("ggmncv", "default")
   return(returned_object)
 }

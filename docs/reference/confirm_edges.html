@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Confirm Edges — confirm_edges" />
-<meta property="og:description" content="Confirmatory testing of edges detected with data-driven
-             model selection in an independent dataset." />
+<meta property="og:description" content="Confirmatory hypothesis testing of edges that were initially
+             detected with data-driven model selection." />
 
 
 
@@ -127,8 +127,8 @@
     </div>
 
     <div class="ref-description">
-    <p>Confirmatory testing of edges detected with data-driven
-             model selection in an independent dataset.</p>
+    <p>Confirmatory hypothesis testing of edges that were initially
+             detected with data-driven model selection.</p>
     </div>
 
     <pre class="usage"><span class='fu'>confirm_edges</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>Rnew</span>, <span class='va'>method</span>, <span class='va'>alpha</span><span class='op'>)</span></pre>
@@ -138,7 +138,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An object of classo <code>ggmncv</code></p></td>
+      <td><p>An object of class <code>ggmncv</code></p></td>
     </tr>
     <tr>
       <th>Rnew</th>
@@ -146,8 +146,8 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>Character string. A correction method for multiple comparison (defaults to <code>fdr</code>).
-Can be abbreviated. See <a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust</a>.</p></td>
+      <td><p>Character string. A correction method for multiple comparison
+(defaults to <code>fdr</code>). Can be abbreviated. See <a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust</a>.</p></td>
     </tr>
     <tr>
       <th>alpha</th>
@@ -157,7 +157,28 @@ Can be abbreviated. See <a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>ggmncv</code></p>
+    <p>An object of class <code>ggmncv</code>, including:</p>
+<ul>
+<li><p><strong>P</strong>: Matrix of confirmed edges (partial correlations)</p></li>
+<li><p><strong>adj</strong>: Matrix of confirmed edges (adjacency)</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The basic idea is to merge exploration with confirmation. This is accomplished
+by testing those edges (in an independent dataset) that were initially detected
+via data driven model selection.</p>
+<p>Confirmatory hypothesis testing follows the approach described in
+Jankova and Van De Geer (2015)
+: (1)
+graphical lasso is computed with lambda fixed to  \(\lambda = \sqrt{log(p)/n}\),
+(2) the de-sparsified estimator is computed, and then (3) <em>p</em>-values are
+obtained for the de-sparsified estimator.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Jankova J, Van De Geer S (2015).
+&#8220;Confidence intervals for high-dimensional inverse covariance estimation.&#8221;
+<em>Electronic Journal of Statistics</em>, <b>9</b>(1), 1205--1229.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span><span class='op'>(</span><span class='va'>bfi</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>25</span><span class='op'>]</span><span class='op'>)</span></span>
@@ -167,9 +188,8 @@ Can be abbreviated. See <a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust
 <span class='r-in'><span class='va'>Y_confirm</span> <span class='op'>&lt;-</span> <span class='va'>Y</span><span class='op'>[</span><span class='fl'>1001</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span>,<span class='op'>]</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggmncv.html'>ggmncv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Y_explore</span><span class='op'>)</span>,</span>
-<span class='r-in'>              n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y_explore</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> selecting lambda</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |=                                                                     |   2%  |                                                                              |===                                                                   |   4%  |                                                                              |====                                                                  |   6%  |                                                                              |======                                                                |   8%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  12%  |                                                                              |==========                                                            |  14%  |                                                                              |===========                                                           |  16%  |                                                                              |=============                                                         |  18%  |                                                                              |==============                                                        |  20%  |                                                                              |===============                                                       |  22%  |                                                                              |=================                                                     |  24%  |                                                                              |==================                                                    |  26%  |                                                                              |====================                                                  |  28%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================                                                |  32%  |                                                                              |========================                                              |  34%  |                                                                              |=========================                                             |  36%  |                                                                              |===========================                                           |  38%  |                                                                              |============================                                          |  40%  |                                                                              |=============================                                         |  42%  |                                                                              |===============================                                       |  44%  |                                                                              |================================                                      |  46%  |                                                                              |==================================                                    |  48%  |                                                                              |===================================                                   |  50%  |                                                                              |====================================                                  |  52%  |                                                                              |======================================                                |  54%  |                                                                              |=======================================                               |  56%  |                                                                              |=========================================                             |  58%  |                                                                              |==========================================                            |  60%  |                                                                              |===========================================                           |  62%  |                                                                              |=============================================                         |  64%  |                                                                              |==============================================                        |  66%  |                                                                              |================================================                      |  68%  |                                                                              |=================================================                     |  70%  |                                                                              |==================================================                    |  72%  |                                                                              |====================================================                  |  74%  |                                                                              |=====================================================                 |  76%  |                                                                              |=======================================================               |  78%  |                                                                              |========================================================              |  80%  |                                                                              |=========================================================             |  82%  |                                                                              |===========================================================           |  84%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  88%  |                                                                              |===============================================================       |  90%  |                                                                              |================================================================      |  92%  |                                                                              |==================================================================    |  94%  |                                                                              |===================================================================   |  96%  |                                                                              |===================================================================== |  98%  |                                                                              |======================================================================| 100%</span>
+<span class='r-in'>              n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y_explore</span><span class='op'>)</span>,</span>
+<span class='r-in'>              progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>confirm</span> <span class='op'>&lt;-</span> <span class='fu'>confirm_edges</span><span class='op'>(</span><span class='va'>fit</span>,</span>
 <span class='r-in'>                         Rnew <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Y_confirm</span><span class='op'>)</span>,</span>

@@ -7,21 +7,40 @@
 confirm_edges(object, Rnew, method, alpha)
 }
 \arguments{
-\item{object}{An object of classo \code{ggmncv}}
+\item{object}{An object of class \code{ggmncv}}
 
 \item{Rnew}{Matrix. A correlation matrix of dimensions \emph{p} by \emph{p}.}
 
-\item{method}{Character string. A correction method for multiple comparison (defaults to \code{fdr}).
-Can be abbreviated. See \link[stats]{p.adjust}.}
+\item{method}{Character string. A correction method for multiple comparison
+(defaults to \code{fdr}). Can be abbreviated. See \link[stats]{p.adjust}.}
 
 \item{alpha}{Numeric. Significance level (defaults to \code{0.05}).}
 }
 \value{
-An object of class \code{ggmncv}
+An object of class \code{ggmncv}, including:
+
+\itemize{
+
+\item{\strong{P}}: Matrix of confirmed edges (partial correlations)
+
+\item{\strong{adj}}: Matrix of confirmed edges (adjacency)
+
+}
 }
 \description{
-Confirmatory testing of edges detected with data-driven
-             model selection in an independent dataset.
+Confirmatory hypothesis testing of edges that were initially
+             detected with data-driven model selection.
+}
+\details{
+The basic idea is to merge exploration with confirmation. This is accomplished
+by testing those edges (in an independent dataset) that were initially detected
+via data driven model selection.
+
+Confirmatory hypothesis testing follows the approach described in
+\insertCite{jankova2015confidence;textual}{GGMncv}: (1)
+graphical lasso is computed with lambda fixed to  \mjseqn{\lambda = \sqrt{log(p)/n}},
+(2) the de-sparsified estimator is computed, and then (3) \emph{p}-values are
+obtained for the de-sparsified estimator.
 }
 \examples{
 Y <- na.omit(bfi[,1:25])
@@ -31,10 +50,14 @@ Y_explore <- Y[1:1000,]
 Y_confirm <- Y[1001:nrow(Y),]
 
 fit <- ggmncv(cor(Y_explore),
-              n = nrow(Y_explore))
+              n = nrow(Y_explore),
+              progress = FALSE)
 
 confirm <- confirm_edges(fit,
                          Rnew = cor(Y_confirm),
                          method = "fdr",
                          alpha = 0.05)
+}
+\references{
+\insertAllCited{}
 }

@@ -42,7 +42,8 @@
 <meta property="og:title" content="Bootstrapped Edge Inclusion 'Probabilities' — boot_eip" />
 <meta property="og:description" content="
 
-Compute edge inclusion 'probabilities' with a non-parametric bootstrap." />
+Compute the number of times each edge was selected
+when performing a non-parametric bootstrap." />
 
 
 
@@ -130,7 +131,8 @@ Compute edge inclusion 'probabilities' with a non-parametric bootstrap." />
     <div class="ref-description">
     <p><script id="MathJax-script" async src="../../mathjaxr/doc/mathjax/es5/tex-chtml-full.js"></script>
 
-Compute edge inclusion 'probabilities' with a non-parametric bootstrap.</p>
+Compute the number of times each edge was selected
+when performing a non-parametric bootstrap.</p>
     </div>
 
     <pre class="usage"><span class='fu'>boot_eip</span><span class='op'>(</span>
@@ -157,17 +159,18 @@ Compute edge inclusion 'probabilities' with a non-parametric bootstrap.</p>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>Character string. Which correlation coefficient (or covariance) is to be
-computed. One of "pearson" (default), "kendall", or "spearman."
-Defaults to <code>pearson</code>.</p></td>
+      <td><p>Character string. Which correlation coefficient (or covariance)
+is to be computed. One of "pearson" (default), "kendall",
+or "spearman". Defaults to <code>pearson</code>.</p></td>
     </tr>
     <tr>
       <th>samples</th>
-      <td><p>Numeric. How many boostrap samples (defaults to <code>500</code>).</p></td>
+      <td><p>Numeric. How many bootstrap samples (defaults to <code>500</code>).</p></td>
     </tr>
     <tr>
       <th>penalty</th>
-      <td><p>Character string. Which penalty should be used (defaults to <code>"atan"</code>)?</p></td>
+      <td><p>Character string. Which penalty should be used
+(defaults to <code>"atan"</code>)?</p></td>
     </tr>
     <tr>
       <th>ic</th>
@@ -180,7 +183,7 @@ Kim et al. (2012)
     </tr>
     <tr>
       <th>gamma</th>
-      <td><p>Numeric. Hyperparameter for the penalty function. Defaults to 3.7 (<code>SCAD</code>),
+      <td><p>Numeric. Hyper parameter for the penalty function. Defaults to 3.7 (<code>SCAD</code>),
 2 (<code>MCP</code>), 0.5 (<code>adapt</code>), and 0.01 otherwise with <code>select = "lambda"</code>.</p></td>
     </tr>
     <tr>
@@ -220,17 +223,65 @@ with <code>ebic_gamma = 1</code>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>eip</code></p>
+    <p>An object of class <code>eip</code>, including the "probabilities".</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># data</span></span>
 <span class='r-in'><span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='fu'>GGMncv</span><span class='fu'>::</span><span class='va'><a href='ptsd.html'>ptsd</a></span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># compute eip's</span></span>
-<span class='r-in'><span class='va'>boot_samps</span> <span class='op'>&lt;-</span> <span class='fu'>boot_eip</span><span class='op'>(</span><span class='va'>Y</span>, samples  <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> computing eip's</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%</span>
+<span class='r-in'><span class='va'>boot_samps</span> <span class='op'>&lt;-</span> <span class='fu'>boot_eip</span><span class='op'>(</span><span class='va'>Y</span>, samples  <span class='op'>=</span> <span class='fl'>10</span>, progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>boot_samps</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Edge Inclusion 'Probabilities':</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Relation EIP</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B2 1.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B3 0.4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--B3 1.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B4 1.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--B4 0.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--B4 1.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B5 0.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--B5 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--B5 0.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--B5 1.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--C1 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--C1 0.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--C1 0.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--C1 0.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--C1 0.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--C2 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--C2 0.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--C2 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--C2 0.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--C2 0.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--C2 1.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--D1 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--D1 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--D1 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--D1 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--D1 0.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--D1 0.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C2--D1 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--D2 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--D2 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--D2 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--D2 0.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--D2 0.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--D2 0.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C2--D2 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    D1--D2 0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--D3 0.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--D3 0.4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--D3 0.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--D3 0.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--D3 0.3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--D3 0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C2--D3 0.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    D1--D3 0.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    D2--D3 0.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

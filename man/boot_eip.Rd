@@ -22,13 +22,14 @@ boot_eip(
 \arguments{
 \item{Y}{Matrix. A matrix of dimensions \emph{n} by \emph{p}.}
 
-\item{method}{Character string. Which correlation coefficient (or covariance) is to be
-computed. One of "pearson" (default), "kendall", or "spearman."
-Defaults to \code{pearson}.}
+\item{method}{Character string. Which correlation coefficient (or covariance)
+is to be computed. One of "pearson" (default), "kendall",
+or "spearman". Defaults to \code{pearson}.}
 
-\item{samples}{Numeric. How many boostrap samples (defaults to \code{500}).}
+\item{samples}{Numeric. How many bootstrap samples (defaults to \code{500}).}
 
-\item{penalty}{Character string. Which penalty should be used (defaults to \code{"atan"})?}
+\item{penalty}{Character string. Which penalty should be used
+(defaults to \code{"atan"})?}
 
 \item{ic}{Character string. Which information criterion should be used (defaults to \code{"bic"})?
 The options include \code{aic}, \code{ebic} (ebic_gamma defaults to \code{0.5}; see details),
@@ -36,7 +37,7 @@ The options include \code{aic}, \code{ebic} (ebic_gamma defaults to \code{0.5}; 
 \insertCite{kim2012consistent;textual}{GGMncv}. The options are \code{gic_1}
 (i.e., \code{bic}) to \code{gic_6}.}
 
-\item{gamma}{Numeric. Hyperparameter for the penalty function. Defaults to 3.7 (\code{SCAD}),
+\item{gamma}{Numeric. Hyper parameter for the penalty function. Defaults to 3.7 (\code{SCAD}),
 2 (\code{MCP}), 0.5 (\code{adapt}), and 0.01 otherwise with \code{select = "lambda"}.}
 
 \item{lambda}{Numeric vector. Regularization parameter. Defaults to \code{NULL} that provides default
@@ -60,16 +61,19 @@ nonconvex regularization, as opposed to the \mjseqn{\ell_1}-penalty.}
 with \code{ebic_gamma = 1}.}
 }
 \value{
-An object of class \code{eip}
+An object of class \code{eip}, including the "probabilities".
 }
 \description{
 \loadmathjax
-Compute edge inclusion 'probabilities' with a non-parametric bootstrap.
+Compute the number of times each edge was selected
+when performing a non-parametric bootstrap.
 }
 \examples{
 # data
 Y <- GGMncv::ptsd[,1:10]
 
 # compute eip's
-boot_samps <- boot_eip(Y, samples  = 10)
+boot_samps <- boot_eip(Y, samples  = 10, progress = FALSE)
+
+boot_samps
 }
