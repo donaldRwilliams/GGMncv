@@ -32,6 +32,8 @@ Imports:
     stats,
     utils
 Suggests:
+    rmarkdown,
+    knitr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
@@ -41,3 +43,4 @@ RdMacros:
   Rdpack,
   mathjaxr
 BugReports: https://github.com/donaldRwilliams/GGMncv/issues
+VignetteBuilder: knitr

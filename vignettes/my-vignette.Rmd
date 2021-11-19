@@ -1,0 +1,19 @@
+---
+title: "Positive Manifold (Sign Restriction)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Positive Manifold (Sign Restriction)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(GGMncv)
+```

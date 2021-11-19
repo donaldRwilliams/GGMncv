@@ -7,3 +7,6 @@ src/*.o
 src/*.so
 src/*.dll
 ^paper$
+inst/doc
+/doc/
+/Meta/
