@@ -335,6 +335,11 @@ symmetric_mat <- function (x) {
   x
 }
 
+symm_mat <- function (x) {
+  x[lower.tri(x)] <- t(x)[lower.tri(x)]
+  x
+}
+
 
 globalVariables(c("VIP",
                   "new1",
