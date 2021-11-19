@@ -214,7 +214,7 @@ htf <- function(Sigma, adj, tol = 1e-10) {
 
 coef_helper <- function(Theta){
   p <- ncol(Theta)
-  betas <- -round(t(sapply(1:p, function(x) Theta[x,-x] / Theta[x,x])), 3)
+  betas <- -t(sapply(1:p, function(x) Theta[x,-x] / Theta[x,x]))
   return(betas)
 }
 

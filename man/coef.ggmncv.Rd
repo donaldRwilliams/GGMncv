@@ -15,10 +15,13 @@
 A matrix of regression coefficients.
 }
 \description{
-Regression Coefficients from \code{ggmncv} Objects
+There is a direct correspondence between the inverse covariance
+matrix and multiple regression \insertCite{stephens1998,kwan2014regression}{GGMncv}.
+This readily allows for converting the off diagonal elements to regression coefficients,
+resulting in noncovex penalization for multiple regression.
 }
 \note{
-The matrix of coefficients can be accessed via \code{coefs[1,]},
+The coefficients can be accessed via \code{coefs[1,]},
 which provides the estimates for predicting the first node.
 
 Further, the estimates are essentially computed with both
@@ -43,6 +46,35 @@ coefs <- coef(fit)
 
 coefs
 
+
+# no regularization, resulting in OLS
+
+# data
+# note: scaled for lm()
+Y <- scale(GGMncv::ptsd[,1:5])
+
+# correlations
+S <- cor(Y)
+
+# fit model
+# note: non reg
+fit <- ggmncv(R = S, n = nrow(Y), progress = FALSE, lambda = 0)
+
+# regression
+coefs <- coef(fit)
+
+# fit lm
+fit_lm <- lm(Y[,1] ~ 0 + Y[,-1])
+
+# ggmncv
+coefs[1,]
+
+# lm
+as.numeric(coef(fit_lm))
+
 }
 
+}
+\references{
+\insertAllCited{}
 }
