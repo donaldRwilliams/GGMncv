@@ -43,7 +43,9 @@
 <meta property="og:description" content="
 
 Compute the number of times each edge was selected
-when performing a non-parametric bootstrap." />
+when performing a non-parametric bootstrap
+(see Figure 6.7, Hastie et al. 2009)
+." />
 
 
 
@@ -132,156 +134,116 @@ when performing a non-parametric bootstrap." />
     <p><script id="MathJax-script" async src="../../mathjaxr/doc/mathjax/es5/tex-chtml-full.js"></script>
 
 Compute the number of times each edge was selected
-when performing a non-parametric bootstrap.</p>
+when performing a non-parametric bootstrap
+(see Figure 6.7, Hastie et al. 2009)
+.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>boot_eip</span><span class='op'>(</span>
-  <span class='va'>Y</span>,
-  method <span class='op'>=</span> <span class='st'>"pearson"</span>,
-  samples <span class='op'>=</span> <span class='fl'>50</span>,
-  penalty <span class='op'>=</span> <span class='st'>"atan"</span>,
-  ic <span class='op'>=</span> <span class='st'>"bic"</span>,
-  gamma <span class='op'>=</span> <span class='cn'>NULL</span>,
-  lambda <span class='op'>=</span> <span class='cn'>NULL</span>,
-  n_lambda <span class='op'>=</span> <span class='fl'>50</span>,
-  n_gamma <span class='op'>=</span> <span class='fl'>50</span>,
-  unreg <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  progress <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>boot_eip</span><span class='op'>(</span><span class='va'>Y</span>, method <span class='op'>=</span> <span class='st'>"pearson"</span>, samples <span class='op'>=</span> <span class='fl'>500</span>, progress <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>Y</th>
-      <td><p>Matrix. A matrix of dimensions <em>n</em> by <em>p</em>.</p></td>
+      <td><p>A matrix of dimensions <em>n</em> by <em>p</em>.</p></td>
     </tr>
     <tr>
       <th>method</th>
       <td><p>Character string. Which correlation coefficient (or covariance)
 is to be computed. One of "pearson" (default), "kendall",
-or "spearman". Defaults to <code>pearson</code>.</p></td>
+or "spearman".</p></td>
     </tr>
     <tr>
       <th>samples</th>
-      <td><p>Numeric. How many bootstrap samples (defaults to <code>500</code>).</p></td>
-    </tr>
-    <tr>
-      <th>penalty</th>
-      <td><p>Character string. Which penalty should be used
-(defaults to <code>"atan"</code>)?</p></td>
-    </tr>
-    <tr>
-      <th>ic</th>
-      <td><p>Character string. Which information criterion should be used (defaults to <code>"bic"</code>)?
-The options include <code>aic</code>, <code>ebic</code> (ebic_gamma defaults to <code>0.5</code>; see details),
-<code>ric</code>, or any of the generalized information criteria provided in section 5 of
-Kim et al. (2012)
-. The options are <code>gic_1</code>
-(i.e., <code>bic</code>) to <code>gic_6</code>.</p></td>
-    </tr>
-    <tr>
-      <th>gamma</th>
-      <td><p>Numeric. Hyper parameter for the penalty function. Defaults to 3.7 (<code>SCAD</code>),
-2 (<code>MCP</code>), 0.5 (<code>adapt</code>), and 0.01 otherwise with <code>select = "lambda"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>lambda</th>
-      <td><p>Numeric vector. Regularization parameter. Defaults to <code>NULL</code> that provides default
-values with  <code>select = "lambda"</code> and  <code>sqrt(log(p)/n)</code> with
-<code>select = "gamma"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>n_lambda</th>
-      <td><p>Numeric. The number of \(\lambda\)'s to be evaluated. Defaults to 50.
-This is disregarded if custom values are provided in <code>lambda</code>.</p></td>
-    </tr>
-    <tr>
-      <th>n_gamma</th>
-      <td><p>Numeric. The number of \(\gamma\)'s to be evaluated. Defaults to 50.
-This is disregarded if custom values are provided in <code>lambda</code>.</p></td>
-    </tr>
-    <tr>
-      <th>unreg</th>
-      <td><p>Logical. Should the models be refitted (or unregularized) with maximum likelihood
-(defaults to <code>FALSE</code>)? Setting to <code>TRUE</code> results in the approach of
-Foygel and Drton (2010)
-, but with the regularization path obtained from
-nonconvex regularization, as opposed to the \(\ell_1\)-penalty.</p></td>
+      <td><p>Numeric. How many bootstrap samples (defaults to <code>500</code>)?</p></td>
     </tr>
     <tr>
       <th>progress</th>
-      <td><p>Logical. Should a progress bar be included (defaults to <code>TRUE</code>) ?</p></td>
+      <td><p>Logical. Should a progress bar be included (defaults to <code>TRUE</code>)?</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments. Currently gamma in EBIC (<code>ic = "ebic"</code>) can be set
-with <code>ebic_gamma = 1</code>.</p></td>
+      <td><p>Additional arguments passed to <code><a href='ggmncv.html'>ggmncv</a></code></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>eip</code>, including the "probabilities".</p>
+    <p>An object of class <code>eip</code> that includes the "probabilities" in a
+data frame.</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Although Hastie et al. (2009)
+ suggests
+this approach provides probabilities, to avoid confusion with Bayesian inference,
+these are better thought of as "probabilities" (or better yet proportions).</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Hastie T, Tibshirani R, Friedman J (2009).
+<em>The elements of statistical learning: data mining, inference, and prediction</em>.
+Springer Science \&amp; Business Media.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'># data</span></span>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'># data (ptsd symptoms)</span></span>
 <span class='r-in'><span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='fu'>GGMncv</span><span class='fu'>::</span><span class='va'><a href='ptsd.html'>ptsd</a></span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># compute eip's</span></span>
-<span class='r-in'><span class='va'>boot_samps</span> <span class='op'>&lt;-</span> <span class='fu'>boot_eip</span><span class='op'>(</span><span class='va'>Y</span>, samples  <span class='op'>=</span> <span class='fl'>10</span>, progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>boot_samps</span> <span class='op'>&lt;-</span> <span class='fu'>boot_eip</span><span class='op'>(</span><span class='va'>Y</span>, samples  <span class='op'>=</span> <span class='fl'>100</span>, progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>boot_samps</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Edge Inclusion 'Probabilities':</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  Relation EIP</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B2 1.0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B3 0.4</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--B3 1.0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B4 1.0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--B4 0.0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--B4 1.0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B5 0.8</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--B5 0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--B5 0.8</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--B5 1.0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--C1 0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--C1 0.0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--C1 0.0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--C1 0.7</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--C1 0.9</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--C2 0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--C2 0.8</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--C2 0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--C2 0.6</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--C2 0.8</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--C2 1.0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--D1 0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--D1 0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--D1 0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--D1 0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--D1 0.0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--D1 0.8</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    C2--D1 0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--D2 0.5</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--D2 0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--D2 0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--D2 0.7</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--D2 0.3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--D2 0.7</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    C2--D2 0.5</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    D1--D2 0.5</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--D3 0.3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--D3 0.4</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--D3 0.3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--D3 0.9</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--D3 0.3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--D3 0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    C2--D3 0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    D1--D3 0.7</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>    D2--D3 0.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Relation  EIP</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B2 0.98</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B3 0.29</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--B3 1.00</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B4 1.00</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--B4 0.20</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--B4 0.98</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--B5 0.79</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--B5 0.24</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--B5 0.88</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--B5 0.99</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--C1 0.14</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--C1 0.04</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--C1 0.04</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--C1 0.46</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--C1 0.88</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--C2 0.08</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--C2 0.73</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--C2 0.14</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--C2 0.56</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--C2 0.91</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--C2 0.94</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--D1 0.34</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--D1 0.14</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--D1 0.13</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--D1 0.07</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--D1 0.12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--D1 0.44</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C2--D1 0.38</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--D2 0.57</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--D2 0.16</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--D2 0.07</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--D2 0.37</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--D2 0.08</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--D2 0.43</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C2--D2 0.44</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    D1--D2 0.54</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B1--D3 0.22</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B2--D3 0.39</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B3--D3 0.26</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B4--D3 0.85</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    B5--D3 0.40</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C1--D3 0.26</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    C2--D3 0.12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    D1--D3 0.65</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    D2--D3 0.95</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> -----</span>
+<span class='r-in'><span class='co'># }</span></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

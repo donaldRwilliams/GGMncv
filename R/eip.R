@@ -3,70 +3,49 @@
 #' @description
 #' \loadmathjax
 #' Compute the number of times each edge was selected
-#' when performing a non-parametric bootstrap.
+#' when performing a non-parametric bootstrap
+#' \insertCite{@see Figure 6.7, @hastie2009elements}{GGMncv}.
 #'
-#' @param Y Matrix. A matrix of dimensions \emph{n} by \emph{p}.
+#' @param Y A matrix of dimensions \emph{n} by \emph{p}.
 #'
 #' @param method Character string. Which correlation coefficient (or covariance)
 #'               is to be computed. One of "pearson" (default), "kendall",
-#'               or "spearman". Defaults to \code{pearson}.
+#'               or "spearman".
 #'
-#' @param samples Numeric. How many bootstrap samples (defaults to \code{500}).
+#' @param samples Numeric. How many bootstrap samples (defaults to \code{500})?
 #'
-#' @param penalty Character string. Which penalty should be used
-#'                 (defaults to \code{"atan"})?
 #'
-#' @param ic Character string. Which information criterion should be used (defaults to \code{"bic"})?
-#'           The options include \code{aic}, \code{ebic} (ebic_gamma defaults to \code{0.5}; see details),
-#'           \code{ric}, or any of the generalized information criteria provided in section 5 of
-#'           \insertCite{kim2012consistent;textual}{GGMncv}. The options are \code{gic_1}
-#'           (i.e., \code{bic}) to \code{gic_6}.
+#' @param progress Logical. Should a progress bar be included (defaults to \code{TRUE})?
 #'
-#' @param gamma Numeric. Hyper parameter for the penalty function. Defaults to 3.7 (\code{SCAD}),
-#'              2 (\code{MCP}), 0.5 (\code{adapt}), and 0.01 otherwise with \code{select = "lambda"}.
+#' @param ... Additional arguments passed to \code{\link{ggmncv}}
 #'
-#' @param lambda Numeric vector. Regularization parameter. Defaults to \code{NULL} that provides default
-#'               values with  \code{select = "lambda"} and  \code{sqrt(log(p)/n)} with
-#'               \code{select = "gamma"}.
+#' @references
+#' \insertAllCited{}
 #'
-#' @param n_lambda Numeric. The number of \mjseqn{\lambda}'s to be evaluated. Defaults to 50.
-#'                 This is disregarded if custom values are provided in \code{lambda}.
+#' @return An object of class \code{eip} that includes the "probabilities" in a
+#' data frame.
 #'
-#' @param n_gamma Numeric. The number of \mjseqn{\gamma}'s to be evaluated. Defaults to 50.
-#'                This is disregarded if custom values are provided in \code{lambda}.
+#' @note Although \insertCite{hastie2009elements;textual}{GGMncv} suggests
+#' this approach provides probabilities, to avoid confusion with Bayesian inference,
+#' these are better thought of as "probabilities" (or better yet proportions).
 #'
-#' @param unreg Logical. Should the models be refitted (or unregularized) with maximum likelihood
-#'              (defaults to \code{FALSE})? Setting to \code{TRUE} results in the approach of
-#'              \insertCite{Foygel2010;textual}{GGMncv}, but with the regularization path obtained from
-#'              nonconvex regularization, as opposed to the \mjseqn{\ell_1}-penalty.
-#'
-#' @param progress Logical. Should a progress bar be included (defaults to \code{TRUE}) ?
-#'
-#' @param ... Additional arguments. Currently gamma in EBIC (\code{ic = "ebic"}) can be set
-#'            with \code{ebic_gamma = 1}.
-#'
-#' @return An object of class \code{eip}, including the "probabilities".
 #' @export
 #'
 #' @examples
-#' # data
+#'
+#' \donttest{
+#' # data (ptsd symptoms)
 #' Y <- GGMncv::ptsd[,1:10]
 #'
 #' # compute eip's
-#' boot_samps <- boot_eip(Y, samples  = 10, progress = FALSE)
+#' boot_samps <- boot_eip(Y, samples  = 100, progress = FALSE)
 #'
 #' boot_samps
+#'}
 boot_eip <- function(Y,
                      method = "pearson",
-                     samples = 50,
-                     penalty = "atan",
-                     ic = "bic",
-                     gamma = NULL,
-                     lambda = NULL,
-                     n_lambda = 50,
-                     n_gamma = 50,
-                     unreg = FALSE,
-                     progress = TRUE,...){
+                     samples = 500,
+                     progress = TRUE, ...){
 
   n <- nrow(Y)
 
@@ -75,8 +54,10 @@ boot_eip <- function(Y,
   I_p <- diag(p)
 
   if(progress){
+
     message("\ncomputing eip's")
     pb <- utils::txtProgressBar(min = 0, max = samples, style = 3)
+
   }
 
   boot_samps <-  sapply(1:samples, function(i) {
@@ -85,29 +66,19 @@ boot_eip <- function(Y,
 
     R <- cor(Yboot, method = method)
 
-    fit <- ggmncv(R = R,
-                      n = n,
-                      penalty = penalty,
-                      ic = ic,
-                      select = "lambda",
-                      gamma = gamma,
-                      lambda = lambda,
-                      n_lambda = n_lambda,
-                      n_gamma = n_gamma,
-                      unreg = unreg,
-                      store = FALSE,
-                      progress = FALSE)
+    fit <- ggmncv(R = R, n = n, progress = FALSE, ...)
 
     adj <- fit$adj
 
     if(progress){
       utils::setTxtProgressBar(pb, i)
     }
+
     adj[upper.tri(adj)]
 
   })
 
-  if(is.null( colnames(Y))){
+  if (is.null(colnames(Y))) {
     cn <- 1:p
   } else {
     cn <- colnames(Y)
@@ -119,11 +90,11 @@ boot_eip <- function(Y,
       EIP = rowMeans(boot_samps))
 
   returned_object <- list(eip_results = eip_results)
+
   class(returned_object) <- c("eip")
 
   return(returned_object)
 }
-
 
 
 #' Plot Edge Inclusion 'Probabilities'

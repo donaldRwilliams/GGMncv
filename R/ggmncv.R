@@ -1,5 +1,7 @@
 #' GGMncv
 #'
+#' @name ggmncv
+#'
 #' @description
 #' \loadmathjax
 #' Gaussian graphical models with nonconvex regularization. A survey of these approaches is provided
