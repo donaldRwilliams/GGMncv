@@ -261,9 +261,9 @@ Also notice that the atan penalty provides a sparser solution.
 
 
 ## Bootstrapping
-**GGMncv** does not provide confidence intervals based on bootstrapping.  This is because, in general, 
-these kinds "confidence" intervals from penalized approaches do not have the correct properties to 
-be considered confidence intervals 
+**GGMncv** does not provide confidence intervals based on bootstrapping.  
+This is because, in general, "confidence" intervals from penalized approaches do not 
+have the correct properties to be considered confidence intervals 
 [(see Wikipedia)](https://en.wikipedia.org/wiki/Confidence_interval). This 
 sentiment is echoed in Section 3.1, "Why standard bootstrapping and subsampling do not work," of 
 @Buhlmann2014:
