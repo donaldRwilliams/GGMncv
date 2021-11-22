@@ -27,9 +27,10 @@
 #'
 #'
 #' @details
-#' The basic idea is to merge exploration with confirmation. This is accomplished
-#' by testing those edges (in an independent dataset) that were initially detected
-#' via data driven model selection.
+#' The basic idea is to merge exploration with confirmation
+#' \insertCite{@see for example,  @rodriguez_williams_rast_mulder_2020}{GGMncv}.
+#' This is accomplished by testing those edges (in an independent dataset)
+#' that were initially detected via data driven model selection.
 #'
 #' Confirmatory hypothesis testing follows the approach described in
 #' \insertCite{jankova2015confidence;textual}{GGMncv}: (1)

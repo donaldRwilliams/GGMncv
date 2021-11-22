@@ -165,9 +165,11 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The basic idea is to merge exploration with confirmation. This is accomplished
-by testing those edges (in an independent dataset) that were initially detected
-via data driven model selection.</p>
+    <p>The basic idea is to merge exploration with confirmation
+(see for example,  Rodriguez et al. 2020)
+.
+This is accomplished by testing those edges (in an independent dataset)
+that were initially detected via data driven model selection.</p>
 <p>Confirmatory hypothesis testing follows the approach described in
 Jankova and Van De Geer (2015)
 : (1)
@@ -178,7 +180,11 @@ obtained for the de-sparsified estimator.</p>
 
     <p>Jankova J, Van De Geer S (2015).
 &#8220;Confidence intervals for high-dimensional inverse covariance estimation.&#8221;
-<em>Electronic Journal of Statistics</em>, <b>9</b>(1), 1205--1229.</p>
+<em>Electronic Journal of Statistics</em>, <b>9</b>(1), 1205--1229.<br /><br /> Rodriguez JE, Williams DR, Rast P, Mulder J (2020).
+&#8220;On Formalizing Theoretical Expectations: Bayesian Testing of Central Structures in Psychological Networks.&#8221;
+<em>PsyArXiv</em>.
+doi: <a href='https://doi.org/10.31234/osf.io/zw7pf'>10.31234/osf.io/zw7pf</a>
+.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span><span class='op'>(</span><span class='va'>bfi</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>25</span><span class='op'>]</span><span class='op'>)</span></span>
