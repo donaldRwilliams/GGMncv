@@ -36,8 +36,38 @@
 #' @importFrom stats runif
 #'
 #' @examples
+#' \donttest{
+#' p <- 20
+#' n <- 500
 #'
-#' true_net <- gen_net(p = 10)
+#' true_net <- gen_net(p = p, edge_prob = 0.25)
+#'
+#' y <- MASS::mvrnorm(n = n,
+#'                    mu = rep(0, p),
+#'                    Sigma = true_net$cors)
+#'
+#' # default
+#' fit_atan <- ggmncv(R = cor(y),
+#'                    n = nrow(y),
+#'                    penalty = "atan",
+#'                    progress = FALSE)
+#'
+#' # lasso
+#' fit_l1 <- ggmncv(R = cor(y),
+#'                  n = nrow(y),
+#'                  penalty = "lasso",
+#'                  progress = FALSE)
+#'
+#' # atan
+#' score_binary(estimate = true_net$adj,
+#'              true = fit_atan$adj,
+#'              model_name = "atan")
+#'
+#' # lasso
+#' score_binary(estimate = fit_l1$adj,
+#'              true = true_net$adj,
+#'              model_name = "lasso")
+#'}
 gen_net <- function(p = 20,
                     edge_prob = 0.3,
                     lb = 0.05,

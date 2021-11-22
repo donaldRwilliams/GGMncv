@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Simulate a Partial Correlation Matrix — gen_net • GGMncv</title>
+<title>Binary Classification — score_binary • GGMncv</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Simulate a Partial Correlation Matrix — gen_net" />
-<meta property="og:description" content="Simulate a Partial Correlation Matrix" />
+<meta property="og:title" content="Binary Classification — score_binary" />
+<meta property="og:description" content="Binary Classification" />
 <meta property="og:image" content="https://donaldrwilliams.github.io/GGMncv/reference/figures/hex.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@wdonald_1985" />
@@ -124,65 +124,47 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Simulate a Partial Correlation Matrix</h1>
-    <small class="dont-index">Source: <a href='https://github.com/donaldRwilliams/GGMncv/blob/master/R/gen_net.R'><code>R/gen_net.R</code></a></small>
-    <div class="hidden name"><code>gen_net.Rd</code></div>
+    <h1>Binary Classification</h1>
+    <small class="dont-index">Source: <a href='https://github.com/donaldRwilliams/GGMncv/blob/master/R/score_binary.R'><code>R/score_binary.R</code></a></small>
+    <div class="hidden name"><code>score_binary.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Simulate a Partial Correlation Matrix</p>
+    <p>Binary Classification</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gen_net</span><span class='op'>(</span>p <span class='op'>=</span> <span class='fl'>20</span>, edge_prob <span class='op'>=</span> <span class='fl'>0.3</span>, lb <span class='op'>=</span> <span class='fl'>0.05</span>, ub <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>score_binary</span><span class='op'>(</span><span class='va'>estimate</span>, <span class='va'>true</span>, model_name <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>p</th>
-      <td><p>number of variables (nodes)</p></td>
+      <th>estimate</th>
+      <td><p>Matrix. Estimated graph (adjacency matrix)</p></td>
     </tr>
     <tr>
-      <th>edge_prob</th>
-      <td><p>connectivity</p></td>
+      <th>true</th>
+      <td><p>Matrix. True graph (adjacency matrix)</p></td>
     </tr>
     <tr>
-      <th>lb</th>
-      <td><p>lower bound for the partial correlations</p></td>
-    </tr>
-    <tr>
-      <th>ub</th>
-      <td><p>upper bound for the partial correlations</p></td>
+      <th>model_name</th>
+      <td><p>Character string. Name of the method or penalty
+(defaults to <code>NULL</code>)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list containing the following:</p>
-<ul>
-<li><p><strong>pcor</strong>: Partial correlation matrix, encoding
-the conditional (in)dependence structure.</p></li>
-<li><p><strong>cors</strong>: Correlation matrix.</p></li>
-<li><p><strong>adj</strong>: Adjacency matrix.</p></li>
-<li><p><strong>trys</strong>: Number of attempts to obtain a
-positive definite matrix.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>The function checks for a valid matrix (positive definite),
-but sometimes this will still fail. For example, for
-larger <code>p</code>, to have large partial correlations this
-requires a sparse GGM
-(accomplished by setting <code>edge_prob</code>
-to a small value).</p>
+    <p>A data frame containing specificity (1 - false positive rate),
+sensitivity (true positive rate), precision (1 - false discovery rate),
+f1_score, and mcc (Matthews correlation coefficient).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># \donttest{</span></span>
 <span class='r-in'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fl'>20</span></span>
 <span class='r-in'><span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>500</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='va'>true_net</span> <span class='op'>&lt;-</span> <span class='fu'>gen_net</span><span class='op'>(</span>p <span class='op'>=</span> <span class='va'>p</span>, edge_prob <span class='op'>=</span> <span class='fl'>0.25</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>true_net</span> <span class='op'>&lt;-</span> <span class='fu'><a href='gen_net.html'>gen_net</a></span><span class='op'>(</span>p <span class='op'>=</span> <span class='va'>p</span>, edge_prob <span class='op'>=</span> <span class='fl'>0.25</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'>MASS</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MASS/man/mvrnorm.html'>mvrnorm</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='va'>n</span>,</span>
 <span class='r-in'>                   mu <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>p</span><span class='op'>)</span>,</span>
@@ -200,29 +182,28 @@ to a small value).</p>
 <span class='r-in'>                 penalty <span class='op'>=</span> <span class='st'>"lasso"</span>,</span>
 <span class='r-in'>                 progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'># atan</span></span>
-<span class='r-in'><span class='fu'><a href='score_binary.html'>score_binary</a></span><span class='op'>(</span>estimate <span class='op'>=</span> <span class='va'>true_net</span><span class='op'>$</span><span class='va'>adj</span>,</span>
+<span class='r-in'><span class='co'># atan scores</span></span>
+<span class='r-in'><span class='fu'>score_binary</span><span class='op'>(</span>estimate <span class='op'>=</span> <span class='va'>true_net</span><span class='op'>$</span><span class='va'>adj</span>,</span>
 <span class='r-in'>             true <span class='op'>=</span> <span class='va'>fit_atan</span><span class='op'>$</span><span class='va'>adj</span>,</span>
 <span class='r-in'>             model_name <span class='op'>=</span> <span class='st'>"atan"</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       measure     score model_name</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 specificity 0.9337748       atan</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 sensitivity 0.9487179       atan</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   precision 0.7872340       atan</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4      recall 0.9487179       atan</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    f1_score 0.8604651       atan</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 6         mcc 0.8260665       atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 specificity 0.9851852       atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 sensitivity 0.8181818       atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   precision 0.9574468       atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4      recall 0.8181818       atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    f1_score 0.8823529       atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6         mcc 0.8443943       atan</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'># lasso</span></span>
-<span class='r-in'><span class='fu'><a href='score_binary.html'>score_binary</a></span><span class='op'>(</span>estimate <span class='op'>=</span> <span class='va'>fit_l1</span><span class='op'>$</span><span class='va'>adj</span>,</span>
+<span class='r-in'><span class='fu'>score_binary</span><span class='op'>(</span>estimate <span class='op'>=</span> <span class='va'>fit_l1</span><span class='op'>$</span><span class='va'>adj</span>,</span>
 <span class='r-in'>             true <span class='op'>=</span> <span class='va'>true_net</span><span class='op'>$</span><span class='va'>adj</span>,</span>
 <span class='r-in'>             model_name <span class='op'>=</span> <span class='st'>"lasso"</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       measure     score model_name</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 specificity 0.7482517      lasso</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 specificity 0.5734266      lasso</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 2 sensitivity 1.0000000      lasso</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   precision 0.5662651      lasso</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   precision 0.4351852      lasso</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 4      recall 1.0000000      lasso</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    f1_score 0.7230769      lasso</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 6         mcc 0.6509292      lasso</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    f1_score 0.6064516      lasso</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6         mcc 0.4995465      lasso</span>
 <span class='r-in'><span class='co'># }</span></span>
 </pre>
   </div>
