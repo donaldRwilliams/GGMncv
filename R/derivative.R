@@ -19,7 +19,7 @@
 #' deriv <- penalty_derivative(theta =  seq(-5,5,length.out = 10000),
 #'                             lambda = 1,
 #'                             gamma = c(0.01, 0.05, 0.1))
-penalty_derivative <- function(theta = seq(-5,5,length.out = 100000),
+penalty_derivative <- function(theta = seq(-5,5, length.out = 100000),
                                penalty = "atan",
                                lambda = 1,
                                gamma = c(0.01, 0.05)){
