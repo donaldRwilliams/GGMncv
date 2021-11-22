@@ -42,9 +42,12 @@
 <meta property="og:title" content="De-Sparsified Graphical Lasso Estimator — desparsify" />
 <meta property="og:description" content="
 
-Compute the de-sparsified glasso estimator with the approach
-described in Equation 7 of Jankova and Van De Geer (2015)
-." />
+Compute the de-sparsified (sometimes called &quot;de-biased&quot;) glasso estimator with
+the approach described in Equation 7 of Jankova and Van De Geer (2015)
+.
+The basic idea is to undo \(L_1\)-regularization, in order
+to compute p-values and confidence intervals
+(i.e., to make statistical inference)." />
 
 
 
@@ -132,9 +135,12 @@ described in Equation 7 of Jankova and Van De Geer (2015)
     <div class="ref-description">
     <p><script id="MathJax-script" async src="../../mathjaxr/doc/mathjax/es5/tex-chtml-full.js"></script>
 
-Compute the de-sparsified glasso estimator with the approach
-described in Equation 7 of Jankova and Van De Geer (2015)
-.</p>
+Compute the de-sparsified (sometimes called "de-biased") glasso estimator with
+the approach described in Equation 7 of Jankova and Van De Geer (2015)
+.
+The basic idea is to <em>undo</em> \(L_1\)-regularization, in order
+to compute <em>p</em>-values and confidence intervals
+(i.e., to make statistical inference).</p>
     </div>
 
     <pre class="usage"><span class='fu'>desparsify</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -144,11 +150,11 @@ described in Equation 7 of Jankova and Van De Geer (2015)
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An object of class <code>ggmncv</code></p></td>
+      <td><p>An object of class <code>ggmncv</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Currently ignored</p></td>
+      <td><p>Currently ignored.</p></td>
     </tr>
     </table>
 
@@ -168,67 +174,82 @@ described in Equation 7 of Jankova and Van De Geer (2015)
 <p>\(\hat{\mathrm{\bf T}} = 2\hat{\boldsymbol{\Theta}} - \hat{\boldsymbol{\Theta}}\hat{\mathrm{\bf R}}\hat{\boldsymbol{\Theta}},\)</p>
 <p>where \(\hat{\boldsymbol{\Theta}}\) denotes the graphical lasso estimator of the precision matrix
 and \(\hat{\mathrm{\bf R}}\) is the sample correlation matrix. Further details can be
-found in section 2 ("Main Results") of Jankova and Van De Geer (2015)
+found in Section 2 ("Main Results") of Jankova and Van De Geer (2015)
 .</p>
+<p>This approach is built upon earlier work on the de-sparsified lasso estimator
+(Javanmard and Montanari 2014; Van de Geer et al. 2014; Zhang and Zhang 2014)</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>This assumes (reasonably) Gaussian data.</p>
+    <p>This assumes (reasonably) Gaussian data, and should not to be expected
+to work for, say, polychoric correlations. Further, all work to date
+has only looked at the graphical lasso estimator, and not de-sparsifying
+nonconvex regularization. Accordingly, it is probably best to set
+<code>penalty = "lasso"</code> in <code><a href='ggmncv.html'>ggmncv</a></code>.</p>
+<p>This function only provides the de-sparsified estimator and
+not <em>p</em>-values or confidence intervals (see <code><a href='inference.html'>inference</a></code>).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Jankova J, Van De Geer S (2015).
 &#8220;Confidence intervals for high-dimensional inverse covariance estimation.&#8221;
-<em>Electronic Journal of Statistics</em>, <b>9</b>(1), 1205--1229.</p>
+<em>Electronic Journal of Statistics</em>, <b>9</b>(1), 1205--1229.<br /><br /> Javanmard A, Montanari A (2014).
+&#8220;Confidence intervals and hypothesis testing for high-dimensional regression.&#8221;
+<em>The Journal of Machine Learning Research</em>, <b>15</b>(1), 2869--2909.<br /><br /> Van de Geer S, B昼㹣hlmann P, Ritov Y, Dezeure R (2014).
+&#8220;On asymptotically optimal confidence regions and tests for high-dimensional models.&#8221;
+<em>The Annals of Statistics</em>, <b>42</b>(3), 1166--1202.<br /><br /> Zhang C, Zhang SS (2014).
+&#8220;Confidence intervals for low dimensional parameters in high dimensional linear models.&#8221;
+<em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em>, <b>76</b>(1), 217--242.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># data</span></span>
-<span class='r-in'><span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='fu'>GGMncv</span><span class='fu'>::</span><span class='va'><a href='Sachs.html'>Sachs</a></span></span>
+<span class='r-in'><span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='fu'>GGMncv</span><span class='fu'>::</span><span class='va'><a href='Sachs.html'>Sachs</a></span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># fit model</span></span>
-<span class='r-in'><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggmncv.html'>ggmncv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> selecting lambda</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |=                                                                     |   2%  |                                                                              |===                                                                   |   4%  |                                                                              |====                                                                  |   6%  |                                                                              |======                                                                |   8%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  12%  |                                                                              |==========                                                            |  14%  |                                                                              |===========                                                           |  16%  |                                                                              |=============                                                         |  18%  |                                                                              |==============                                                        |  20%  |                                                                              |===============                                                       |  22%  |                                                                              |=================                                                     |  24%  |                                                                              |==================                                                    |  26%  |                                                                              |====================                                                  |  28%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================                                                |  32%  |                                                                              |========================                                              |  34%  |                                                                              |=========================                                             |  36%  |                                                                              |===========================                                           |  38%  |                                                                              |============================                                          |  40%  |                                                                              |=============================                                         |  42%  |                                                                              |===============================                                       |  44%  |                                                                              |================================                                      |  46%  |                                                                              |==================================                                    |  48%  |                                                                              |===================================                                   |  50%  |                                                                              |====================================                                  |  52%  |                                                                              |======================================                                |  54%  |                                                                              |=======================================                               |  56%  |                                                                              |=========================================                             |  58%  |                                                                              |==========================================                            |  60%  |                                                                              |===========================================                           |  62%  |                                                                              |=============================================                         |  64%  |                                                                              |==============================================                        |  66%  |                                                                              |================================================                      |  68%  |                                                                              |=================================================                     |  70%  |                                                                              |==================================================                    |  72%  |                                                                              |====================================================                  |  74%  |                                                                              |=====================================================                 |  76%  |                                                                              |=======================================================               |  78%  |                                                                              |========================================================              |  80%  |                                                                              |=========================================================             |  82%  |                                                                              |===========================================================           |  84%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  88%  |                                                                              |===============================================================       |  90%  |                                                                              |================================================================      |  92%  |                                                                              |==================================================================    |  94%  |                                                                              |===================================================================   |  96%  |                                                                              |===================================================================== |  98%  |                                                                              |======================================================================| 100%</span>
+<span class='r-in'><span class='co'># note: fix lambda, as in the reference</span></span>
+<span class='r-in'><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggmncv.html'>ggmncv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span>,</span>
+<span class='r-in'>              progress <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>              penalty <span class='op'>=</span> <span class='st'>"lasso"</span>,</span>
+<span class='r-in'>              lambda <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>p</span><span class='op'>)</span><span class='op'>/</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># fit model</span></span>
+<span class='r-in'><span class='co'># note: no regularization</span></span>
+<span class='r-in'><span class='va'>fit_non_reg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggmncv.html'>ggmncv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span>,</span>
+<span class='r-in'>                      progress <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span class='r-in'>                      penalty <span class='op'>=</span> <span class='st'>"lasso"</span>,</span>
+<span class='r-in'>                      lambda <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># remove (some) bias and sparsity</span></span>
 <span class='r-in'><span class='va'>That</span> <span class='op'>&lt;-</span> <span class='fu'>desparsify</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'># de-sparsified partial correlations</span></span>
+<span class='r-in'><span class='co'># graphical lasso estimator</span></span>
+<span class='r-in'><span class='va'>fit</span><span class='op'>$</span><span class='va'>P</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             [,1]        [,2]        [,3]        [,4]       [,5]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1,]  0.00000000 -0.09592018  0.10347554  0.00000000 -0.3163087</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2,] -0.09592018  0.00000000  0.22902674  0.31104348  0.1749705</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3,]  0.10347554  0.22902674  0.00000000  0.07298544 -0.4440013</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [4,]  0.00000000  0.31104348  0.07298544  0.00000000 -0.2600128</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5,] -0.31630867  0.17497053 -0.44400133 -0.26001275  0.0000000</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># de-sparsified estimator</span></span>
 <span class='r-in'><span class='va'>That</span><span class='op'>$</span><span class='va'>P</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>               [,1]        [,2]        [,3]        [,4]         [,5]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1,]  0.000000000  0.07190758  0.05094874 -0.16479200 -0.156117182</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2,]  0.071907577  0.00000000  0.05182416  0.27833694  0.198798358</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3,]  0.050948741  0.05182416  0.00000000 -0.06457824 -0.319861820</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4,] -0.164791999  0.27833694 -0.06457824  0.00000000 -0.045986586</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5,] -0.156117182  0.19879836 -0.31986182 -0.04598659  0.000000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6,]  0.002719739  0.02538559  0.48994703  0.04264428 -0.070437297</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7,]  0.023912164 -0.05722995 -0.05224299  0.01747688  0.134436628</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8,]  0.691616344 -0.42744543 -0.06378050  0.17301302  0.009648906</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9,]  0.112201696 -0.12291158  0.07933048  0.53080816 -0.184095840</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [10,] -0.228687138  0.12269847  0.12112253  0.26037116 -0.058537548</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [11,] -0.033235683  0.73362264  0.11839068 -0.19364949 -0.059263154</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>               [,6]        [,7]         [,8]        [,9]       [,10]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1,]  0.002719739  0.02391216  0.691616344  0.11220170 -0.22868714</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2,]  0.025385586 -0.05722995 -0.427445427 -0.12291158  0.12269847</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3,]  0.489947032 -0.05224299 -0.063780502  0.07933048  0.12112253</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4,]  0.042644280  0.01747688  0.173013020  0.53080816  0.26037116</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5,] -0.070437297  0.13443663  0.009648906 -0.18409584 -0.05853755</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6,]  0.000000000  0.40466078  0.023275912 -0.02054467 -0.01796091</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7,]  0.404660777  0.00000000 -0.030363514 -0.01242277 -0.10455942</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8,]  0.023275912 -0.03036351  0.000000000 -0.05247622  0.30530686</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9,] -0.020544669 -0.01242277 -0.052476221  0.00000000  0.19674864</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [10,] -0.017960913 -0.10455942  0.305306859  0.19674864  0.00000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [11,] -0.009837089 -0.02495264  0.417494377  0.18691388 -0.03663081</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>              [,11]</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1,] -0.033235683</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [2,]  0.733622641</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [3,]  0.118390679</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4,] -0.193649492</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5,] -0.059263154</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6,] -0.009837089</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7,] -0.024952642</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8,]  0.417494377</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9,]  0.186913880</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [10,] -0.036630805</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [11,]  0.000000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              [,1]       [,2]        [,3]         [,4]       [,5]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1,]  0.000000000 -0.1094239  0.10948543  0.001852132 -0.3202569</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2,] -0.109423934  0.0000000  0.26145644  0.335307844  0.2114870</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3,]  0.109485428  0.2614564  0.00000000  0.059653978 -0.4636671</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [4,]  0.001852132  0.3353078  0.05965398  0.000000000 -0.2804660</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5,] -0.320256910  0.2114870 -0.46366714 -0.280466031  0.0000000</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># mle</span></span>
+<span class='r-in'><span class='va'>fit_non_reg</span><span class='op'>$</span><span class='va'>P</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              [,1]       [,2]        [,3]         [,4]       [,5]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1,]  0.000000000 -0.1101030  0.10995010  0.002016594 -0.3192876</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2,] -0.110102999  0.0000000  0.26561295  0.337956876  0.2162442</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3,]  0.109950103  0.2656129  0.00000000  0.056272312 -0.4664779</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [4,]  0.002016594  0.3379569  0.05627231  0.000000000 -0.2833199</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5,] -0.319287553  0.2162442 -0.46647791 -0.283319888  0.0000000</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

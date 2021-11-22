@@ -1,5 +1,7 @@
 #' Statistical Inference for Gaussian Graphical Models
 #'
+#' @name inference
+#'
 #' @description Compute p-values for each relation based on the de-sparsified precision matrix
 #' \insertCite{jankova2015confidence}{GGMncv}.
 #'

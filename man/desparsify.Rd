@@ -7,9 +7,9 @@
 desparsify(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{ggmncv}}
+\item{object}{An object of class \code{ggmncv}.}
 
-\item{...}{Currently ignored}
+\item{...}{Currently ignored.}
 }
 \value{
 The de-sparsified estimates, including
@@ -24,8 +24,11 @@ The de-sparsified estimates, including
 }
 \description{
 \loadmathjax
-Compute the de-sparsified glasso estimator with the approach
-described in Equation 7 of \insertCite{jankova2015confidence;textual}{GGMncv}.
+Compute the de-sparsified (sometimes called "de-biased") glasso estimator with
+the approach described in Equation 7 of \insertCite{jankova2015confidence;textual}{GGMncv}.
+The basic idea is to \emph{undo} \mjseqn{L_1}-regularization, in order
+to compute \emph{p}-values and confidence intervals
+(i.e., to make statistical inference).
 }
 \details{
 According to \insertCite{jankova2015confidence;textual}{GGMncv}, the de-sparisifed estimator,
@@ -35,23 +38,54 @@ According to \insertCite{jankova2015confidence;textual}{GGMncv}, the de-sparisif
 
 where \mjseqn{\hat{\boldsymbol{\Theta}}} denotes the graphical lasso estimator of the precision matrix
 and \mjseqn{\hat{\mathrm{\bf R}}} is the sample correlation matrix. Further details can be
-found in section 2 ("Main Results") of \insertCite{jankova2015confidence;textual}{GGMncv}.
+found in Section 2 ("Main Results") of \insertCite{jankova2015confidence;textual}{GGMncv}.
+
+This approach is built upon earlier work on the de-sparsified lasso estimator
+\insertCite{javanmard2014confidence,van2014asymptotically,zhang2014confidence}{GGMncv}
 }
 \note{
-This assumes (reasonably) Gaussian data.
+This assumes (reasonably) Gaussian data, and should not to be expected
+to work for, say, polychoric correlations. Further, all work to date
+has only looked at the graphical lasso estimator, and not de-sparsifying
+nonconvex regularization. Accordingly, it is probably best to set
+\code{penalty = "lasso"} in \code{\link{ggmncv}}.
+
+This function only provides the de-sparsified estimator and
+not \emph{p}-values or confidence intervals (see \code{\link{inference}}).
 }
 \examples{
 # data
-Y <- GGMncv::Sachs
+Y <- GGMncv::Sachs[,1:5]
+
+n <- nrow(Y)
+p <- ncol(Y)
 
 # fit model
-fit <- ggmncv(cor(Y), n = nrow(Y))
+# note: fix lambda, as in the reference
+fit <- ggmncv(cor(Y), n = nrow(Y),
+              progress = FALSE,
+              penalty = "lasso",
+              lambda = sqrt(log(p)/n))
+
+# fit model
+# note: no regularization
+fit_non_reg <- ggmncv(cor(Y), n = nrow(Y),
+                      progress = FALSE,
+                      penalty = "lasso",
+                      lambda = 0)
+
 
 # remove (some) bias and sparsity
 That <- desparsify(fit)
 
-# de-sparsified partial correlations
+# graphical lasso estimator
+fit$P
+
+# de-sparsified estimator
 That$P
+
+# mle
+fit_non_reg$P
 }
 \references{
 \insertAllCited{}

@@ -17,7 +17,7 @@
 #'
 #' @param progress Logical. Should a progress bar be included (defaults to \code{TRUE})?
 #'
-#' @param ... Additional arguments passed to \code{\link{ggmncv}}
+#' @param ... Additional arguments passed to \code{\link{ggmncv}}.
 #'
 #' @references
 #' \insertAllCited{}

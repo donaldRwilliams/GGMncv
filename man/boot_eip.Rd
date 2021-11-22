@@ -17,7 +17,7 @@ or "spearman".}
 
 \item{progress}{Logical. Should a progress bar be included (defaults to \code{TRUE})?}
 
-\item{...}{Additional arguments passed to \code{\link{ggmncv}}}
+\item{...}{Additional arguments passed to \code{\link{ggmncv}}.}
 }
 \value{
 An object of class \code{eip} that includes the "probabilities" in a
