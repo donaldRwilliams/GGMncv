@@ -59,6 +59,28 @@ The following are implemented in `GGMncv`:
 1.  Atan (`penalty = "atan"`; Wang and Zhu (2016)). This is currently
     the default.
 
+2.  Seamless *L*<sub>0</sub> (`penalty = "selo"`; Dicker, Huang, and
+    Lin (2013))
+
+3.  Exponential (`penalty = "exp"`; Wang, Fan, and Zhu (2018))
+
+4.  Smooth integration of counting and absolute deviation
+    (`penalty = "sica"`; Lv and Fan (2009))
+
+5.  Log (`penalty = "log"`; Mazumder, Friedman, and Hastie (2011))
+
+6.  *L*<sub>q</sub> (`penalty = "lq"`, *0* \< *q* \< *1*; e.g., Knight
+    and Fu (2000))
+
+7.  Smoothly clipped absolute deviation (`penalty = "scad"`; Fan and
+    Li (2001))
+
+8.  Minimax concave penalty (`penalty = "mcp"`; C.-H. Zhang (2010))
+
+9.  Adaptive lasso (`penalty = "adapt"`; Zou (2006))
+
+10. Lasso (`penalty = "lasso"`; Tibshirani (1996))
+
 Options 1-5 are continuous approximations to the *L*<sub>0</sub>
 penalty, that is, best subsets model selection. However, the solution is
 computationally efficient and solved with the local linear approximation
@@ -503,11 +525,27 @@ Methods and Applications to Neuroimaging.” *NeuroImage* 55 (4): 1519–27.
 
 </div>
 
+<div id="ref-dicker2013variable" class="csl-entry">
+
+Dicker, Lee, Baosheng Huang, and Xihong Lin. 2013. “Variable Selection
+and Estimation with the Seamless-l 0 Penalty.” *Statistica Sinica*,
+929–62.
+
+</div>
+
 <div id="ref-fan2009network" class="csl-entry">
 
 Fan, Jianqing, Yang Feng, and Yichao Wu. 2009. “Network Exploration via
 the Adaptive LASSO and SCAD Penalties.” *The Annals of Applied
 Statistics* 3 (2): 521.
+
+</div>
+
+<div id="ref-fan2001variable" class="csl-entry">
+
+Fan, Jianqing, and Runze Li. 2001. “Variable Selection via Nonconcave
+Penalized Likelihood and Its Oracle Properties.” *Journal of the
+American Statistical Association* 96 (456): 1348–60.
 
 </div>
 
@@ -542,6 +580,13 @@ Research* 13: 1037–57.
 
 </div>
 
+<div id="ref-knight2000asymptotics" class="csl-entry">
+
+Knight, Keith, and Wenjiang Fu. 2000. “Asymptotics for Lasso-Type
+Estimators.” *Annals of Statistics*, 1356–78.
+
+</div>
+
 <div id="ref-kwan2014regression" class="csl-entry">
 
 Kwan, Clarence CY. 2014. “A Regression-Based Interpretation of the
@@ -566,11 +611,43 @@ Estimation in r.” *Journal of Machine Learning Research: JMLR* 16: 553.
 
 </div>
 
+<div id="ref-lv2009unified" class="csl-entry">
+
+Lv, Jinchi, and Yingying Fan. 2009. “A Unified Approach to Model
+Selection and Sparse Recovery Using Regularized Least Squares.” *The
+Annals of Statistics* 37 (6A): 3498–528.
+
+</div>
+
+<div id="ref-mazumder2011sparsenet" class="csl-entry">
+
+Mazumder, Rahul, Jerome H Friedman, and Trevor Hastie. 2011. “Sparsenet:
+Coordinate Descent with Nonconvex Penalties.” *Journal of the American
+Statistical Association* 106 (495): 1125–38.
+
+</div>
+
+<div id="ref-tibshirani1996regression" class="csl-entry">
+
+Tibshirani, Robert. 1996. “Regression Shrinkage and Selection via the
+Lasso.” *Journal of the Royal Statistical Society: Series B
+(Methodological)* 58 (1): 267–88.
+
+</div>
+
 <div id="ref-tibshirani2011regression" class="csl-entry">
 
-Tibshirani, Robert. 2011. “Regression Shrinkage and Selection via the
-Lasso: A Retrospective.” *Journal of the Royal Statistical Society:
-Series B (Statistical Methodology)* 73 (3): 273–82.
+———. 2011. “Regression Shrinkage and Selection via the Lasso: A
+Retrospective.” *Journal of the Royal Statistical Society: Series B
+(Statistical Methodology)* 73 (3): 273–82.
+
+</div>
+
+<div id="ref-wang2018variable" class="csl-entry">
+
+Wang, Yanxin, Qibin Fan, and Li Zhu. 2018. “Variable Selection and
+Estimation Using a Continuous Approximation to the L0 Penalty.” *Annals
+of the Institute of Statistical Mathematics* 70 (1): 191–214.
 
 </div>
 
@@ -624,6 +701,13 @@ Networks.” *PLoS Computational Biology* 14 (8): e1006369.
 
 Zhao, Peng, and Bin Yu. 2006. “On Model Selection Consistency of Lasso.”
 *Journal of Machine Learning Research* 7 (Nov): 2541–63.
+
+</div>
+
+<div id="ref-zou2006adaptive" class="csl-entry">
+
+Zou, Hui. 2006. “The Adaptive Lasso and Its Oracle Properties.” *Journal
+of the American Statistical Association* 101 (476): 1418–29.
 
 </div>
 

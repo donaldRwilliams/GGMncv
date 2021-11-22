@@ -93,10 +93,10 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#ggmncv-gaussian-graphical-models-with-non-convex-penalties" class="anchor"></a>GGMncv: Gaussian Graphical Models with Non-Convex Penalties</h1></div>
 <p><a href="https://cran.r-project.org/package=GGMncv"><img src="http://www.r-pkg.org/badges/version/GGMncv" alt="CRAN Version"></a> <a href="https://cran.r-project.org/package=GGMncv"><img src="https://cranlogs.r-pkg.org/badges/GGMncv" alt="Downloads"></a> <a href="https://travis-ci.org/donaldRwilliams/GGMncv"><img src="https://travis-ci.org/donaldRwilliams/GGMncv.svg?branch=master" alt="Build Status"></a></p>
-<p>The primary goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known to overcome the various limitations of lasso (least absolute shrinkage “screening” operator), including inconsistent model selection (Zhao and Yu 2006), biased estimates (Zhang 2010)<span id="a1"><a href="#f1"><span class="math display">1</span></a></span>, and a high false positive rate (see for example Williams and Rast 2020; Williams et al. 2019).</p>
+<p>The primary goal of GGMncv is to provide non-convex penalties for estimating Gaussian graphical models. These are known to overcome the various limitations of lasso (least absolute shrinkage “screening” operator), including inconsistent model selection (Zhao and Yu 2006), biased estimates (C.-H. Zhang 2010)<span id="a1"><a href="#f1"><span class="math display">1</span></a></span>, and a high false positive rate (see for example Williams and Rast 2020; Williams et al. 2019).</p>
 <p>Note that these limitations of lasso are well-known. In the case of false positives, for example, it has been noted that</p>
 <blockquote>
-<p>The lasso is doing variable screening and, hence, I suggest that we interpret the second ‘s’ in lasso as ‘screening’ rather than ‘selection’. Once we have the screening property, the task is to remove the false positive selections (p. 278, Tibshirani 2011).</p>
+<p>The lasso is doing variable screening and, hence, I suggest that we interpret the second ‘s’ in lasso as ‘screening’ rather than ‘selection.’ Once we have the screening property, the task is to remove the false positive selections (p. 278, Tibshirani 2011).</p>
 </blockquote>
 <p>An additional goal of <strong>GGMncv</strong> is to provide methods for making statistical inference in <strong>regularized</strong> Gaussian graphical models. This is accomplished with the de-sparsified graphical lasso estimator introduced in Jankova and Van De Geer (2015). This is described in the section <a href="#de-sparsified-estimator">De-Sparsified Estimator</a>. The next <a href="#comparing-ggms">section</a> shows how the de-sparsified estimator can be used to compare GGMs.</p>
 <div id="installation" class="section level2">
@@ -115,16 +115,16 @@
 <a href="#penalties" class="anchor"></a>Penalties</h2>
 <p>The following are implemented in <code>GGMncv</code>:</p>
 <ol>
-<li><p>Atan (<code>penalty = "atan"</code>; Wang and Zhu 2016). This is currently the default.</p></li>
-<li><p>Seamless <em>L</em><sub>0</sub> (<code>penalty = "selo"</code>; Dicker, Huang, and Lin 2013)</p></li>
-<li><p>Exponential (<code>penalty = "exp"</code>; Wang, Fan, and Zhu 2018)</p></li>
-<li><p>Smooth integration of counting and absolute deviation (<code>penalty =     "sica"</code>; Lv and Fan 2009)</p></li>
-<li><p>Log (<code>penalty = "log"</code>; Mazumder, Friedman, and Hastie 2011)</p></li>
-<li><p><em>L</em><sub>q</sub> (<code>penalty = "lq"</code>, <em>0</em> &lt; <em>q</em> &lt; <em>1</em>; e.g., Knight and Fu 2000)</p></li>
-<li><p>Smoothly clipped absolute deviation (<code>penalty = "scad"</code>; Fan and Li 2001)</p></li>
-<li><p>Minimax concave penalty (<code>penalty = "mcp"</code>; Zhang 2010)</p></li>
-<li><p>Adaptive lasso (<code>penalty = "adapt"</code>; Zou 2006)</p></li>
-<li><p>Lasso (<code>penalty = "lasso"</code>; Tibshirani 1996)</p></li>
+<li><p>Atan (<code>penalty = "atan"</code>; Wang and Zhu (2016)). This is currently the default.</p></li>
+<li><p>Seamless <em>L</em><sub>0</sub> (<code>penalty = "selo"</code>; Dicker, Huang, and Lin (2013))</p></li>
+<li><p>Exponential (<code>penalty = "exp"</code>; Wang, Fan, and Zhu (2018))</p></li>
+<li><p>Smooth integration of counting and absolute deviation (<code>penalty = "sica"</code>; Lv and Fan (2009))</p></li>
+<li><p>Log (<code>penalty = "log"</code>; Mazumder, Friedman, and Hastie (2011))</p></li>
+<li><p><em>L</em><sub>q</sub> (<code>penalty = "lq"</code>, <em>0</em> &lt; <em>q</em> &lt; <em>1</em>; e.g., Knight and Fu (2000))</p></li>
+<li><p>Smoothly clipped absolute deviation (<code>penalty = "scad"</code>; Fan and Li (2001))</p></li>
+<li><p>Minimax concave penalty (<code>penalty = "mcp"</code>; C.-H. Zhang (2010))</p></li>
+<li><p>Adaptive lasso (<code>penalty = "adapt"</code>; Zou (2006))</p></li>
+<li><p>Lasso (<code>penalty = "lasso"</code>; Tibshirani (1996))</p></li>
 </ol>
 <p>Options 1-5 are continuous approximations to the <em>L</em><sub>0</sub> penalty, that is, best subsets model selection. However, the solution is computationally efficient and solved with the local linear approximation described in Fan, Feng, and Wu (2009) or the one-step approach described in Zou and Li (2008).</p>
 <div id="penalty-function" class="section level3">
@@ -177,7 +177,7 @@
 <div id="tuning-free" class="section level3">
 <h3 class="hasAnchor">
 <a href="#tuning-free" class="anchor"></a>Tuning Free</h3>
-<p>A tuning free option is also available. This is accomplished by setting the tuning parameter to <embed src="https://latex.codecogs.com/svg.latex?%5Csmall%20%5Csqrt%7Blog%28p%29/n%7D"></embed> (see for example Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van De Geer 2015) and then selecting <embed src="https://latex.codecogs.com/svg.latex?%5Cgamma"></embed></p>
+<p>A tuning free option is also available. This is accomplished by setting the tuning parameter to <embed src="https://latex.codecogs.com/svg.latex?%5Csmall%20%5Csqrt%7Blog%28p%29/n%7D"></embed> (see for example R. Zhang, Ren, and Chen 2018; Li et al. 2015; Jankova and Van De Geer 2015) and then selecting <embed src="https://latex.codecogs.com/svg.latex?%5Cgamma"></embed></p>
 </div>
 </div>
 <div id="example-structure-learning" class="section level2">
@@ -285,7 +285,8 @@
 <div id="bootstrapping" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bootstrapping" class="anchor"></a>Bootstrapping</h2>
-<p><strong>GGMncv</strong> does not provide confidence intervals based on bootstrapping. This is because, in general, these kinds “confidence” intervals from penalized approaches do not have the correct properties to be considered confidence intervals <a href="https://en.wikipedia.org/wiki/Confidence_interval">(see Wikipedia)</a>. This sentiment is echoed in Section 3.1, “Why standard bootstrapping and subsampling do not work,” of Bühlmann, Kalisch, and Meier (2014):</p>
+<p><strong>GGMncv</strong> does not provide confidence intervals based on bootstrapping.<br>
+This is because, in general, “confidence” intervals from penalized approaches do not have the correct properties to be considered confidence intervals <a href="https://en.wikipedia.org/wiki/Confidence_interval">(see Wikipedia)</a>. This sentiment is echoed in Section 3.1, “Why standard bootstrapping and subsampling do not work,” of Bühlmann, Kalisch, and Meier (2014):</p>
 <blockquote>
 <p>The (limiting) distribution of such a sparse estimator is non-Gaussian with point mass at zero, and this is the reason why standard bootstrap or subsampling techniques do not provide valid confidence regions or p-values (pp. 7-8).</p>
 </blockquote>
@@ -394,102 +395,99 @@
 <ol>
 <li><p><span id="f1"></span> Note that the penalties in <strong>GGMncv</strong> should provide <em>nearly</em> unbiased estimates <a href="#a1">(return)</a>.</p></li>
 <li><p><span id="f2"></span> In low-dimensional settings, assuming that <em>n</em> is sufficiently larger than <em>p</em>, the sample covariance matrix provides adequate initial estimates. In high-dimensional settings (<em>n</em> &lt; <em>p</em>), the initial estimates are obtained from lasso <a href="#a2">(return)</a>.</p></li>
-<li><p><span id="f3"></span> It is possible to compute confidence intervals for lasso with the methods included in the <strong>SILGGM</strong> <code>R</code> package (Zhang, Ren, and Chen 2018). These do not use the bootstrap <a href="#a3">(return)</a>.</p></li>
+<li><p><span id="f3"></span> It is possible to compute confidence intervals for lasso with the methods included in the <strong>SILGGM</strong> <code>R</code> package (R. Zhang, Ren, and Chen 2018). These do not use the bootstrap <a href="#a3">(return)</a>.</p></li>
 </ol>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references">
-<div id="ref-berk2013valid">
-<p>Berk, Richard, Lawrence Brown, Andreas Buja, Kai Zhang, Linda Zhao, and others. 2013. “Valid Post-Selection Inference.” <em>The Annals of Statistics</em> 41 (2): 802–37.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-berk2013valid" class="csl-entry">
+Berk, Richard, Lawrence Brown, Andreas Buja, Kai Zhang, Linda Zhao, et al. 2013. “Valid Post-Selection Inference.” <em>The Annals of Statistics</em> 41 (2): 802–37.
 </div>
-<div id="ref-bunea2011penalized">
-<p>Bunea, Florentina, Yiyuan She, Hernando Ombao, Assawin Gongvatana, Kate Devlin, and Ronald Cohen. 2011. “Penalized Least Squares Regression Methods and Applications to Neuroimaging.” <em>NeuroImage</em> 55 (4): 1519–27.</p>
+<div id="ref-Buhlmann2014" class="csl-entry">
+Bühlmann, Peter, Markus Kalisch, and Lukas Meier. 2014. “<span class="nocase">High-Dimensional Statistics with a View Toward Applications in Biology</span>.” <em>Annual Review of Statistics and Its Application</em> 1 (1): 255–78. <a href="https://doi.org/10.1146/annurev-statistics-022513-115545" class="uri">https://doi.org/10.1146/annurev-statistics-022513-115545</a>.
 </div>
-<div id="ref-Buhlmann2014">
-<p>Bühlmann, Peter, Markus Kalisch, and Lukas Meier. 2014. “High-Dimensional Statistics with a View Toward Applications in Biology.” <em>Annual Review of Statistics and Its Application</em> 1 (1): 255–78. <a href="https://doi.org/10.1146/annurev-statistics-022513-115545" class="uri">https://doi.org/10.1146/annurev-statistics-022513-115545</a>.</p>
+<div id="ref-bunea2011penalized" class="csl-entry">
+Bunea, Florentina, Yiyuan She, Hernando Ombao, Assawin Gongvatana, Kate Devlin, and Ronald Cohen. 2011. “Penalized Least Squares Regression Methods and Applications to Neuroimaging.” <em>NeuroImage</em> 55 (4): 1519–27.
 </div>
-<div id="ref-dicker2013variable">
-<p>Dicker, Lee, Baosheng Huang, and Xihong Lin. 2013. “Variable Selection and Estimation with the Seamless-L 0 Penalty.” <em>Statistica Sinica</em>, 929–62.</p>
+<div id="ref-dicker2013variable" class="csl-entry">
+Dicker, Lee, Baosheng Huang, and Xihong Lin. 2013. “Variable Selection and Estimation with the Seamless-l 0 Penalty.” <em>Statistica Sinica</em>, 929–62.
 </div>
-<div id="ref-fan2009network">
-<p>Fan, Jianqing, Yang Feng, and Yichao Wu. 2009. “Network Exploration via the Adaptive Lasso and Scad Penalties.” <em>The Annals of Applied Statistics</em> 3 (2): 521.</p>
+<div id="ref-fan2009network" class="csl-entry">
+Fan, Jianqing, Yang Feng, and Yichao Wu. 2009. “Network Exploration via the Adaptive LASSO and SCAD Penalties.” <em>The Annals of Applied Statistics</em> 3 (2): 521.
 </div>
-<div id="ref-fan2001variable">
-<p>Fan, Jianqing, and Runze Li. 2001. “Variable Selection via Nonconcave Penalized Likelihood and Its Oracle Properties.” <em>Journal of the American Statistical Association</em> 96 (456): 1348–60.</p>
+<div id="ref-fan2001variable" class="csl-entry">
+Fan, Jianqing, and Runze Li. 2001. “Variable Selection via Nonconcave Penalized Likelihood and Its Oracle Properties.” <em>Journal of the American Statistical Association</em> 96 (456): 1348–60.
 </div>
-<div id="ref-goeman2018l1">
-<p>Goeman, Jelle, Rosa Meijer, and Nimisha Chaturvedi. 2018. “L1 and L2 Penalized Regression Models.” <em>Vignette R Package Penalized.</em></p>
+<div id="ref-goeman2018l1" class="csl-entry">
+Goeman, Jelle, Rosa Meijer, and Nimisha Chaturvedi. 2018. “L1 and L2 Penalized Regression Models.” <em>Vignette R Package Penalized.</em>
 </div>
-<div id="ref-hastie2015statistical">
-<p>Hastie, Trevor, Robert Tibshirani, and Martin Wainwright. 2015. <em>Statistical Learning with Sparsity: The Lasso and Generalizations</em>. CRC press.</p>
+<div id="ref-hastie2015statistical" class="csl-entry">
+Hastie, Trevor, Robert Tibshirani, and Martin Wainwright. 2015. <em>Statistical Learning with Sparsity: The Lasso and Generalizations</em>. CRC press.
 </div>
-<div id="ref-jankova2015confidence">
-<p>Jankova, Jana, and Sara Van De Geer. 2015. “Confidence Intervals for High-Dimensional Inverse Covariance Estimation.” <em>Electronic Journal of Statistics</em> 9 (1): 1205–29.</p>
+<div id="ref-jankova2015confidence" class="csl-entry">
+Jankova, Jana, and Sara Van De Geer. 2015. “Confidence Intervals for High-Dimensional Inverse Covariance Estimation.” <em>Electronic Journal of Statistics</em> 9 (1): 1205–29.
 </div>
-<div id="ref-kim2012consistent">
-<p>Kim, Yongdai, Sunghoon Kwon, and Hosik Choi. 2012. “Consistent Model Selection Criteria on High Dimensions.” <em>The Journal of Machine Learning Research</em> 13: 1037–57.</p>
+<div id="ref-kim2012consistent" class="csl-entry">
+Kim, Yongdai, Sunghoon Kwon, and Hosik Choi. 2012. “Consistent Model Selection Criteria on High Dimensions.” <em>The Journal of Machine Learning Research</em> 13: 1037–57.
 </div>
-<div id="ref-knight2000asymptotics">
-<p>Knight, Keith, and Wenjiang Fu. 2000. “Asymptotics for Lasso-Type Estimators.” <em>Annals of Statistics</em>, 1356–78.</p>
+<div id="ref-knight2000asymptotics" class="csl-entry">
+Knight, Keith, and Wenjiang Fu. 2000. “Asymptotics for Lasso-Type Estimators.” <em>Annals of Statistics</em>, 1356–78.
 </div>
-<div id="ref-kwan2014regression">
-<p>Kwan, Clarence CY. 2014. “A Regression-Based Interpretation of the Inverse of the Sample Covariance Matrix.” <em>Spreadsheets in Education</em> 7 (1): 4613.</p>
+<div id="ref-kwan2014regression" class="csl-entry">
+Kwan, Clarence CY. 2014. “A Regression-Based Interpretation of the Inverse of the Sample Covariance Matrix.” <em>Spreadsheets in Education</em> 7 (1): 4613.
 </div>
-<div id="ref-lee2016exact">
-<p>Lee, Jason D, Dennis L Sun, Yuekai Sun, Jonathan E Taylor, and others.</p>
-<ol>
-<li>“Exact Post-Selection Inference, with Application to the Lasso.” <em>The Annals of Statistics</em> 44 (3): 907–27.</li>
-</ol>
+<div id="ref-lee2016exact" class="csl-entry">
+Lee, Jason D, Dennis L Sun, Yuekai Sun, Jonathan E Taylor, et al. 2016. “Exact Post-Selection Inference, with Application to the Lasso.” <em>The Annals of Statistics</em> 44 (3): 907–27.
 </div>
-<div id="ref-li2015flare">
-<p>Li, Xingguo, Tuo Zhao, Xiaoming Yuan, and Han Liu. 2015. “The Flare Package for High Dimensional Linear Regression and Precision Matrix Estimation in R.” <em>Journal of Machine Learning Research: JMLR</em> 16: 553.</p>
+<div id="ref-li2015flare" class="csl-entry">
+Li, Xingguo, Tuo Zhao, Xiaoming Yuan, and Han Liu. 2015. “The Flare Package for High Dimensional Linear Regression and Precision Matrix Estimation in r.” <em>Journal of Machine Learning Research: JMLR</em> 16: 553.
 </div>
-<div id="ref-lv2009unified">
-<p>Lv, Jinchi, and Yingying Fan. 2009. “A Unified Approach to Model Selection and Sparse Recovery Using Regularized Least Squares.” <em>The Annals of Statistics</em> 37 (6A): 3498–3528.</p>
+<div id="ref-lv2009unified" class="csl-entry">
+Lv, Jinchi, and Yingying Fan. 2009. “A Unified Approach to Model Selection and Sparse Recovery Using Regularized Least Squares.” <em>The Annals of Statistics</em> 37 (6A): 3498–528.
 </div>
-<div id="ref-mazumder2011sparsenet">
-<p>Mazumder, Rahul, Jerome H Friedman, and Trevor Hastie. 2011. “Sparsenet: Coordinate Descent with Nonconvex Penalties.” <em>Journal of the American Statistical Association</em> 106 (495): 1125–38.</p>
+<div id="ref-mazumder2011sparsenet" class="csl-entry">
+Mazumder, Rahul, Jerome H Friedman, and Trevor Hastie. 2011. “Sparsenet: Coordinate Descent with Nonconvex Penalties.” <em>Journal of the American Statistical Association</em> 106 (495): 1125–38.
 </div>
-<div id="ref-tibshirani1996regression">
-<p>Tibshirani, Robert. 1996. “Regression Shrinkage and Selection via the Lasso.” <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 58 (1): 267–88.</p>
+<div id="ref-tibshirani1996regression" class="csl-entry">
+Tibshirani, Robert. 1996. “Regression Shrinkage and Selection via the Lasso.” <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 58 (1): 267–88.
 </div>
-<div id="ref-tibshirani2011regression">
-<p>———. 2011. “Regression Shrinkage and Selection via the Lasso: A Retrospective.” <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em> 73 (3): 273–82.</p>
+<div id="ref-tibshirani2011regression" class="csl-entry">
+———. 2011. “Regression Shrinkage and Selection via the Lasso: A Retrospective.” <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em> 73 (3): 273–82.
 </div>
-<div id="ref-wang2018variable">
-<p>Wang, Yanxin, Qibin Fan, and Li Zhu. 2018. “Variable Selection and Estimation Using a Continuous Approximation to the L0 Penalty.” <em>Annals of the Institute of Statistical Mathematics</em> 70 (1): 191–214.</p>
+<div id="ref-wang2018variable" class="csl-entry">
+Wang, Yanxin, Qibin Fan, and Li Zhu. 2018. “Variable Selection and Estimation Using a Continuous Approximation to the L0 Penalty.” <em>Annals of the Institute of Statistical Mathematics</em> 70 (1): 191–214.
 </div>
-<div id="ref-wang2016variable">
-<p>Wang, Yanxin, and Li Zhu. 2016. “Variable Selection and Parameter Estimation with the Atan Regularization Method.” <em>Journal of Probability and Statistics</em>.</p>
+<div id="ref-wang2016variable" class="csl-entry">
+Wang, Yanxin, and Li Zhu. 2016. “Variable Selection and Parameter Estimation with the Atan Regularization Method.” <em>Journal of Probability and Statistics</em>.
 </div>
-<div id="ref-williams2020beyond">
-<p>Williams, Donald R. 2020. “Beyond Lasso: A Survey of Nonconvex Regularization in Gaussian Graphical Models.” <em>PsyArXiv</em>.</p>
+<div id="ref-williams2020beyond" class="csl-entry">
+Williams, Donald R. 2020. “Beyond Lasso: A Survey of Nonconvex Regularization in Gaussian Graphical Models.” <em>PsyArXiv</em>.
 </div>
-<div id="ref-williams2020back">
-<p>Williams, Donald R, and Philippe Rast. 2020. “Back to the Basics: Rethinking Partial Correlation Network Methodology.” <em>British Journal of Mathematical and Statistical Psychology</em> 73 (2): 187–212.</p>
+<div id="ref-williams2020back" class="csl-entry">
+Williams, Donald R, and Philippe Rast. 2020. “Back to the Basics: Rethinking Partial Correlation Network Methodology.” <em>British Journal of Mathematical and Statistical Psychology</em> 73 (2): 187–212.
 </div>
-<div id="ref-williams2019nonregularized">
-<p>Williams, Donald R, Mijke Rhemtulla, Anna C Wysocki, and Philippe Rast.</p>
+<div id="ref-williams2019nonregularized" class="csl-entry">
+Williams, Donald R, Mijke Rhemtulla, Anna C Wysocki, and Philippe Rast.
 <ol>
 <li>“On Nonregularized Estimation of Psychological Networks.” <em>Multivariate Behavioral Research</em> 54 (5): 719–50.</li>
 </ol>
 </div>
-<div id="ref-zhang2010nearly">
-<p>Zhang, Cun-Hui. 2010. “Nearly Unbiased Variable Selection Under Minimax Concave Penalty.” <em>The Annals of Statistics</em> 38 (2): 894–942.</p>
+<div id="ref-zhang2010nearly" class="csl-entry">
+Zhang, Cun-Hui. 2010. “Nearly Unbiased Variable Selection Under Minimax Concave Penalty.” <em>The Annals of Statistics</em> 38 (2): 894–942.
 </div>
-<div id="ref-zhang2018silggm">
-<p>Zhang, Rong, Zhao Ren, and Wei Chen. 2018. “SILGGM: An Extensive R Package for Efficient Statistical Inference in Large-Scale Gene Networks.” <em>PLoS Computational Biology</em> 14 (8): e1006369.</p>
+<div id="ref-zhang2018silggm" class="csl-entry">
+Zhang, Rong, Zhao Ren, and Wei Chen. 2018. “SILGGM: An Extensive r Package for Efficient Statistical Inference in Large-Scale Gene Networks.” <em>PLoS Computational Biology</em> 14 (8): e1006369.
 </div>
-<div id="ref-zhao2006model">
-<p>Zhao, Peng, and Bin Yu. 2006. “On Model Selection Consistency of Lasso.” <em>Journal of Machine Learning Research</em> 7 (Nov): 2541–63.</p>
+<div id="ref-zhao2006model" class="csl-entry">
+Zhao, Peng, and Bin Yu. 2006. “On Model Selection Consistency of Lasso.” <em>Journal of Machine Learning Research</em> 7 (Nov): 2541–63.
 </div>
-<div id="ref-zou2006adaptive">
-<p>Zou, Hui. 2006. “The Adaptive Lasso and Its Oracle Properties.” <em>Journal of the American Statistical Association</em> 101 (476): 1418–29.</p>
+<div id="ref-zou2006adaptive" class="csl-entry">
+Zou, Hui. 2006. “The Adaptive Lasso and Its Oracle Properties.” <em>Journal of the American Statistical Association</em> 101 (476): 1418–29.
 </div>
-<div id="ref-zou2008one">
-<p>Zou, Hui, and Runze Li. 2008. “One-Step Sparse Estimates in Nonconcave Penalized Likelihood Models.” <em>Annals of Statistics</em> 36 (4): 1509.</p>
+<div id="ref-zou2008one" class="csl-entry">
+Zou, Hui, and Runze Li. 2008. “One-Step Sparse Estimates in Nonconcave Penalized Likelihood Models.” <em>Annals of Statistics</em> 36 (4): 1509.
 </div>
 </div>
 </div>

@@ -62,7 +62,23 @@ The following are implemented in `GGMncv`:
 
 1. Atan (`penalty = "atan"`; @wang2016variable). This is currently the default.
 
+2. Seamless *L*<sub>0</sub>  (`penalty = "selo"`; @dicker2013variable)
 
+3. Exponential (`penalty = "exp"`; @wang2018variable)
+
+4. Smooth integration of counting and absolute deviation (`penalty = "sica"`; @lv2009unified)
+
+5. Log (`penalty = "log"`; @mazumder2011sparsenet)
+
+6. *L*<sub>q</sub> (`penalty = "lq"`, *0* < *q* < *1*; e.g., @knight2000asymptotics)
+
+7. Smoothly clipped absolute deviation (`penalty = "scad"`; @fan2001variable)
+
+8. Minimax concave penalty (`penalty = "mcp"`; @zhang2010nearly)
+
+9. Adaptive lasso (`penalty = "adapt"`; @zou2006adaptive)
+
+10. Lasso (`penalty = "lasso"`; @tibshirani1996regression)
 
 
 Options 1-5 are continuous approximations to the *L*<sub>0</sub> penalty, that is, best subsets 
