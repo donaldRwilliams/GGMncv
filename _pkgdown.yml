@@ -1,6 +1,6 @@
 home:
   title: GGMncv
-  description: Estimation Gaussian graphical model with noncovex penalties
+  description: Estimate Gaussian graphical models with noncovex penalties
 
 url: https://donaldrwilliams.github.io/GGMncv/
 template:
