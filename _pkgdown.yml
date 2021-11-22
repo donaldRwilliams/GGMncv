@@ -1,0 +1,13 @@
+home:
+  title: GGMncv
+
+url: https://donaldrwilliams.github.io/GGMncv/
+template:
+  params:
+    bootswatch: flatly
+  opengraph:
+    image:
+      src: man/figures/hex.jpg
+    twitter:
+      creator: "@wdonald_1985"
+      card: summary
