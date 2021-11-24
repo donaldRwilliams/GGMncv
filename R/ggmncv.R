@@ -288,6 +288,8 @@ ggmncv <- function(R,
             )
           ))
 
+        # diag(lambda_mat) <- 0
+
         fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
 
         Theta <- fit$wi

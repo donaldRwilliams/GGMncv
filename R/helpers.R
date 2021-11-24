@@ -265,8 +265,11 @@ lw_helper <- function(x, N){
   #    all variances are the same
   #    all covariances are zero
 
-  # Modified from the MATLAB-code downloaded from the website of Michael Wolf in the Department of Economics of the University of Zurich.
-  # Based on the presentation in the article of Ledoit & Wolf (2004): "Honey, I Shrunk The Sample Covariance Matrix". The Journal of Portfolio Management Summer, Vol. 30, No. 4, 110-119.
+  # Modified from the MATLAB-code downloaded from the website of Michael Wolf
+  # in the Department of Economics of the University of Zurich.
+  # Based on the presentation in the article of Ledoit & Wolf (2004): "Honey,
+  # I Shrunk The Sample Covariance Matrix". The Journal of Portfolio Management
+  # Summer, Vol. 30, No. 4, 110-119.
 
   # This version: 2/2015
 
@@ -339,6 +342,14 @@ symm_mat <- function (x) {
   x[lower.tri(x)] <- t(x)[lower.tri(x)]
   x
 }
+
+jsd <- function(Theta1, Theta2){
+  Theta1 <- cov2cor(Theta1)
+  Theta2 <- cov2cor(Theta2)
+  jsd <- (kl_mvn(Theta1, Theta2) +  kl_mvn(Theta2, Theta1)) / 2
+  return(jsd)
+}
+
 
 
 globalVariables(c("VIP",

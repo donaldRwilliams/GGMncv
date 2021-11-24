@@ -1,18 +1,49 @@
-#' Title
+#' @title Network Comparison Test
 #'
-#' @param Y_g1
-#' @param Y_g2
-#' @param iter
-#' @param desparsify
-#' @param method
-#' @param FUN
-#' @param cores
-#' @param ...
+#' @description A re-implementation and extension of the permutation based
+#' network comparison test introduced in \insertCite{van2017comparing;textual}{GGMncv}.
+#' Such extensions include scaling to networks with many nodes and the option to
+#' use custom test-statistics.
+#'
+#' @param Y_g1 A matrix (or data.frame) of dimensions \emph{n} by \emph{p},
+#'             corresponding to the first dataset (\emph{p} must be the same
+#'             for \code{Y_g1} and \code{Y_g2}).
+#'
+#' @param Y_g2 A matrix of dimensions \emph{n} by \emph{p}, corresponding to the
+#'             second dataset (\emph{p} must be the same for \code{Y_g1} and \code{Y_g2}).
+#'
+#' @param iter Numeric. Number of (Monte Carlo) permutations (defaults to \code{1000}).
+#'
+#' @param desparsify Logical. Should the de-sparsified glasso estimator be
+#'                   computed (defaults to \code{TRUE})? This is much faster,
+#'                   as the tuning parameter is fixed to
+#'                   \mjseqn{\lambda = \sqrt{log(p)/n}}.
+#'
+#' @param method character string. Which correlation coefficient (or covariance)
+#'               is to be computed. One of "pearson" (default), "kendall",
+#'               or "spearman".
+#'
+#' @param FUN A function or list of functions (defaults to \code{NULL}),
+#'            specifying custom test-statistics. See \strong{Examples}.
+#'
+#'
+#' @param cores Numeric. Number of cores to use when executing the permutations in
+#'              parallel (defaults to \code{1}).
+#'
+#' @param ... Additional arguments passed to \code{\link{ggmncv}}.
+#'
+#' @references
+#' \insertAllCited{}
 #'
 #' @return
+#'
 #' @export
 #'
-#' @examples
+#' @importFrom pbapply pboptions
+#' @importFrom pbapply pblapply
+#' @importFrom parallel makeCluster
+#' @importFrom parallel stopCluster
+#'
 nct <- function(Y_g1, Y_g2,
                 iter = 1000,
                 desparsify = TRUE,
@@ -20,7 +51,6 @@ nct <- function(Y_g1, Y_g2,
                 FUN = NULL,
                 cores = 1,
                 ...){
-
 
   p_g1 <- ncol(Y_g1)
 
@@ -113,13 +143,11 @@ nct <- function(Y_g1, Y_g2,
 
   }
 
-  cl <- parallel::makeCluster(cores)
+  cl <- makeCluster(cores)
 
-  pbapply::pboptions(nout = 10)
+  pboptions(nout = 10)
 
-  parallel::clusterExport(cl,varlist = "jsd")
-
-  iter_results <- pblapply(X = 1:iter, function(x){
+  iter_results <- parallel::parLapply(X = 1:iter, function(x){
 
     perm_g1 <- sample(1:n_total, size = n_g1, replace = FALSE)
 
@@ -130,8 +158,8 @@ nct <- function(Y_g1, Y_g2,
     if(desparsify){
 
       fit_g1 <-
-        GGMncv::desparsify(
-          GGMncv::ggmncv(
+        desparsify(
+          ggmncv(
             R = cor(Y_g1_perm, method = method),
             n = n_g1, lambda = sqrt(log(p_g1)/n_g1),
             progress = FALSE
@@ -139,8 +167,8 @@ nct <- function(Y_g1, Y_g2,
         )
 
       fit_g2 <-
-        GGMncv::desparsify(
-          GGMncv::ggmncv(
+        desparsify(
+          ggmncv(
             R = cor(Y_g2_perm, method = method),
             n = n_g2, lambda = sqrt(log(p_g2)/n_g2),
             progress = FALSE
@@ -149,11 +177,11 @@ nct <- function(Y_g1, Y_g2,
 
     } else {
 
-      fit_g1 <- GGMncv::ggmncv(R = cor(Y_g1_perm, method = method),
+      fit_g1 <- ggmncv(R = cor(Y_g1_perm, method = method),
                        n = n_g1, ...,
                        progress = FALSE)
 
-      fit_g2 <- GGMncv::ggmncv(R = cor(Y_g2_perm, method = method),
+      fit_g2 <- ggmncv(R = cor(Y_g2_perm, method = method),
                        n = n_g2, ...,
                        progress = FALSE)
     }
@@ -203,21 +231,37 @@ nct <- function(Y_g1, Y_g2,
 
   }, cl = cl)
 
-  parallel::stopCluster(cl)
+  stopCluster(cl)
 
   custom_results <- list()
+  perm_list <- list()
 
   if(!is.null(FUN)){
 
     if(length(FUN) == 1){
 
-      custom_results[[1]] <- t(sapply(iter_results, "[[", "fun_perm", simplify = TRUE))
+      if(length(obs$fun_obs) == 1){
+        perm_list[[1]] <- sapply(iter_results, "[[", "fun_perm", simplify = TRUE)
+        names(perm_list) <- paste0(as.character(substitute(FUN)), "_perm")
+        custom_results[[1]] <- mean(as.numeric(perm_list[[1]]) >= obs$fun_obs)
+        names(custom_results) <- paste0(as.character(substitute(FUN)), "_pvalue")
+        obs$fun_obs <- list(obs$fun_obs)
+        names(obs$fun_obs) <- paste0(as.character(substitute(FUN)), "_obs")
+
+      }
+
+
+
+      #names(perm_list) <- paste0(as.character(substitute(FUN)), "_perm")
+
+      #custom_results[[1]] <- mean(perm_list[[1]] >= obs$fun_obs[[i]])
 
     } else {
 
       for(i in seq_len(length(FUN))) {
 
-        res_x <- do.call(rbind, sapply(iter_results, "[[", "fun_perm", simplify = TRUE)[i,])
+        res_x <- do.call(rbind, sapply(iter_results, "[[", "fun_perm",
+                                       simplify = TRUE)[i,])
 
         perm_list[[i]] <- res_x
 
@@ -236,12 +280,14 @@ nct <- function(Y_g1, Y_g2,
 
       names(custom_results) <- paste0(names(FUN), "_pvalue")
       names(perm_list) <- paste(names(FUN), "_perm")
-
+      names(obs$fun_obs) <- paste0(names(obs$fun_obs), "_obs")
     }
 
-    names(obs$fun_obs) <- paste0(names(obs$fun_obs), "_obs")
+
 
   }
+
+
 
   default_names <- names(iter_results[[1]])[1:4]
 
@@ -261,13 +307,14 @@ nct <- function(Y_g1, Y_g2,
 
   names(perm_list_default) <- default_names
 
-  ret <- c(default_results,
-    custom_results,
-    perm_list_default,
-    obs[1:4],
-    obs$fun_obs)
+  returned_object <- c(default_results,
+                       custom_results,
+                       perm_list_default,
+                       perm_list,
+                       obs[1:4],
+                       obs$fun_obs)
 
-  return(ret)
+  return(returned_object)
 }
 
 
