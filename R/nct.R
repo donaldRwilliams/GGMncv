@@ -43,6 +43,7 @@
 #' @importFrom pbapply pblapply
 #' @importFrom parallel makeCluster
 #' @importFrom parallel stopCluster
+#' @importFrom parallel parLapply
 #'
 nct <- function(Y_g1, Y_g2,
                 iter = 1000,
@@ -50,6 +51,7 @@ nct <- function(Y_g1, Y_g2,
                 method = "pearson",
                 FUN = NULL,
                 cores = 1,
+                progress = TRUE,
                 ...){
 
   p_g1 <- ncol(Y_g1)
@@ -143,94 +145,278 @@ nct <- function(Y_g1, Y_g2,
 
   }
 
-  cl <- makeCluster(cores)
+  if(cores == 1){
 
-  pboptions(nout = 10)
-
-  iter_results <- parallel::parLapply(X = 1:iter, function(x){
-
-    perm_g1 <- sample(1:n_total, size = n_g1, replace = FALSE)
-
-    Y_g1_perm <- stacked_data[perm_g1,]
-
-    Y_g2_perm <- stacked_data[n_seq[-perm_g1],]
-
-    if(desparsify){
-
-      fit_g1 <-
-        desparsify(
-          ggmncv(
-            R = cor(Y_g1_perm, method = method),
-            n = n_g1, lambda = sqrt(log(p_g1)/n_g1),
-            progress = FALSE
-          )
-        )
-
-      fit_g2 <-
-        desparsify(
-          ggmncv(
-            R = cor(Y_g2_perm, method = method),
-            n = n_g2, lambda = sqrt(log(p_g2)/n_g2),
-            progress = FALSE
-          )
-        )
-
-    } else {
-
-      fit_g1 <- ggmncv(R = cor(Y_g1_perm, method = method),
-                       n = n_g1, ...,
-                       progress = FALSE)
-
-      fit_g2 <- ggmncv(R = cor(Y_g2_perm, method = method),
-                       n = n_g2, ...,
-                       progress = FALSE)
+    if(progress){
+      pb <- txtProgressBar(min = 0, max = iter, style = 3)
     }
 
-    pcor_g1 <- fit_g1$P
-    pcor_g2 <- fit_g2$P
+    iter_results <- lapply(X = 1:iter, function(x){
 
-    # observed: global strength
-    glstr_perm_g1 <- sum(abs(pcor_g1[upper.tri(I_p)]))
-    glstr_perm_g2 <- sum(abs(pcor_g2[upper.tri(I_p)]))
-    glstr_diff_perm <- abs(glstr_perm_g1 - glstr_perm_g2)
+      perm_g1 <- sample(1:n_total, size = n_g1, replace = FALSE)
 
-    # observed: SSE
-    sse_perm <- sum((pcor_g1[upper.tri(I_p)] - pcor_g2[upper.tri(I_p)])^2)
+      Y_g1_perm <- stacked_data[perm_g1,]
 
-    # observed: jensen shannon distance
-    jsd_perm <- jsd(fit_g1$Theta, fit_g2$Theta)
+      Y_g2_perm <- stacked_data[n_seq[-perm_g1],]
 
-    # observed: max diff
-    max_diff_perm <- max(abs(pcor_g1[upper.tri(I_p)] - pcor_g2[upper.tri(I_p)]))
+      if(desparsify){
 
-    returned_obj <- list(glstr_perm = glstr_diff_perm,
-                         sse_perm = sse_perm,
-                         jsd_perm = jsd_perm,
-                         max_perm = max_diff_perm)
+        fit_g1 <-
+          desparsify(
+            ggmncv(
+              R = cor(Y_g1_perm, method = method),
+              n = n_g1, lambda = sqrt(log(p_g1)/n_g1),
+              progress = FALSE
+            )
+          )
 
-
-    if(!is.null(FUN)){
-
-      if(is(FUN, "function")){
-
-        returned_obj$fun_perm <- FUN(pcor_g1, pcor_g2)
-
-      } else if (is(FUN, "list")){
-
-        returned_obj$fun_perm <- lapply(FUN, function(f) f(pcor_g1, pcor_g2))
+        fit_g2 <-
+          desparsify(
+            ggmncv(
+              R = cor(Y_g2_perm, method = method),
+              n = n_g2, lambda = sqrt(log(p_g2)/n_g2),
+              progress = FALSE
+            )
+          )
 
       } else {
 
-        stop("custom not supported. must be a function or list of functions")
+        fit_g1 <- ggmncv(R = cor(Y_g1_perm, method = method),
+                         n = n_g1, ...,
+                         progress = FALSE)
+
+        fit_g2 <- ggmncv(R = cor(Y_g2_perm, method = method),
+                         n = n_g2, ...,
+                         progress = FALSE)
+      }
+
+      pcor_g1 <- fit_g1$P
+      pcor_g2 <- fit_g2$P
+
+      # observed: global strength
+      glstr_perm_g1 <- sum(abs(pcor_g1[upper.tri(I_p)]))
+      glstr_perm_g2 <- sum(abs(pcor_g2[upper.tri(I_p)]))
+      glstr_diff_perm <- abs(glstr_perm_g1 - glstr_perm_g2)
+
+      # observed: SSE
+      sse_perm <- sum((pcor_g1[upper.tri(I_p)] - pcor_g2[upper.tri(I_p)])^2)
+
+      # observed: jensen shannon distance
+      jsd_perm <- jsd(fit_g1$Theta, fit_g2$Theta)
+
+      # observed: max diff
+      max_diff_perm <- max(abs(pcor_g1[upper.tri(I_p)] - pcor_g2[upper.tri(I_p)]))
+
+      returned_obj <- list(glstr_perm = glstr_diff_perm,
+                           sse_perm = sse_perm,
+                           jsd_perm = jsd_perm,
+                           max_perm = max_diff_perm)
+
+
+      if(!is.null(FUN)){
+
+        if(is(FUN, "function")){
+
+          returned_obj$fun_perm <- FUN(pcor_g1, pcor_g2)
+
+        } else if (is(FUN, "list")){
+
+          returned_obj$fun_perm <- lapply(FUN, function(f) f(pcor_g1, pcor_g2))
+
+        } else {
+
+          stop("custom not supported. must be a function or list of functions")
+
+        }
 
       }
 
+      if(progress){
+        setTxtProgressBar(pb, x)
+      }
+      return(returned_obj)
+
+    })
+
+  } else {
+
+    cl <- makeCluster(cores)
+
+    if(progress){
+
+      pboptions(nout = 10)
+
+      iter_results <- pblapply(X = 1:iter, function(x){
+
+        perm_g1 <- sample(1:n_total, size = n_g1, replace = FALSE)
+
+        Y_g1_perm <- stacked_data[perm_g1,]
+
+        Y_g2_perm <- stacked_data[n_seq[-perm_g1],]
+
+        if(desparsify){
+
+          fit_g1 <-
+            desparsify(
+              ggmncv(
+                R = cor(Y_g1_perm, method = method),
+                n = n_g1, lambda = sqrt(log(p_g1)/n_g1),
+                progress = FALSE
+              )
+            )
+
+          fit_g2 <-
+            desparsify(
+              ggmncv(
+                R = cor(Y_g2_perm, method = method),
+                n = n_g2, lambda = sqrt(log(p_g2)/n_g2),
+                progress = FALSE
+              )
+            )
+
+        } else {
+
+          fit_g1 <- ggmncv(R = cor(Y_g1_perm, method = method),
+                           n = n_g1, ...,
+                           progress = FALSE)
+
+          fit_g2 <- ggmncv(R = cor(Y_g2_perm, method = method),
+                           n = n_g2, ...,
+                           progress = FALSE)
+        }
+
+        pcor_g1 <- fit_g1$P
+        pcor_g2 <- fit_g2$P
+
+        # observed: global strength
+        glstr_perm_g1 <- sum(abs(pcor_g1[upper.tri(I_p)]))
+        glstr_perm_g2 <- sum(abs(pcor_g2[upper.tri(I_p)]))
+        glstr_diff_perm <- abs(glstr_perm_g1 - glstr_perm_g2)
+
+        # observed: SSE
+        sse_perm <- sum((pcor_g1[upper.tri(I_p)] - pcor_g2[upper.tri(I_p)])^2)
+
+        # observed: jensen shannon distance
+        jsd_perm <- jsd(fit_g1$Theta, fit_g2$Theta)
+
+        # observed: max diff
+        max_diff_perm <- max(abs(pcor_g1[upper.tri(I_p)] - pcor_g2[upper.tri(I_p)]))
+
+        returned_obj <- list(glstr_perm = glstr_diff_perm,
+                             sse_perm = sse_perm,
+                             jsd_perm = jsd_perm,
+                             max_perm = max_diff_perm)
+
+
+        if(!is.null(FUN)){
+
+          if(is(FUN, "function")){
+
+            returned_obj$fun_perm <- FUN(pcor_g1, pcor_g2)
+
+          } else if (is(FUN, "list")){
+
+            returned_obj$fun_perm <- lapply(FUN, function(f) f(pcor_g1, pcor_g2))
+
+          } else {
+
+            stop("custom not supported. must be a function or list of functions")
+
+          }
+
+        }
+
+        return(returned_obj)
+
+      }, cl = cl)
+
+    } else {
+
+      iter_results <- parallel::parLapply(X = 1:iter, function(x){
+
+        perm_g1 <- sample(1:n_total, size = n_g1, replace = FALSE)
+
+        Y_g1_perm <- stacked_data[perm_g1,]
+
+        Y_g2_perm <- stacked_data[n_seq[-perm_g1],]
+
+        if(desparsify){
+
+          fit_g1 <-
+            desparsify(
+              ggmncv(
+                R = cor(Y_g1_perm, method = method),
+                n = n_g1, lambda = sqrt(log(p_g1)/n_g1),
+                progress = FALSE
+              )
+            )
+
+          fit_g2 <-
+            desparsify(
+              ggmncv(
+                R = cor(Y_g2_perm, method = method),
+                n = n_g2, lambda = sqrt(log(p_g2)/n_g2),
+                progress = FALSE
+              )
+            )
+
+        } else {
+
+          fit_g1 <- ggmncv(R = cor(Y_g1_perm, method = method),
+                           n = n_g1, ...,
+                           progress = FALSE)
+
+          fit_g2 <- ggmncv(R = cor(Y_g2_perm, method = method),
+                           n = n_g2, ...,
+                           progress = FALSE)
+        }
+
+        pcor_g1 <- fit_g1$P
+        pcor_g2 <- fit_g2$P
+
+        # observed: global strength
+        glstr_perm_g1 <- sum(abs(pcor_g1[upper.tri(I_p)]))
+        glstr_perm_g2 <- sum(abs(pcor_g2[upper.tri(I_p)]))
+        glstr_diff_perm <- abs(glstr_perm_g1 - glstr_perm_g2)
+
+        # observed: SSE
+        sse_perm <- sum((pcor_g1[upper.tri(I_p)] - pcor_g2[upper.tri(I_p)])^2)
+
+        # observed: jensen shannon distance
+        jsd_perm <- jsd(fit_g1$Theta, fit_g2$Theta)
+
+        # observed: max diff
+        max_diff_perm <- max(abs(pcor_g1[upper.tri(I_p)] - pcor_g2[upper.tri(I_p)]))
+
+        returned_obj <- list(glstr_perm = glstr_diff_perm,
+                             sse_perm = sse_perm,
+                             jsd_perm = jsd_perm,
+                             max_perm = max_diff_perm)
+
+        if(!is.null(FUN)){
+
+          if(is(FUN, "function")){
+
+            returned_obj$fun_perm <- FUN(pcor_g1, pcor_g2)
+
+          } else if (is(FUN, "list")){
+
+            returned_obj$fun_perm <- lapply(FUN, function(f) f(pcor_g1, pcor_g2))
+
+          } else {
+
+            stop("custom not supported. must be a function or list of functions")
+
+          }
+
+        }
+
+        return(returned_obj)
+
+      }, cl = cl)
+
     }
-
-    return(returned_obj)
-
-  }, cl = cl)
-
+  }
   stopCluster(cl)
 
   custom_results <- list()
@@ -252,9 +438,7 @@ nct <- function(Y_g1, Y_g2,
 
 
 
-      #names(perm_list) <- paste0(as.character(substitute(FUN)), "_perm")
 
-      #custom_results[[1]] <- mean(perm_list[[1]] >= obs$fun_obs[[i]])
 
     } else {
 
