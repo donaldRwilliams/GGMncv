@@ -83,7 +83,7 @@ confirm_edges <- function(object, Rnew, method, alpha) {
   confirm_which <- which(fit$adj[upper.tri(diag(p))] == 1)
 
   # only test those in the object
-  ps <- p.adjust(p = inf$uncorrect[upper.tri(diag(p))][confirm_which],
+  ps <- p.adjust(p = inf$pval_uncorrect[upper.tri(diag(p))][confirm_which],
                  method = method)
 
   confirm_mat <- matrix(0, p, p)

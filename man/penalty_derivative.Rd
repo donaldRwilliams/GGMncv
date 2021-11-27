@@ -14,22 +14,44 @@ penalty_derivative(
 \arguments{
 \item{theta}{Numeric vector. Values for which the derivative is computed.}
 
-\item{penalty}{Character string. Character string. Which penalty should be
-used (defaults to \code{"atan"})? See \code{\link[GGMncv]{ggmncv}} for the
+\item{penalty}{Character string. Which penalty should be
+used (defaults to \code{"atan"})?
+See \code{\link[GGMncv]{ggmncv}} for the
 available penalties.}
 
 \item{lambda}{Numeric.  Regularization parameter (defaults to \code{1}).}
 
-\item{gamma}{Numeric vector. Hyperparameter(s) for the penalty function.}
+\item{gamma}{Numeric vector. Hyperparameter(s) for the penalty function}
 }
 \value{
-A list of class \code{penalty_derivative}
+A list of class \code{penalty_derivative}, including the following:
+
+\itemize{
+
+\item \code{deriv}: Data frame including the derivative, theta, gamma,
+and the chosen penalty.
+
+\item \code{lambda}: Regularization parameter.
+
+}
 }
 \description{
 Compute the derivative for a nonconvex penalty.
+}
+\note{
+Some care is required for specifying \code{gamma}. For example,
+the default value for \code{scad} is 3.7 and it \emph{must} be some
+value greater than 2 \insertCite{fan2001variable}{GGMncv}. The
+default values in \strong{GGMncv} are set to recommended values in the
+respective papers.
 }
 \examples{
 deriv <- penalty_derivative(theta =  seq(-5,5,length.out = 10000),
                             lambda = 1,
                             gamma = c(0.01, 0.05, 0.1))
+
+head(deriv$deriv)
+}
+\references{
+\insertAllCited{}
 }

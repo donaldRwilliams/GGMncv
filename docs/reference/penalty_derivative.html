@@ -149,8 +149,9 @@
     </tr>
     <tr>
       <th>penalty</th>
-      <td><p>Character string. Character string. Which penalty should be
-used (defaults to <code>"atan"</code>)? See <code><a href='ggmncv.html'>ggmncv</a></code> for the
+      <td><p>Character string. Which penalty should be
+used (defaults to <code>"atan"</code>)?
+See <code><a href='ggmncv.html'>ggmncv</a></code> for the
 available penalties.</p></td>
     </tr>
     <tr>
@@ -159,18 +160,46 @@ available penalties.</p></td>
     </tr>
     <tr>
       <th>gamma</th>
-      <td><p>Numeric vector. Hyperparameter(s) for the penalty function.</p></td>
+      <td><p>Numeric vector. Hyperparameter(s) for the penalty function</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of class <code>penalty_derivative</code></p>
+    <p>A list of class <code>penalty_derivative</code>, including the following:</p>
+<ul>
+<li><p><code>deriv</code>: Data frame including the derivative, theta, gamma,
+and the chosen penalty.</p></li>
+<li><p><code>lambda</code>: Regularization parameter.</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Some care is required for specifying <code>gamma</code>. For example,
+the default value for <code>scad</code> is 3.7 and it <em>must</em> be some
+value greater than 2 (Fan and Li 2001)
+. The
+default values in <strong>GGMncv</strong> are set to recommended values in the
+respective papers.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Fan J, Li R (2001).
+&#8220;Variable selection via nonconcave penalized likelihood and its oracle properties.&#8221;
+<em>Journal of the American statistical Association</em>, <b>96</b>(456), 1348--1360.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='va'>deriv</span> <span class='op'>&lt;-</span> <span class='fu'>penalty_derivative</span><span class='op'>(</span>theta <span class='op'>=</span>  <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>,<span class='fl'>5</span>,length.out <span class='op'>=</span> <span class='fl'>10000</span><span class='op'>)</span>,</span>
 <span class='r-in'>                            lambda <span class='op'>=</span> <span class='fl'>1</span>,</span>
 <span class='r-in'>                            gamma <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>deriv</span><span class='op'>$</span><span class='va'>deriv</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          deriv   thetas gamma penalty</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 0.0002586469 5.000000  0.01    atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 0.0002587504 4.999000  0.01    atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 0.0002588539 4.998000  0.01    atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 0.0002589576 4.997000  0.01    atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 0.0002590612 4.996000  0.01    atan</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 0.0002591650 4.994999  0.01    atan</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

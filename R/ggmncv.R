@@ -4,9 +4,9 @@
 #'
 #' @description
 #' \loadmathjax
-#' Gaussian graphical models with nonconvex regularization. A survey of these approaches is provided
-#' in \insertCite{williams2020beyond;textual}{GGMncv}.
-#'
+#' Gaussian graphical modeling with nonconvex regularization. A thorough survey
+#' of these penalties, including simulation studies investigating their properties,
+#' is provided in \insertCite{williams2020beyond;textual}{GGMncv}.
 #'
 #' @param R Matrix. A correlation matrix of dimensions \emph{p} by \emph{p}.
 #'
@@ -20,26 +20,41 @@
 #'           \insertCite{kim2012consistent;textual}{GGMncv}. The options are \code{gic_1}
 #'           (i.e., \code{bic}) to \code{gic_6}.
 #'
-#' @param select Character string. Which tuning parameter should be selected (defaults to \code{"lambda"})?.
-#'               The options include \code{"lambda"} (the regularization parameter),
-#'               \code{"gamma"} (governs the 'shape'), and \code{"both"}. See details.
+#' @param select Character string. Which tuning parameter should be selected
+#'               (defaults to \code{"lambda"})? The options include \code{"lambda"}
+#'               (the regularization parameter), \code{"gamma"} (governs the 'shape'),
+#'               and \code{"both"}.
 #'
-#' @param gamma Numeric vector. Hyperparameter for the penalty function. Defaults to 3.7 (\code{SCAD}),
-#'              2 (\code{MCP}), 0.5 (\code{adapt}), and 0.01 otherwise with \code{select = "lambda"}.
+#' @param gamma Numeric. Hyperparameter for the penalty function.
+#'              Defaults to 3.7 (\code{scad}), 2 (\code{mcp}), 0.5 (\code{adapt}),
+#'              and 0.01 with all other penalties. Note care must be taken when
+#'              departing from the default values
+#'              (see the references in '\code{note}')
 #'
-#' @param lambda Numeric vector. Regularization parameter. Defaults to \code{NULL} that provides default
+#'
+#' @param lambda Numeric vector. Regularization (or tuning) parameters.
+#'               The defaults is \code{NULL} that provides default
 #'               values with  \code{select = "lambda"} and \code{sqrt(log(p)/n)} with
 #'               \code{select = "gamma"}.
 #'
+#' @param lambda_min_ratio Numeric. The smallest value for \code{lambda}, as a
+#'                         fraction of the upperbound of the
+#'                         regularization/tuning parameter. The default is
+#'                         \code{0.01}, which mimics the \code{R} package
+#'                         \strong{qgraph}. To mimic the \code{R} package
+#'                         \strong{huge}, set \code{lambda_min_ratio = 0.1}
+#'                         and \code{n_lambda = 10}.
+#'
 #' @param n_lambda Numeric. The number of \mjseqn{\lambda}'s to be evaluated. Defaults to 50.
-#'                 This is disregarded if custom values are provided in \code{lambda}.
+#'                 This is disregarded if custom values are provided for \code{lambda}.
 #'
 #' @param n_gamma Numeric. The number of \mjseqn{\gamma}'s to be evaluated. Defaults to 50.
 #'                This is disregarded if custom values are provided in \code{lambda}.
 #'
-#' @param initial A matrix or function. The initial inverse correlation matrix
-#'                for computing the penalty derivative. Defaults to \code{NULL}
-#'                which uses the inverse of \code{R} (see 'Note')
+#' @param initial A matrix (\emph{p} by \emph{p}) or custom function that returns
+#'                the inverse of the covariance matrix . This is used to compute
+#'                the penalty derivative. The default is \code{NULL}, which results
+#'                in using the inverse of \code{R} (see '\code{Note}').
 #'
 #' @param LLA Logical. Should the local linear approximation be used (default to \code{FALSE})?
 #'
@@ -47,7 +62,6 @@
 #'              (defaults to \code{FALSE})? Setting to \code{TRUE} results in the approach of
 #'              \insertCite{Foygel2010;textual}{GGMncv}, but with the regularization path obtained from
 #'              nonconvex regularization, as opposed to the \mjseqn{\ell_1}-penalty.
-#'
 #'
 #' @param maxit Numeric. The maximum number of iterations for determining convergence of the LLA
 #'              algorithm (defaults to \code{1e4}). Note this can be changed to, say,
@@ -57,7 +71,7 @@
 #' @param thr Numeric. Threshold for determining convergence of the LLA algorithm
 #'            (defaults to \code{1.0e-4}).
 #'
-#' @param store Logical. Should all of the fitted models be saved (defaults to \code{TRUE})?.
+#' @param store Logical. Should all of the fitted models be saved (defaults to \code{TRUE})?
 #'
 #' @param progress  Logical. Should a progress bar be included (defaults to \code{TRUE})?
 #'
@@ -66,8 +80,11 @@
 #'                   must be between 0 and 1). Setting \code{ebic_gamma = 0} results
 #'                   in BIC.
 #'
-#' @param ... Additional arguments passed to \code{initial} if a
-#'            function is provided and ignored otherwise (see "examples").
+#' @param penalize_diagonal Logical. Should the diagonal of the inverse covariance
+#'                          matrix be penalized (defaults to \code{TRUE}).
+#'
+#' @param ... Additional arguments passed to \code{initial} when a
+#'            function is provided and ignored otherwise.
 #'
 #' @references
 #' \insertAllCited{}
@@ -78,22 +95,29 @@
 #'
 #' \itemize{
 #' \item \code{Theta} Inverse covariance matrix
+#'
 #' \item \code{Sigma} Covariance matrix
+#'
 #' \item \code{P} Weighted adjacency matrix
+#'
 #' \item \code{adj} Adjacency matrix
-#' \item \code{lambda} Tuning parameter
+#'
+#' \item \code{lambda} Tuning parameter(s)
+#'
 #' \item \code{fit} glasso fitted model (a list)
 #' }
 #'
-#' @details Several of the penalties are (continuous) approximations to the \mjseqn{\ell_0} penalty,
-#' that is, best subset selection. However, the solution does not require enumerating
-#' all possible models which results in a computationally efficient solution.
+#' @details Several of the penalties are (continuous) approximations to the
+#' \mjseqn{\ell_0} penalty, that is, best subset selection. However, the solution
+#' does not require enumerating all possible models which results in a computationally
+#' efficient solution.
 #'
 #' \strong{L0 Approximations}
 #'
 #' \itemize{
 #'
-#' \item Atan: \code{penalty = "atan"} \insertCite{wang2016variable}{GGMncv}. This is currently the default.
+#' \item Atan: \code{penalty = "atan"} \insertCite{wang2016variable}{GGMncv}.
+#'  This is currently the default.
 #'
 #' \item Seamless \mjseqn{\ell_0}: \code{penalty = "selo"} \insertCite{dicker2013variable}{GGMncv}.
 #'
@@ -122,7 +146,7 @@
 #'
 #' }
 #'
-#' \strong{Gamma} (\mjseqn{\gamma}):
+#' \strong{gamma} (\mjseqn{\gamma}):
 #'
 #' The \code{gamma} argument corresponds to additional hyperparameter for each penalty.
 #' The defaults are set to the recommended values from the respective papers.
@@ -130,12 +154,13 @@
 #' \strong{LLA}
 #'
 #' The local linear approximate is noncovex penalties was described in
-#' \insertCite{fan2009network}{GGMncv}. This is essentially a iteratively
+#' \insertCite{fan2009network}{GGMncv}. This is essentially an iteratively
 #' re-weighted (g)lasso. Note that by default \code{LLA = FALSE}. This is due to
 #' the work of \insertCite{zou2008one;textual}{GGMncv}, which suggested that,
 #' so long as the starting values are good enough, then a one-step estimator is
-#' sufficient. In the case of low-dimensional data, the sample based inverse
-#' covariance matrix is used to compute the penalty. This is expected to work well,
+#' sufficient to obtain an accurate estimate of the conditional dependence structure.
+#' In the case of low-dimensional data, the sample based inverse
+#' covariance matrix is used for the starting values. This is expected to work well,
 #' assuming that \mjseqn{n} is sufficiently larger than  \mjseqn{p}.
 #'
 #'
@@ -148,26 +173,75 @@
 #' or when \emph{p} approaches \emph{n}, the precision matrix can become quite unstable.
 #' As a result, with \code{initial = NULL}, the algorithm can take a very (very) long time.
 #' If this occurs, provide a matrix for \code{initial} (e.g., using \code{lw}).
-#' Alternatively, the penalty can be changed to \code{"lasso"}, if desired.
+#' Alternatively, the penalty can be changed to \code{penalty = "lasso"}, if desired.
 #'
-#'
-#'
+#' The \code{R} package \strong{glassoFast} is under the hood of \code{ggmncv}
+#' \insertCite{sustik2012glassofast}{GGMncv}, which is much faster than
+#' \strong{glasso} when there are many nodes.
 #'
 #' @importFrom stats cor cov2cor
 #'
 #' @export
 #'
 #' @examples
+#' \donttest{
+#'
 #' # data
-#' Y <- GGMncv::ptsd[,1:10]
+#' Y <- GGMncv::ptsd
 #'
 #' S <- cor(Y)
 #'
 #' # fit model
-#' fit <- ggmncv(S, n = nrow(Y))
+#' # note: atan default
+#' fit_atan <- ggmncv(S, n = nrow(Y),
+#'                    progress = FALSE)
 #'
 #' # plot
-#' plot(get_graph(fit))
+#' plot(get_graph(fit_atan),
+#'      edge_magnify = 10,
+#'      node_names = colnames(Y))
+#'
+#' # lasso
+#' fit_l1 <- ggmncv(S, n = nrow(Y),
+#'                  progress = FALSE,
+#'                  penalty = "lasso")
+#'
+#' # plot
+#' plot(get_graph(fit_l1),
+#'      edge_magnify = 10,
+#'      node_names = colnames(Y))
+#'
+#'
+#' # for these data, we might expect all relations to be positive
+#' # and thus the red edges are spurious. The following re-estimates
+#' # the graph, given all edges positive (sign restriction).
+#'
+#' # set negatives to zero (sign restriction)
+#' adj_new <- ifelse( fit_atan$P <= 0, 0, 1)
+#'
+#' check_zeros <- TRUE
+#'
+#' # track trys
+#' iter <- 0
+#'
+#' # iterate until all positive
+#' while(check_zeros){
+#'   iter <- iter + 1
+#'   fit_new <- constrained(S, adj = adj_new)
+#'   check_zeros <- any(fit_new$wadj < 0)
+#'   adj_new <- ifelse( fit_new$wadj <= 0, 0, 1)
+#' }
+#'
+#' # make graph object
+#' new_graph <- list(P = fit_new$wadj,
+#'                   adj = adj_new)
+#' class(new_graph) <- "graph"
+#'
+#' plot(new_graph,
+#'      edge_magnify = 10,
+#'      node_names = colnames(Y))
+#'
+#' }
 ggmncv <- function(R,
                    n,
                    penalty = "atan",
@@ -176,6 +250,7 @@ ggmncv <- function(R,
                    gamma = NULL,
                    lambda = NULL,
                    n_lambda = 50,
+                   lambda_min_ratio = 0.01,
                    n_gamma = 50,
                    initial = NULL,
                    LLA = FALSE,
@@ -185,6 +260,7 @@ ggmncv <- function(R,
                    store = TRUE,
                    progress = TRUE,
                    ebic_gamma = 0.5,
+                   penalize_diagonal = TRUE,
                    ...) {
 
   if (!penalty %in% c("atan",
@@ -197,7 +273,9 @@ ggmncv <- function(R,
                       "sica",
                       "lq",
                       "adapt")) {
-    stop("penalty not found. \ncurrent options: atan, mcp, scad, exp, selo, or log")
+
+    stop("penalty not found. \ncurrent options:
+         atan, mcp, scad, exp, selo, or log")
   }
 
   if(is.null(n)){
@@ -252,23 +330,28 @@ ggmncv <- function(R,
         gamma <- 0.01
 
       }
-    }
+  }
 
     if (is.null(lambda)) {
-      # take from the huge package:
+      # take from the huge R package:
       # Zhao, T., Liu, H., Roeder, K., Lafferty, J., & Wasserman, L. (2012).
       # The huge package for high-dimensional undirected graph estimation in R.
       # The Journal of Machine Learning Research, 13(1), 1059-1062.
       lambda.max <- max(max(R - I_p),-min(R - I_p))
-      lambda.min = 0.01 * lambda.max
+
+      lambda.min <-  lambda_min_ratio * lambda.max
+
       lambda <-
         exp(seq(log(lambda.min), log(lambda.max), length.out = n_lambda))
+
     }
 
     n_lambda <- length(lambda)
 
     if (progress) {
+
       message("selecting lambda")
+
       pb <- utils::txtProgressBar(min = 0,
                                   max = n_lambda,
                                   style = 3)
@@ -288,7 +371,9 @@ ggmncv <- function(R,
             )
           ))
 
-        # diag(lambda_mat) <- 0
+        if(isFALSE(penalize_diagonal)){
+          diag(lambda_mat) <- 0
+          }
 
         fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
 
@@ -315,6 +400,10 @@ ggmncv <- function(R,
                 "_deriv(Theta = Theta_old, lambda = lambda[i], gamma = gamma)"
               )
             ))
+
+          if(isFALSE(penalize_diagonal)){
+            diag(lambda_mat) <- 0
+          }
 
           fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
 
@@ -457,7 +546,9 @@ ggmncv <- function(R,
     n_gamma <- length(gamma)
 
     if (progress) {
+
       message("selecting gamma")
+
       pb <- utils::txtProgressBar(min = 0,
                                   max = n_gamma,
                                   style = 3)
@@ -478,6 +569,10 @@ ggmncv <- function(R,
               "_deriv(Theta = Theta, lambda = lambda, gamma = gamma[i])"
             )
           ))
+
+        if(isFALSE(penalize_diagonal)){
+          diag(lambda_mat) <- 0
+        }
 
         fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
 
@@ -504,6 +599,10 @@ ggmncv <- function(R,
                 "_deriv(Theta = Theta_old, lambda = lambda, gamma = gamma[i])"
               )
             ))
+
+          if(isFALSE(penalize_diagonal)){
+            diag(lambda_mat) <- 0
+          }
 
           fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
 
@@ -541,7 +640,7 @@ ggmncv <- function(R,
         edges = edges,
         n = n,
         p = p,
-        type = ic, ...
+        type = ic
       )
 
       fit$gamma <- gamma[i]
@@ -601,9 +700,8 @@ ggmncv <- function(R,
     # identity matrix
     I_p <- diag(p)
 
-
-
     if (is.null(initial)) {
+
       Theta <- solve(R)
 
     } else {
@@ -618,9 +716,12 @@ ggmncv <- function(R,
       # The huge package for high-dimensional undirected graph estimation in R.
       # The Journal of Machine Learning Research, 13(1), 1059-1062.
       lambda.max <- max(max(R - I_p),-min(R - I_p))
-      lambda.min = 0.01 * lambda.max
+
+      lambda.min <- lambda_min_ratio * lambda.max
+
       lambda <-
         exp(seq(log(lambda.min), log(lambda.max), length.out = n_lambda))
+
     }
 
     n_lambda <- length(lambda)
@@ -647,11 +748,14 @@ ggmncv <- function(R,
     }
 
     if (progress) {
+
       message("selecting lambda and gamma")
+
       pb <- utils::txtProgressBar(min = 0,
                                   max = n_lambda,
                                   style = 3)
     }
+
     iterations <- 0
 
     fits_all <-  lapply(1:n_lambda, function(x) {
@@ -669,6 +773,10 @@ ggmncv <- function(R,
               )
             ))
 
+          if(isFALSE(penalize_diagonal)){
+            diag(lambda_mat) <- 0
+          }
+
           fit <- glassoFast::glassoFast(S = R, rho = lambda_mat)
 
           Theta <- fit$wi
@@ -684,6 +792,7 @@ ggmncv <- function(R,
           iterations <- 0
 
           while (convergence > thr & iterations < maxit) {
+
             Theta_old <- Theta_new
 
             lambda_mat <-
@@ -748,6 +857,7 @@ ggmncv <- function(R,
       }
 
       fits
+
     })
 
 
@@ -841,11 +951,11 @@ print.ggmncv <- function(x,...){
 #'
 #' @description Plot the solution path for the partial correlations.
 #'
-#' @param x An object of class \code{ggmncv}
+#' @param x An object of class \code{\link{ggmncv}}.
 #'
-#' @param size Numeric. The size of the points (\code{eip}).
+#' @param size Numeric. Line size in \code{geom_line}.
 #'
-#' @param alpha Numeric. The transparency of the lines. Only for the solution path options.
+#' @param alpha Numeric. The transparency of the lines.
 #'
 #' @param ... Currently ignored.
 #'
@@ -857,7 +967,7 @@ print.ggmncv <- function(x,...){
 #' @importFrom reshape melt
 #'
 #' @examples
-#'
+#' \donttest{
 #' # data
 #' Y <- GGMncv::ptsd[,1:10]
 #'
@@ -865,11 +975,19 @@ print.ggmncv <- function(x,...){
 #' S <- cor(Y, method = "spearman")
 #'
 #' # fit model
-#' fit <- ggmncv(R = S, n = nrow(Y))
+#' # default: atan
+#' fit <- ggmncv(R = S, n = nrow(Y), progress = FALSE)
 #'
 #' # plot
 #' plot(fit)
 #'
+#' # lasso
+#' fit <- ggmncv(R = S, n = nrow(Y), progress = FALSE,
+#'               penalty = "lasso")
+#'
+#' # plot
+#' plot(fit)
+#' }
 #' @export
 plot.ggmncv <- function(x, size = 1, alpha = 0.5, ...){
 
@@ -888,15 +1006,20 @@ plot.ggmncv <- function(x, size = 1, alpha = 0.5, ...){
   }
 
   p <- ncol(x$Theta)
+
   which_min <- which(x$lambda  == x$lambda_min)
+
   lambda_min <- x$lambda[which_min]
 
   Theta_std <- t(sapply(1:n_lambda, function(i)
     cov2cor(x$fitted_models[[i]]$wi)[upper.tri(diag(p))]))
 
   non_zero <- sum(Theta_std[which_min,] !=0)
+
   dat_res <-  reshape::melt(Theta_std)
+
   dat_res$X1 <- round(x$lambda, 3)
+
   dat_res$penalty <- x$penalty
 
   plt <- ggplot(dat_res, aes(y = -value,
@@ -908,7 +1031,6 @@ plot.ggmncv <- function(x, size = 1, alpha = 0.5, ...){
     geom_line(show.legend = FALSE,
               alpha = alpha,
               size = size) +
-
     geom_hline(yintercept = 0,  color = "black") +
     xlab(expression(lambda)) +
     ylab(expression(hat(rho))) +

@@ -7,7 +7,7 @@
 \method{plot}{penalty_function}(x, size = 1, ...)
 }
 \arguments{
-\item{x}{An object of class \code{penalty_function}.}
+\item{x}{An object of class\code{\link{penalty_function}}.}
 
 \item{size}{Numeric. Line size in \code{geom_line}.}
 

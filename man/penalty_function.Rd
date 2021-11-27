@@ -14,22 +14,42 @@ penalty_function(
 \arguments{
 \item{theta}{Numeric vector. Values for which the derivative is computed.}
 
-\item{penalty}{Character string. Character string. Which penalty should be
-used (defaults to \code{"atan"})? See \code{\link[GGMncv]{ggmncv}} for the
+\item{penalty}{Character string. Which penalty should be
+used (defaults to \code{"atan"})?
+See \code{\link[GGMncv]{ggmncv}} for the
 available penalties.}
 
 \item{lambda}{Numeric.  Regularization parameter (defaults to \code{1}).}
 
-\item{gamma}{Numeric vector. Hyperparameter(s) for the penalty function.}
+\item{gamma}{Numeric vector. Hyperparameter(s) for the penalty function}
 }
 \value{
-An object of class \code{penalty_function}
+A list of class \code{penalty_function}, including the following:
+
+\itemize{
+
+\item \code{deriv}: Data frame including the penalty function,
+theta, gamma, and the chosen penalty.
+
+}
 }
 \description{
 Compute the penalty function for nonconvex penalties.
+}
+\note{
+Some care is required for specifying \code{gamma}. For example,
+the default value for \code{scad} is 3.7 and it \emph{must} be some
+value greater than 2 \insertCite{fan2001variable}{GGMncv}. The
+default values in \strong{GGMncv} are set to recommended values in the
+respective papers.
 }
 \examples{
 func <- penalty_function(theta =  seq(-5,5,length.out = 10000),
                             lambda = 1,
                             gamma = c(0.01, 0.05, 0.1))
+
+head(func)
+}
+\references{
+\insertAllCited{}
 }

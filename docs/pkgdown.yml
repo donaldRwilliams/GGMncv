@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   my-vignette: my-vignette.html
-last_built: 2021-11-24T14:51Z
+last_built: 2021-11-27T22:58Z
 urls:
   reference: https://donaldrwilliams.github.io/GGMncv//reference
   article: https://donaldrwilliams.github.io/GGMncv//articles

@@ -7,11 +7,11 @@
 \method{plot}{ggmncv}(x, size = 1, alpha = 0.5, ...)
 }
 \arguments{
-\item{x}{An object of class \code{ggmncv}}
+\item{x}{An object of class \code{\link{ggmncv}}.}
 
-\item{size}{Numeric. The size of the points (\code{eip}).}
+\item{size}{Numeric. Line size in \code{geom_line}.}
 
-\item{alpha}{Numeric. The transparency of the lines. Only for the solution path options.}
+\item{alpha}{Numeric. The transparency of the lines.}
 
 \item{...}{Currently ignored.}
 }
@@ -22,7 +22,7 @@ A \code{ggplot} object
 Plot the solution path for the partial correlations.
 }
 \examples{
-
+\donttest{
 # data
 Y <- GGMncv::ptsd[,1:10]
 
@@ -30,9 +30,17 @@ Y <- GGMncv::ptsd[,1:10]
 S <- cor(Y, method = "spearman")
 
 # fit model
-fit <- ggmncv(R = S, n = nrow(Y))
+# default: atan
+fit <- ggmncv(R = S, n = nrow(Y), progress = FALSE)
 
 # plot
 plot(fit)
 
+# lasso
+fit <- ggmncv(R = S, n = nrow(Y), progress = FALSE,
+              penalty = "lasso")
+
+# plot
+plot(fit)
+}
 }

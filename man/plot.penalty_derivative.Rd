@@ -7,7 +7,7 @@
 \method{plot}{penalty_derivative}(x, size = 1, ...)
 }
 \arguments{
-\item{x}{An object of class \code{penalty_derivative}.}
+\item{x}{An object of class \code{\link{penalty_derivative}}.}
 
 \item{size}{Numeric. Line size in \code{geom_line}.}
 

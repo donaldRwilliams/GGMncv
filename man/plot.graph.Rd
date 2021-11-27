@@ -49,13 +49,13 @@ This indicates groups of nodes that should be the same color
 An object of class \code{ggplot}
 }
 \description{
-Visualize the conditional (in)dependence structure.
+Visualize the conditional dependence structure.
 }
 \examples{
 Y <- na.omit(bfi[,1:25])
 
-fit <- ggmncv(cor(Y),
-              n = nrow(Y))
+fit <- ggmncv(cor(Y), n = nrow(Y),
+              progress = FALSE)
 
 plot(get_graph(fit))
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Statistical Inference for Regularized Gaussian Graphical Models — inference • GGMncv</title>
+<title>Compare Edges Between Gaussian Graphical Models — compare_edges • GGMncv</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,10 @@
 
 
 
-<meta property="og:title" content="Statistical Inference for Regularized Gaussian Graphical Models — inference" />
-<meta property="og:description" content="Compute p-values for each relation based on the
-de-sparsified glasso estimator (Jankova and Van De Geer 2015)
+<meta property="og:title" content="Compare Edges Between Gaussian Graphical Models — compare_edges" />
+<meta property="og:description" content="Establish whether each of the corresponding edges
+             are significantly different in two groups,
+             with the de-sparsified estimator of (Jankova and Van De Geer 2015)
 ." />
 <meta property="og:image" content="https://donaldrwilliams.github.io/GGMncv/reference/figures/hex.png" />
 <meta name="twitter:card" content="summary" />
@@ -126,30 +127,36 @@ de-sparsified glasso estimator (Jankova and Van De Geer 2015)
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Statistical Inference for Regularized Gaussian Graphical Models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/donaldRwilliams/GGMncv/blob/master/R/inference.R'><code>R/inference.R</code></a></small>
-    <div class="hidden name"><code>inference.Rd</code></div>
+    <h1>Compare Edges Between Gaussian Graphical Models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/donaldRwilliams/GGMncv/blob/master/R/ggm_compare.R'><code>R/ggm_compare.R</code></a></small>
+    <div class="hidden name"><code>compare_edges.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compute <em>p</em>-values for each relation based on the
-de-sparsified glasso estimator (Jankova and Van De Geer 2015)
+    <p>Establish whether each of the corresponding edges
+             are significantly different in two groups,
+             with the de-sparsified estimator of (Jankova and Van De Geer 2015)
 .</p>
     </div>
 
-    <pre class="usage"><span class='fu'>inference</span><span class='op'>(</span><span class='va'>object</span>, method <span class='op'>=</span> <span class='st'>"fdr"</span>, alpha <span class='op'>=</span> <span class='fl'>0.05</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>compare_edges</span><span class='op'>(</span><span class='va'>object_1</span>, <span class='va'>object_2</span>, method <span class='op'>=</span> <span class='st'>"fdr"</span>, alpha <span class='op'>=</span> <span class='fl'>0.05</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>An object of class <code>ggmncv</code></p></td>
+      <th>object_1</th>
+      <td><p>object of class <code><a href='ggmncv.html'>ggmncv</a></code> .</p></td>
+    </tr>
+    <tr>
+      <th>object_2</th>
+      <td><p>An object of class <code><a href='ggmncv.html'>ggmncv</a></code>.</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>Character string. A correction method for multiple comparison (defaults to <code>fdr</code>).
-Can be abbreviated. See <a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust</a>.</p></td>
+      <td><p>Character string. A correction method for
+multiple comparisons (defaults to <code>fdr</code>), which
+can be abbreviated. See <a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust</a>.</p></td>
     </tr>
     <tr>
       <th>alpha</th>
@@ -165,7 +172,7 @@ Can be abbreviated. See <a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust
 
     
 <ul>
-<li><p><code>Theta</code> De-sparsified precision matrix</p></li>
+<li><p><code>P_diff</code> De-sparsified partial correlation differences</p></li>
 <li><p><code>adj</code> Adjacency matrix based on the p-values.</p></li>
 <li><p><code>pval_uncorrected</code> Uncorrected p-values</p></li>
 <li><p><code>pval_corrected</code> Corrected p-values</p></li>
@@ -175,11 +182,10 @@ Can be abbreviated. See <a href='https://rdrr.io/r/stats/p.adjust.html'>p.adjust
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>This assumes (reasonably) Gaussian data, and should not to be expected
-to work for, say, polychoric correlations. Further, all work to date
-has only looked at the graphical lasso estimator, and not de-sparsifying
-nonconvex regularization. Accordingly, it is probably best to set
-<code>penalty = "lasso"</code> in <code><a href='ggmncv.html'>ggmncv</a></code>.</p>
+    <p>For low-dimensional settings, i.e., when the number of observations
+far exceeds the number of nodes, this function likely has limited utility and
+a non regularized approach should be used for comparing edges
+(see for example <strong>GGMnonreg</strong>).</p>
 <p>Further, whether the de-sparsified estimator provides nominal error rates
 remains to be seen, at least across a range of conditions. For example,
 the simulation results in Williams (2021)
@@ -199,26 +205,40 @@ doi: <a href='https://doi.org/10.31234/osf.io/kjh2f'>10.31234/osf.io/kjh2f</a>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># data</span></span>
-<span class='r-in'><span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='fu'>GGMncv</span><span class='fu'>::</span><span class='va'><a href='ptsd.html'>ptsd</a></span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span></span>
+<span class='r-in'><span class='co'># note: all edges equal</span></span>
+<span class='r-in'><span class='va'>Y1</span> <span class='op'>&lt;-</span> <span class='fu'>MASS</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MASS/man/mvrnorm.html'>mvrnorm</a></span><span class='op'>(</span><span class='fl'>250</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>10</span><span class='op'>)</span>, Sigma <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>Y2</span> <span class='op'>&lt;-</span> <span class='fu'>MASS</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MASS/man/mvrnorm.html'>mvrnorm</a></span><span class='op'>(</span><span class='fl'>250</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>10</span><span class='op'>)</span>, Sigma <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'># fit model</span></span>
-<span class='r-in'><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggmncv.html'>ggmncv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span>,</span>
-<span class='r-in'>              progress <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
-<span class='r-in'>              penalty <span class='op'>=</span> <span class='st'>"lasso"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># fit models</span></span>
+<span class='r-in'><span class='co'># note: atan penalty by default</span></span>
 <span class='r-in'></span>
+<span class='r-in'><span class='co'># group 1</span></span>
+<span class='r-in'><span class='va'>fit1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggmncv.html'>ggmncv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Y1</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y1</span><span class='op'>)</span>,</span>
+<span class='r-in'>               progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'># statistical inference</span></span>
-<span class='r-in'><span class='fu'>inference</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Statistical Inference</span>
+<span class='r-in'><span class='co'># group 2</span></span>
+<span class='r-in'><span class='va'>fit2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggmncv.html'>ggmncv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Y2</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y2</span><span class='op'>)</span>,</span>
+<span class='r-in'>               progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># compare</span></span>
+<span class='r-in'><span class='va'>compare_ggms</span> <span class='op'>&lt;-</span> <span class='fu'>compare_edges</span><span class='op'>(</span><span class='va'>fit1</span>, <span class='va'>fit2</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>compare_ggms</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Compare Edges </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> fdr: 0.05</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   1 2 3 4 5</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 0 1 0 1 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 1 0 1 0 0</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 0 1 0 1 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 1 0 1 0 1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 1 0 1 1 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    1 2 3 4 5 6 7 8 9 10</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  0 0 0 0 0 0 0 0 0  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  0 0 0 0 0 0 0 0 0  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  0 0 0 0 0 0 0 0 0  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  0 0 0 0 0 0 0 0 0  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  0 0 0 0 0 0 0 0 0  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  0 0 0 0 0 0 0 0 0  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7  0 0 0 0 0 0 0 0 0  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8  0 0 0 0 0 0 0 0 0  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9  0 0 0 0 0 0 0 0 0  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 0 0 0 0 0 0 0 0 0  0</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

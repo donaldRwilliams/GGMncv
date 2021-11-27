@@ -374,7 +374,7 @@ This is because, in general, “confidence” intervals from penalized approache
 <code class="sourceCode R"><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggmncv.html">ggmncv</a></span><span class="op">(</span><span class="va">Y_g1</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">Y_g1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggmncv.html">ggmncv</a></span><span class="op">(</span><span class="va">Y_g2</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">Y_g2</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">ggm_diff</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ggm_compare.html">ggm_compare</a></span><span class="op">(</span><span class="va">fit1</span>, <span class="va">fit2</span><span class="op">)</span></code></pre></div>
+<span class="va">ggm_diff</span> <span class="op">&lt;-</span> <span class="fu">ggm_compare</span><span class="op">(</span><span class="va">fit1</span>, <span class="va">fit2</span><span class="op">)</span></code></pre></div>
 <p>The object <code>ggm_diff</code> includes the partial correlation differences, <em>p</em>-values, and the adjacency matrix.</p>
 </div>
 <div id="citing-ggmncv" class="section level2">
