@@ -34,6 +34,8 @@ Imports:
     stats,
     utils
 Suggests:
+    corpcor,
+    corrplot,
     nlshrink,
     rmarkdown,
     knitr

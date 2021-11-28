@@ -103,7 +103,7 @@ opening the door to out-of-sample prediction in multiple regression." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/my-vignette.html">Positive Manifold (Sign Restriction)</a>
+      <a href="../articles/sign_restrict.html">Positive Manifold (Sign Restriction)</a>
     </li>
   </ul>
 </li>
@@ -188,10 +188,10 @@ If omitted, the fitted values are used.</p></td>
 <span class='r-in'><span class='co'># training data</span></span>
 <span class='r-in'><span class='va'>Ytrain</span> <span class='op'>&lt;-</span> <span class='va'>Y</span><span class='op'>[</span><span class='fl'>101</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span>,<span class='op'>]</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggmncv.html'>ggmncv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Ytrain</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Ytrain</span><span class='op'>)</span>, progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ggmncv.html'>ggmncv</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Ytrain</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>Ytrain</span><span class='op'>)</span>,</span>
+<span class='r-in'>              progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='va'>pred</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>fit</span>, train_data <span class='op'>=</span> <span class='va'>Y</span>,</span>
-<span class='r-in'>                newdata <span class='op'>=</span> <span class='va'>Ytest</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>pred</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>fit</span>, newdata <span class='op'>=</span> <span class='va'>Ytest</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='op'>(</span><span class='va'>pred</span> <span class='op'>-</span> <span class='va'>Ytest</span><span class='op'>)</span><span class='op'>^</span><span class='fl'>2</span>, <span class='fl'>2</span>, <span class='va'>mean</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  Raf  Erk Plcg  PKC  PKA PIP2 PIP3  Mek  P38  Jnk  Akt </span>

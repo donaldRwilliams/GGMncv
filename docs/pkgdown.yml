@@ -2,8 +2,8 @@ pandoc: 2.14.0.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  my-vignette: my-vignette.html
-last_built: 2021-11-28T16:48Z
+  sign_restrict: sign_restrict.html
+last_built: 2021-11-28T17:06Z
 urls:
   reference: https://donaldrwilliams.github.io/GGMncv//reference
   article: https://donaldrwilliams.github.io/GGMncv//articles
