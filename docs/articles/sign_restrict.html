@@ -181,7 +181,7 @@
 <div id="alternative-approach" class="section level2">
 <h2 class="hasAnchor">
 <a href="#alternative-approach" class="anchor"></a>Alternative Approach</h2>
-<p>The above essentially takes the selected graph, and the re-estimates it with the constraint that the negative edges are actually zero. Perhaps a more sophisticated approach is to select the graph with those constraints.</p>
+<p>The above essentially takes the selected graph, and then re-estimates it with the constraint that the negative edges are zero. Perhaps a more sophisticated approach is to select the graph with those constraints.</p>
 <p>This can be implemented with:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">ptsd</span><span class="op">)</span>
@@ -202,6 +202,7 @@
 <span class="co"># storage</span>
 <span class="va">bics</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
 <span class="va">Thetas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+
 <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">sol_path</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
   
   <span class="co"># positive in wi is a negative partial</span>

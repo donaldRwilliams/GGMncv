@@ -117,8 +117,8 @@ be plotted with `plot`.
 
 ## Alternative Approach
 
-The above essentially takes the selected graph, and the re-estimates it
-with the constraint that the negative edges are actually zero. Perhaps a more 
+The above essentially takes the selected graph, and then re-estimates it
+with the constraint that the negative edges are zero. Perhaps a more 
 sophisticated approach is to select the graph with those constraints.
 
 This can be implemented with:
@@ -141,6 +141,7 @@ sol_path <- fit$fitted_models
 # storage
 bics <- NA
 Thetas <- list()
+
 for(i in seq_len(length(sol_path))){
   
   # positive in wi is a negative partial
