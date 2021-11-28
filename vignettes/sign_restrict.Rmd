@@ -142,7 +142,7 @@ sol_path <- fit$fitted_models
 bics <- NA
 Thetas <- list()
 
-for(i in seq_len(length(sol_path))){
+for(i in seq_along(sol_path)){
   
   # positive in wi is a negative partial
   adj_new <- ifelse(sol_path[[i]]$wi >= 0, 0, 1)

@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   sign_restrict: sign_restrict.html
-last_built: 2021-11-28T22:33Z
+last_built: 2021-11-28T22:41Z
 urls:
   reference: https://donaldrwilliams.github.io/GGMncv//reference
   article: https://donaldrwilliams.github.io/GGMncv//articles
