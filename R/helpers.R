@@ -236,103 +236,6 @@ check_gamma <- function(penalty, gamma){
   }
 }
 
-# taken from
-# Kuismin, M., & Sillanpää, M. J. (2016). Use of Wishart prior and simple extensions for
-# sparse precision matrix estimation. PloS one, 11(2), e0148171.
-lw_helper <- function(x, N){
-
-  n <- N
-
-  p <- ncol(x)
-
-  if (isSymmetric(as.matrix(x))) {
-
-    Y <- MASS::mvrnorm(
-      n = n,
-      mu = rep(0, p),
-      Sigma = x,
-      empirical = TRUE
-    )
-
-  } else {
-
-    Y <- x
-  }
-  # Y (n x p)    : n iid observations on p random variables
-  # Sigma (p x p): invertible covariance matrix estimator
-  #
-  # Shrinks towards one-parameter matrix:
-  #    all variances are the same
-  #    all covariances are zero
-
-  # Modified from the MATLAB-code downloaded from the website of Michael Wolf
-  # in the Department of Economics of the University of Zurich.
-  # Based on the presentation in the article of Ledoit & Wolf (2004): "Honey,
-  # I Shrunk The Sample Covariance Matrix". The Journal of Portfolio Management
-  # Summer, Vol. 30, No. 4, 110-119.
-
-  # This version: 2/2015
-
-  ############################################################################
-
-  # This file is released under the BSD 2-clause license.
-
-  # Copyright (c) 2014, Olivier Ledoit and Michael Wolf
-  # All rights reserved.
-
-  # Redistribution and use in source and binary forms, with or without
-  # modification, are permitted provided that the following conditions are
-  # met:
-
-  # 1. Redistributions of source code must retain the above copyright notice,
-  # this list of conditions and the following disclaimer.
-
-  # 2. Redistributions in binary form must reproduce the above copyright
-  # notice, this list of conditions and the following disclaimer in the
-  # documentation and/or other materials provided with the distribution.
-
-  # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-  # IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-  # THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-  # PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-  # CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-  # EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-  # PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-  # PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-  # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-  # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  ##############################################################################
-  # de-mean returns
-
-  Y <- scale(Y, scale = FALSE)
-
-  # compute S covariance matrix
-  S <- crossprod(Y)/n
-
-  # compute prior
-
-  meanvar <- mean(diag(S))
-  prior <- meanvar*diag(1,p)
-
-  # what we call b
-  X <- Y^2
-  phiMat <- (crossprod(X)/n) - S^2
-  phi <- sum(phiMat)
-
-  # what we call c
-  gamma = sum(abs(S-prior)^2)
-
-  # compute shrinkage constant
-  kappa <- phi/gamma
-  shrinkage <- max(0,min(1,kappa/n))
-
-  Sigma <- shrinkage*prior+(1-shrinkage)*S
-  Theta <- solve(cov2cor(Sigma))
-  return(Theta)
-
-}
-
 symmetric_mat <- function (x) {
   x[lower.tri(x)] <- t(x)[lower.tri(x)]
   x
@@ -349,8 +252,6 @@ jsd <- function(Theta1, Theta2){
   jsd <- (kl_mvn(Theta1, Theta2) +  kl_mvn(Theta2, Theta1)) / 2
   return(jsd)
 }
-
-
 
 globalVariables(c("VIP",
                   "new1",

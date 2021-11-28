@@ -35,7 +35,6 @@
 #' @references
 #' \insertAllCited{}
 #'
-#' @return
 #'
 #' @export
 #'
