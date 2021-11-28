@@ -30,14 +30,14 @@
 #' # training data
 #' Ytrain <- Y[101:nrow(Y),]
 #'
-#' fit <- ggmncv(cor(Ytrain), n = nrow(Ytrain))
+#' fit <- ggmncv(cor(Ytrain), n = nrow(Ytrain),
+#'               progress = FALSE)
 #'
-#' pred <- predict(fit, train_data = Y,
-#'                 newdata = Ytest)
+#' pred <- predict(fit, newdata = Ytest)
 #'
 #' round(apply((pred - Ytest)^2, 2, mean), 2)
 #' @export
-predict.ggmncv <- function(object, train_data = NULL,
+predict.ggmncv <- function(object,
                            newdata = NULL, ...){
 
   if(!is.null(newdata)){

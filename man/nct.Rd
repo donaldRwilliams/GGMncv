@@ -12,6 +12,7 @@ nct(
   method = "pearson",
   FUN = NULL,
   cores = 1,
+  progress = TRUE,
   ...
 )
 }

@@ -16,7 +16,7 @@
 \item{...}{Currently ignored.}
 }
 \value{
-A \code{ggplot} object
+A \code{ggplot} object.
 }
 \description{
 Plot the solution path for the partial correlations.

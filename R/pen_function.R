@@ -31,7 +31,7 @@
 #'                             lambda = 1,
 #'                             gamma = c(0.01, 0.05, 0.1))
 #'
-#' head(func)
+#' head(func$pen)
 penalty_function <- function(theta = seq(-5,5,length.out = 100000),
                              penalty = "atan",
                              lambda = 1,

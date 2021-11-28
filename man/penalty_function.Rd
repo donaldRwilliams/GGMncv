@@ -48,7 +48,7 @@ func <- penalty_function(theta =  seq(-5,5,length.out = 10000),
                             lambda = 1,
                             gamma = c(0.01, 0.05, 0.1))
 
-head(func)
+head(func$pen)
 }
 \references{
 \insertAllCited{}

@@ -959,7 +959,7 @@ print.ggmncv <- function(x,...){
 #'
 #' @param ... Currently ignored.
 #'
-#' @return A \code{ggplot} object
+#' @return A \code{ggplot} object.
 #'
 #' @importFrom  ggplot2 aes ggplot  geom_point ylab facet_grid geom_line
 #' geom_vline geom_hline xlab ylab ggtitle theme element_text
@@ -989,7 +989,8 @@ print.ggmncv <- function(x,...){
 #' plot(fit)
 #' }
 #' @export
-plot.ggmncv <- function(x, size = 1, alpha = 0.5, ...){
+plot.ggmncv <- function(x, size = 1,
+                        alpha = 0.5, ...){
 
   if(x$select != "lambda"){
     stop("select must be 'lambda'.")
@@ -1031,12 +1032,10 @@ plot.ggmncv <- function(x, size = 1, alpha = 0.5, ...){
     geom_line(show.legend = FALSE,
               alpha = alpha,
               size = size) +
-    geom_hline(yintercept = 0,  color = "black") +
+    geom_hline(yintercept = 0,
+               color = "black") +
     xlab(expression(lambda)) +
     ylab(expression(hat(rho))) +
-    ggtitle(paste0(non_zero, " edges (",
-                   round(non_zero /  p*(p-1)*.5),
-                   "% connectivity)")) +
     theme(axis.title  = element_text(size = 12),
           strip.text = element_text(size = 12))
 

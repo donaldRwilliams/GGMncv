@@ -26,7 +26,7 @@ Plot Edge Inclusion 'Probabilities'
 Y <- GGMncv::ptsd[,1:10]
 
 # compute eip's
-boot_samps <- boot_eip(Y, B = 10)
+boot_samps <- boot_eip(Y, B = 10, progress = FALSE)
 
 
 plot(boot_samps)

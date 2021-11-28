@@ -4,17 +4,17 @@
 \alias{predict.ggmncv}
 \title{Predict method for \code{ggmncv} Objects}
 \usage{
-\method{predict}{ggmncv}(object, train_data = NULL, newdata = NULL, ...)
+\method{predict}{ggmncv}(object, newdata = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link{ggmncv}}.}
-
-\item{train_data}{Data used for model fitting (defaults to \code{NULL}).}
 
 \item{newdata}{An optional data frame in which to look for variables with which to predict.
 If omitted, the fitted values are used.}
 
 \item{...}{Currently ignored.}
+
+\item{train_data}{Data used for model fitting (defaults to \code{NULL}).}
 }
 \value{
 A matrix of predicted values, of dimensions rows
@@ -36,10 +36,10 @@ Ytest <- Y[1:100,]
 # training data
 Ytrain <- Y[101:nrow(Y),]
 
-fit <- ggmncv(cor(Ytrain), n = nrow(Ytrain))
+fit <- ggmncv(cor(Ytrain), n = nrow(Ytrain),
+              progress = FALSE)
 
-pred <- predict(fit, train_data = Y,
-                newdata = Ytest)
+pred <- predict(fit, newdata = Ytest)
 
 round(apply((pred - Ytest)^2, 2, mean), 2)
 }
