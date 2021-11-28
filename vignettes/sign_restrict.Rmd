@@ -1,0 +1,39 @@
+---
+title: "Positive Manifold (Sign Restriction)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Positive Manifold (Sign Restriction)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+For some research questions, there might be expectations for
+the directions of the relations. For example, in symptom networks,
+all relations are often hypothesized to be positive. In turn,
+any negative relations are thought to be spurious.
+
+In **GGMncv**, it is possible to estimate the conditional 
+dependence structure, given that all edges in the graph are 
+positive (sign restriction).
+
+## Packages
+```{r setup}
+library(GGMncv)
+library(corrplot)
+```
+
+## Data
+The `ptsd` dataset includes 20 post-traumatic stress symptoms.
+The following visualizes the correlation matrix.
+
+```{r}
+corrplot::corrplot(cor(ptsd), method = "shade")
+```
