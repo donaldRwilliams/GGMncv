@@ -2,7 +2,7 @@
 % Please edit documentation in R/inference.R
 \name{inference}
 \alias{inference}
-\title{Statistical Inference for Gaussian Graphical Models}
+\title{Statistical Inference for Regularized Gaussian Graphical Models}
 \usage{
 inference(object, method = "fdr", alpha = 0.05, ...)
 }
@@ -23,9 +23,9 @@ Can be abbreviated. See \link[stats]{p.adjust}.}
 
 \item \code{adj} Adjacency matrix based on the p-values.
 
-\item \code{uncorrected} Uncorrected p-values
+\item \code{pval_uncorrected} Uncorrected p-values
 
-\item \code{corrected} Corected p-values
+\item \code{pval_corrected} Corrected p-values
 
 \item \code{method} The approach used for multiple comparisons
 
@@ -33,24 +33,35 @@ Can be abbreviated. See \link[stats]{p.adjust}.}
 }
 }
 \description{
-Compute p-values for each relation based on the de-sparsified precision matrix
-\insertCite{jankova2015confidence}{GGMncv}.
+Compute \emph{p}-values for each relation based on the
+de-sparsified glasso estimator \insertCite{jankova2015confidence}{GGMncv}.
 }
 \note{
-This assumes the Gaussian data.
+This assumes (reasonably) Gaussian data, and should not to be expected
+to work for, say, polychoric correlations. Further, all work to date
+has only looked at the graphical lasso estimator, and not de-sparsifying
+nonconvex regularization. Accordingly, it is probably best to set
+\code{penalty = "lasso"} in \code{\link{ggmncv}}.
+
+Further, whether the de-sparsified estimator provides nominal error rates
+remains to be seen, at least across a range of conditions. For example,
+the simulation results in \insertCite{williams_2021;textual}{GGMncv}
+demonstrated that the confidence intervals
+can have (severely) compromised coverage properties (whereas non-regularized methods
+had coverage at the nominal level).
 }
 \examples{
 # data
-Y <- GGMncv::ptsd
+Y <- GGMncv::ptsd[,1:5]
 
 # fit model
-fit <- ggmncv(cor(Y), n = nrow(Y))
+fit <- ggmncv(cor(Y), n = nrow(Y),
+              progress = FALSE,
+              penalty = "lasso")
 
 
 # statistical inference
 inference(fit)
-
-
 }
 \references{
 \insertAllCited{}

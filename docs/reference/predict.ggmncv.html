@@ -40,7 +40,11 @@
 
 
 <meta property="og:title" content="Predict method for ggmncv Objects — predict.ggmncv" />
-<meta property="og:description" content="Predicted values based on a ggmncv object" />
+<meta property="og:description" content="There is a direct correspondence between the inverse covariance
+matrix and multiple regression (Stephens 1998; Kwan 2014)
+.
+This readily allows for converting the off diagonal elements to regression coefficients,
+opening the door to out-of-sample prediction in multiple regression." />
 <meta property="og:image" content="https://donaldrwilliams.github.io/GGMncv/reference/figures/hex.png" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@wdonald_1985" />
@@ -130,22 +134,26 @@
     </div>
 
     <div class="ref-description">
-    <p>Predicted values based on a <code>ggmncv</code> object</p>
+    <p>There is a direct correspondence between the inverse covariance
+matrix and multiple regression (Stephens 1998; Kwan 2014)
+.
+This readily allows for converting the off diagonal elements to regression coefficients,
+opening the door to out-of-sample prediction in multiple regression.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ggmncv</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>train_data</span>, newdata <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, train_data <span class='op'>=</span> <span class='cn'>NULL</span>, newdata <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>An object of class <code>ggmncv</code></p></td>
+      <td><p>An object of class <code><a href='ggmncv.html'>ggmncv</a></code>.</p></td>
     </tr>
     <tr>
       <th>train_data</th>
-      <td><p>Data used for model fitting.</p></td>
+      <td><p>Data used for model fitting (defaults to <code>NULL</code>).</p></td>
     </tr>
     <tr>
       <th>newdata</th>
@@ -154,13 +162,21 @@ If omitted, the fitted values are used.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Currently ignored</p></td>
+      <td><p>Currently ignored.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A matrix of predicted values</p>
+    <p>A matrix of predicted values, of dimensions rows
+(in the training/test data) by the number of nodes (columns).</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Kwan CC (2014).
+&#8220;A regression-based interpretation of the inverse of the sample covariance matrix.&#8221;
+<em>Spreadsheets in Education</em>, <b>7</b>(1), 4613.<br /><br /> Stephens G (1998).
+&#8220;On the Inverse of the Covariance Matrix in Portfolio Analysis.&#8221;
+<em>The Journal of Finance</em>, <b>53</b>(5), 1821--1827.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='r-in'><span class='co'># data</span></span>

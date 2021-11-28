@@ -13,6 +13,7 @@ ggmncv(
   gamma = NULL,
   lambda = NULL,
   n_lambda = 50,
+  lambda_min_ratio = 0.01,
   n_gamma = 50,
   initial = NULL,
   LLA = FALSE,
@@ -22,6 +23,7 @@ ggmncv(
   store = TRUE,
   progress = TRUE,
   ebic_gamma = 0.5,
+  penalize_diagonal = TRUE,
   ...
 )
 }
@@ -38,26 +40,40 @@ The options include \code{aic}, \code{ebic} (ebic_gamma defaults to \code{0.5}),
 \insertCite{kim2012consistent;textual}{GGMncv}. The options are \code{gic_1}
 (i.e., \code{bic}) to \code{gic_6}.}
 
-\item{select}{Character string. Which tuning parameter should be selected (defaults to \code{"lambda"})?.
-The options include \code{"lambda"} (the regularization parameter),
-\code{"gamma"} (governs the 'shape'), and \code{"both"}. See details.}
+\item{select}{Character string. Which tuning parameter should be selected
+(defaults to \code{"lambda"})? The options include \code{"lambda"}
+(the regularization parameter), \code{"gamma"} (governs the 'shape'),
+and \code{"both"}.}
 
-\item{gamma}{Numeric vector. Hyperparameter for the penalty function. Defaults to 3.7 (\code{SCAD}),
-2 (\code{MCP}), 0.5 (\code{adapt}), and 0.01 otherwise with \code{select = "lambda"}.}
+\item{gamma}{Numeric. Hyperparameter for the penalty function.
+Defaults to 3.7 (\code{scad}), 2 (\code{mcp}), 0.5 (\code{adapt}),
+and 0.01 with all other penalties. Note care must be taken when
+departing from the default values
+(see the references in '\code{note}')}
 
-\item{lambda}{Numeric vector. Regularization parameter. Defaults to \code{NULL} that provides default
+\item{lambda}{Numeric vector. Regularization (or tuning) parameters.
+The defaults is \code{NULL} that provides default
 values with  \code{select = "lambda"} and \code{sqrt(log(p)/n)} with
 \code{select = "gamma"}.}
 
 \item{n_lambda}{Numeric. The number of \mjseqn{\lambda}'s to be evaluated. Defaults to 50.
-This is disregarded if custom values are provided in \code{lambda}.}
+This is disregarded if custom values are provided for \code{lambda}.}
+
+\item{lambda_min_ratio}{Numeric. The smallest value for \code{lambda}, as a
+fraction of the upperbound of the
+regularization/tuning parameter. The default is
+\code{0.01}, which mimics the \code{R} package
+\strong{qgraph}. To mimic the \code{R} package
+\strong{huge}, set \code{lambda_min_ratio = 0.1}
+and \code{n_lambda = 10}.}
 
 \item{n_gamma}{Numeric. The number of \mjseqn{\gamma}'s to be evaluated. Defaults to 50.
 This is disregarded if custom values are provided in \code{lambda}.}
 
-\item{initial}{A matrix or function. The initial inverse correlation matrix
-for computing the penalty derivative. Defaults to \code{NULL}
-which uses the inverse of \code{R} (see 'Note')}
+\item{initial}{A matrix (\emph{p} by \emph{p}) or custom function that returns
+the inverse of the covariance matrix . This is used to compute
+the penalty derivative. The default is \code{NULL}, which results
+in using the inverse of \code{R} (see '\code{Note}').}
 
 \item{LLA}{Logical. Should the local linear approximation be used (default to \code{FALSE})?}
 
@@ -74,7 +90,7 @@ without convergence check.}
 \item{thr}{Numeric. Threshold for determining convergence of the LLA algorithm
 (defaults to \code{1.0e-4}).}
 
-\item{store}{Logical. Should all of the fitted models be saved (defaults to \code{TRUE})?.}
+\item{store}{Logical. Should all of the fitted models be saved (defaults to \code{TRUE})?}
 
 \item{progress}{Logical. Should a progress bar be included (defaults to \code{TRUE})?}
 
@@ -83,36 +99,47 @@ extended Bayesian information criterion (defaults to 0.5,
 must be between 0 and 1). Setting \code{ebic_gamma = 0} results
 in BIC.}
 
-\item{...}{Additional arguments passed to \code{initial} if a
-function is provided and ignored otherwise (see "examples").}
+\item{penalize_diagonal}{Logical. Should the diagonal of the inverse covariance
+matrix be penalized (defaults to \code{TRUE}).}
+
+\item{...}{Additional arguments passed to \code{initial} when a
+function is provided and ignored otherwise.}
 }
 \value{
 An object of class \code{ggmncv}, including:
 
 \itemize{
 \item \code{Theta} Inverse covariance matrix
+
 \item \code{Sigma} Covariance matrix
+
 \item \code{P} Weighted adjacency matrix
+
 \item \code{adj} Adjacency matrix
-\item \code{lambda} Tuning parameter
+
+\item \code{lambda} Tuning parameter(s)
+
 \item \code{fit} glasso fitted model (a list)
 }
 }
 \description{
 \loadmathjax
-Gaussian graphical models with nonconvex regularization. A survey of these approaches is provided
-in \insertCite{williams2020beyond;textual}{GGMncv}.
+Gaussian graphical modeling with nonconvex regularization. A thorough survey
+of these penalties, including simulation studies investigating their properties,
+is provided in \insertCite{williams2020beyond;textual}{GGMncv}.
 }
 \details{
-Several of the penalties are (continuous) approximations to the \mjseqn{\ell_0} penalty,
-that is, best subset selection. However, the solution does not require enumerating
-all possible models which results in a computationally efficient solution.
+Several of the penalties are (continuous) approximations to the
+\mjseqn{\ell_0} penalty, that is, best subset selection. However, the solution
+does not require enumerating all possible models which results in a computationally
+efficient solution.
 
 \strong{L0 Approximations}
 
 \itemize{
 
-\item Atan: \code{penalty = "atan"} \insertCite{wang2016variable}{GGMncv}. This is currently the default.
+\item Atan: \code{penalty = "atan"} \insertCite{wang2016variable}{GGMncv}.
+ This is currently the default.
 
 \item Seamless \mjseqn{\ell_0}: \code{penalty = "selo"} \insertCite{dicker2013variable}{GGMncv}.
 
@@ -141,7 +168,7 @@ all possible models which results in a computationally efficient solution.
 
 }
 
-\strong{Gamma} (\mjseqn{\gamma}):
+\strong{gamma} (\mjseqn{\gamma}):
 
 The \code{gamma} argument corresponds to additional hyperparameter for each penalty.
 The defaults are set to the recommended values from the respective papers.
@@ -149,12 +176,13 @@ The defaults are set to the recommended values from the respective papers.
 \strong{LLA}
 
 The local linear approximate is noncovex penalties was described in
-\insertCite{fan2009network}{GGMncv}. This is essentially a iteratively
+\insertCite{fan2009network}{GGMncv}. This is essentially an iteratively
 re-weighted (g)lasso. Note that by default \code{LLA = FALSE}. This is due to
 the work of \insertCite{zou2008one;textual}{GGMncv}, which suggested that,
 so long as the starting values are good enough, then a one-step estimator is
-sufficient. In the case of low-dimensional data, the sample based inverse
-covariance matrix is used to compute the penalty. This is expected to work well,
+sufficient to obtain an accurate estimate of the conditional dependence structure.
+In the case of low-dimensional data, the sample based inverse
+covariance matrix is used for the starting values. This is expected to work well,
 assuming that \mjseqn{n} is sufficiently larger than  \mjseqn{p}.
 }
 \note{
@@ -165,19 +193,71 @@ computational speed. In high dimensions (defined here as \emph{p} > \emph{n}),
 or when \emph{p} approaches \emph{n}, the precision matrix can become quite unstable.
 As a result, with \code{initial = NULL}, the algorithm can take a very (very) long time.
 If this occurs, provide a matrix for \code{initial} (e.g., using \code{lw}).
-Alternatively, the penalty can be changed to \code{"lasso"}, if desired.
+Alternatively, the penalty can be changed to \code{penalty = "lasso"}, if desired.
+
+The \code{R} package \strong{glassoFast} is under the hood of \code{ggmncv}
+\insertCite{sustik2012glassofast}{GGMncv}, which is much faster than
+\strong{glasso} when there are many nodes.
 }
 \examples{
+\donttest{
+
 # data
-Y <- GGMncv::ptsd[,1:10]
+Y <- GGMncv::ptsd
 
 S <- cor(Y)
 
 # fit model
-fit <- ggmncv(S, n = nrow(Y))
+# note: atan default
+fit_atan <- ggmncv(S, n = nrow(Y),
+                   progress = FALSE)
 
 # plot
-plot(get_graph(fit))
+plot(get_graph(fit_atan),
+     edge_magnify = 10,
+     node_names = colnames(Y))
+
+# lasso
+fit_l1 <- ggmncv(S, n = nrow(Y),
+                 progress = FALSE,
+                 penalty = "lasso")
+
+# plot
+plot(get_graph(fit_l1),
+     edge_magnify = 10,
+     node_names = colnames(Y))
+
+
+# for these data, we might expect all relations to be positive
+# and thus the red edges are spurious. The following re-estimates
+# the graph, given all edges positive (sign restriction).
+
+# set negatives to zero (sign restriction)
+adj_new <- ifelse( fit_atan$P <= 0, 0, 1)
+
+check_zeros <- TRUE
+
+# track trys
+iter <- 0
+
+# iterate until all positive
+while(check_zeros){
+  iter <- iter + 1
+  fit_new <- constrained(S, adj = adj_new)
+  check_zeros <- any(fit_new$wadj < 0)
+  adj_new <- ifelse( fit_new$wadj <= 0, 0, 1)
+}
+
+# make graph object
+new_graph <- list(P = fit_new$wadj,
+                  adj = adj_new)
+class(new_graph) <- "graph"
+
+plot(new_graph,
+     edge_magnify = 10,
+     node_names = colnames(Y))
+
+}
 }
 \references{
 \insertAllCited{}

@@ -13,6 +13,9 @@
     <loc>https://donaldrwilliams.github.io/GGMncv//reference/coef.ggmncv.html</loc>
   </url>
   <url>
+    <loc>https://donaldrwilliams.github.io/GGMncv//reference/compare_edges.html</loc>
+  </url>
+  <url>
     <loc>https://donaldrwilliams.github.io/GGMncv//reference/confirm_edges.html</loc>
   </url>
   <url>
@@ -31,9 +34,6 @@
     <loc>https://donaldrwilliams.github.io/GGMncv//reference/ggmncv.html</loc>
   </url>
   <url>
-    <loc>https://donaldrwilliams.github.io/GGMncv//reference/ggm_compare.html</loc>
-  </url>
-  <url>
     <loc>https://donaldrwilliams.github.io/GGMncv//reference/head.eip.html</loc>
   </url>
   <url>
@@ -41,6 +41,9 @@
   </url>
   <url>
     <loc>https://donaldrwilliams.github.io/GGMncv//reference/kl_mvn.html</loc>
+  </url>
+  <url>
+    <loc>https://donaldrwilliams.github.io/GGMncv//reference/ledoit_wolf.html</loc>
   </url>
   <url>
     <loc>https://donaldrwilliams.github.io/GGMncv//reference/nct.html</loc>

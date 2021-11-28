@@ -72,6 +72,7 @@
 #'
 #' @export
 coef.ggmncv <- function(object, ...) {
+
   # precision matrix
   Theta <- object$Theta
 
@@ -85,16 +86,24 @@ coef.ggmncv <- function(object, ...) {
 
 
 print_coef <- function(x, ...) {
+
   p <- nrow(x)
 
   cat("Estimates:\n\n")
+
   for (i in seq_len(p)) {
 
     cat(paste0("node.", i, "\n"))
+
     nodes_id <-  (1:p)[-i]
+
     dat <-  as.data.frame(t(x[i, ]))
+
     colnames(dat) <- paste0("node.", nodes_id)
+
     print(round(dat, 3), row.names = FALSE)
+
     cat("---\n\n")
+
   }
 }

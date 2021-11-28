@@ -34,6 +34,7 @@ Imports:
     stats,
     utils
 Suggests:
+    nlshrink,
     rmarkdown,
     knitr
 Encoding: UTF-8

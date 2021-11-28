@@ -2,25 +2,36 @@
 % Please edit documentation in R/plot_graph.R
 \name{get_graph}
 \alias{get_graph}
-\title{Get Graph}
+\title{Extract Graph from \code{ggmncv} Objects}
 \usage{
-get_graph(x)
+get_graph(x, ...)
 }
 \arguments{
-\item{x}{An object of class \code{ggmncv}}
+\item{x}{An object of class \code{ggmncv}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
-A list including two matrices (the weighted adjacency and adjacency matrices)
+\itemize{
+
+\item \code{P}: Weighted adjacency matrix (partial correlation network)
+
+\item \code{adj}: Adjacency matrix
+
+}
 }
 \description{
-Extract the necessary ingredients to visualize the conditional
-             dependence structure.
+The fitted model from  \code{\link{ggmncv}} contains a lot
+of information, most of which is not immediately useful for most use
+cases. This function extracts the weighted adjacency
+(partial correlation network) and adjacency matrices.
 }
 \examples{
-Y <- na.omit(bfi[,1:25])
+Y <- na.omit(bfi[,1:5])
 
 fit <- ggmncv(cor(Y),
-              n = nrow(Y))
+              n = nrow(Y),
+              progress = FALSE)
 
 get_graph(fit)
 }

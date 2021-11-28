@@ -1,6 +1,6 @@
 #' Network Plot for \code{select} Objects
 #'
-#' @description  Visualize the conditional (in)dependence structure.
+#' @description  Visualize the conditional dependence structure.
 #'
 #' @param x An object of class \code{graph} obtained from \code{\link[GGMncv]{get_graph}}.
 #'
@@ -42,8 +42,8 @@
 #' @examples
 #' Y <- na.omit(bfi[,1:25])
 #'
-#' fit <- ggmncv(cor(Y),
-#'               n = nrow(Y))
+#' fit <- ggmncv(cor(Y), n = nrow(Y),
+#'               progress = FALSE)
 #'
 #' plot(get_graph(fit))
 plot.graph <- function(x,
@@ -83,54 +83,72 @@ plot.graph <- function(x,
                                              pos_col))
   e <- abs(as.numeric(x$pcor_adj))
 
-  plt <-GGally::ggnet2(net, edge.alpha = e[e != 0]/max(e),
+  plt <- GGally::ggnet2(net, edge.alpha = e[e != 0]/max(e),
                        edge.size = "abs_weights",
                        edge.color = "edge_color",
                        node.size = 1,
                        mode = layout)
 
   if(is.null(node_groups)){
+
     plt <- plt + geom_point(color = "black",
                             size = node_size + 1) +
       geom_point(size = node_size,
                  color = "white") +
-      guides(color = FALSE) +
+      guides(color = "none") +
       geom_text(label = cn)
 
   } else {
 
-    plt <-  plt + geom_point(aes(color = node_groups, group = node_groups),
-                             size = node_size + 1, alpha = 0.5) +
-      geom_point(size = node_size, aes(color = node_groups)) +
+    plt <-  plt + geom_point(aes(color = node_groups,
+                                 group = node_groups),
+                             size = node_size + 1,
+                             alpha = 0.5) +
+      geom_point(size = node_size,
+                 aes(color = node_groups)) +
       geom_text(label = cn)  +
       scale_color_brewer(palette = palette)
-
-
-  }
+    }
   plt
 }
 
 
-#' Get Graph
+#' @title Extract Graph from \code{ggmncv} Objects
 #'
-#' @description Extract the necessary ingredients to visualize the conditional
-#'              dependence structure.
+#' @description The fitted model from  \code{\link{ggmncv}} contains a lot
+#' of information, most of which is not immediately useful for most use
+#' cases. This function extracts the weighted adjacency
+#' (partial correlation network) and adjacency matrices.
 #'
-#' @param x An object of class \code{ggmncv}
+#' @param x An object of class \code{ggmncv}.
 #'
-#' @return A list including two matrices (the weighted adjacency and adjacency matrices)
+#' @param ... Currently ignored.
+#'
+#' @return
+#'
+#' \itemize{
+#'
+#' \item \code{P}: Weighted adjacency matrix (partial correlation network)
+#'
+#' \item \code{adj}: Adjacency matrix
+#'
+#' }
 #'
 #' @export
 #'
 #' @examples
-#' Y <- na.omit(bfi[,1:25])
+#' Y <- na.omit(bfi[,1:5])
 #'
 #' fit <- ggmncv(cor(Y),
-#'               n = nrow(Y))
+#'               n = nrow(Y),
+#'               progress = FALSE)
 #'
 #' get_graph(fit)
-get_graph <- function(x){
+get_graph <- function(x, ...){
+
   returned_object <- list(P = x$P, adj = x$adj)
+
   class(returned_object) <- "graph"
+
   return(returned_object)
 }

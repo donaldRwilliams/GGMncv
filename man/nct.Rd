@@ -42,9 +42,6 @@ parallel (defaults to \code{1}).}
 
 \item{...}{Additional arguments passed to \code{\link{ggmncv}}.}
 }
-\value{
-
-}
 \description{
 A re-implementation and extension of the permutation based
 network comparison test introduced in \insertCite{van2017comparing;textual}{GGMncv}.
