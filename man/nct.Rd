@@ -41,6 +41,8 @@ specifying custom test-statistics. See \strong{Examples}.}
 \item{cores}{Numeric. Number of cores to use when executing the permutations in
 parallel (defaults to \code{1}).}
 
+\item{progress}{Should a progress bar be included ?}
+
 \item{...}{Additional arguments passed to \code{\link{ggmncv}}.}
 }
 \description{

@@ -48,27 +48,56 @@ penalty_derivative <- function(theta = seq(-5,5, length.out = 100000),
                                lambda = 1,
                                gamma = c(0.01, 0.05)){
 
-  pen_deriv <- lapply(1:length(gamma), function(x){
-    deriv_mat <-
-      eval(parse(
-        text =  paste0(
-          penalty,
-          "_deriv(Theta = as.matrix(theta), lambda = lambda, gamma = gamma[x])"
-        )
-      ))
 
-  res_x <- data.frame(deriv = deriv_mat,
-               thetas = abs(theta),
-               gamma = gamma[x],
-               penalty = penalty)
 
-  return(res_x)
+  if(!is.matrix(theta)){
+
+    pen_deriv <- lapply(1:length(gamma), function(x) {
+      deriv_mat <-
+        eval(parse(
+          text =  paste0(
+            penalty,
+            "_deriv(Theta = as.matrix(theta), lambda = lambda, gamma = gamma[x])"
+          )
+        ))
+
+      res_x <- data.frame(
+        deriv = deriv_mat,
+        thetas = abs(theta),
+        gamma = gamma[x],
+        penalty = penalty
+      )
+
+      return(res_x)
 
 })
+
 
   deriv <- do.call(rbind.data.frame, pen_deriv)
 
   returned_object <- list(deriv = deriv, lambda = lambda)
+
+  } else if (is.matrix(theta)){
+
+    if(length(gamma) != 1){
+      stop("only one value for gamma is allowed when theta is a matrix.")
+    }
+
+    deriv_mat <-
+      eval(parse(
+        text =  paste0(
+          penalty,
+          "_deriv(Theta = as.matrix(theta), lambda = lambda, gamma = gamma)"
+        )
+      ))
+
+    returned_object <- list(deriv = deriv_mat)
+
+  } else {
+
+    stop("theta not supported. must be numeric or matrix.")
+
+  }
 
   class(returned_object) <- "penalty_derivative"
 
@@ -98,18 +127,26 @@ penalty_derivative <- function(theta = seq(-5,5, length.out = 100000),
 #' }
 plot.penalty_derivative <- function(x, size = 1, ...) {
 
-  plt <- ggplot(x$deriv,
-                aes(
-                  x = thetas,
-                  y = deriv,
-                  color = as.factor(gamma),
-                  group = gamma
-                ))  +
-    geom_line(size = size) +
-    ylab(expression(italic(p * "'")[lambda][gamma] ~ "(" * theta * ")")) +
-    xlab(expression(theta)) +
-    scale_color_discrete(name = expression(gamma)) +
-    scale_y_continuous(limits = c(0, x$lambda))
+  if (is.data.frame(x$deriv)) {
+
+    plt <- ggplot(x$deriv,
+                  aes(
+                    x = thetas,
+                    y = deriv,
+                    color = as.factor(gamma),
+                    group = gamma
+                  ))  +
+      geom_line(size = size) +
+      ylab(expression(italic(p * "'")[lambda][gamma] ~ "(" * theta * ")")) +
+      xlab(expression(theta)) +
+      scale_color_discrete(name = expression(gamma)) +
+      scale_y_continuous(limits = c(0, x$lambda))
+
+  } else {
+
+    stop("x not supported. must be a data frame")
+
+  }
 
   return(plt)
 }

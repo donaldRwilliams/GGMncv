@@ -37,7 +37,7 @@
 #'
 #' round(apply((pred - Ytest)^2, 2, mean), 2)
 #' @export
-predict.ggmncv <- function(object,
+predict.ggmncv <- function(object, train_data = NULL,
                            newdata = NULL, ...){
 
   if(!is.null(newdata)){

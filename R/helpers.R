@@ -266,4 +266,5 @@ globalVariables(c("VIP",
                   "EIP",
                   "dat",
                   "thetas",
-                  "pen"))
+                  "pen",
+                  "train_data"))

@@ -30,6 +30,8 @@
 #' @param cores Numeric. Number of cores to use when executing the permutations in
 #'              parallel (defaults to \code{1}).
 #'
+#' @param progress  Should a progress bar be included ?
+#'
 #' @param ... Additional arguments passed to \code{\link{ggmncv}}.
 #'
 #' @references
@@ -147,7 +149,7 @@ nct <- function(Y_g1, Y_g2,
   if(cores == 1){
 
     if(progress){
-      pb <- txtProgressBar(min = 0, max = iter, style = 3)
+      pb <-  utils::txtProgressBar(min = 0, max = iter, style = 3)
     }
 
     iter_results <- lapply(X = 1:iter, function(x){
@@ -231,7 +233,7 @@ nct <- function(Y_g1, Y_g2,
       }
 
       if(progress){
-        setTxtProgressBar(pb, x)
+        utils::setTxtProgressBar(pb, x)
       }
       return(returned_obj)
 

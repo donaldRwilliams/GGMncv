@@ -4,17 +4,17 @@
 \alias{predict.ggmncv}
 \title{Predict method for \code{ggmncv} Objects}
 \usage{
-\method{predict}{ggmncv}(object, newdata = NULL, ...)
+\method{predict}{ggmncv}(object, train_data = NULL, newdata = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link{ggmncv}}.}
+
+\item{train_data}{Data used for model fitting (defaults to \code{NULL}).}
 
 \item{newdata}{An optional data frame in which to look for variables with which to predict.
 If omitted, the fitted values are used.}
 
 \item{...}{Currently ignored.}
-
-\item{train_data}{Data used for model fitting (defaults to \code{NULL}).}
 }
 \value{
 A matrix of predicted values, of dimensions rows

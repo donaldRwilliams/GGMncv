@@ -112,6 +112,8 @@ boot_eip <- function(Y,
 #' @export
 #'
 #' @examples
+#' \donttest{
+#'
 #' # data
 #' Y <- GGMncv::ptsd[,1:10]
 #'
@@ -120,6 +122,8 @@ boot_eip <- function(Y,
 #'
 #'
 #' plot(boot_samps)
+#'
+#' }
 plot.eip <- function(x, color = "black", size = 1,...){
 
   dat <- x$eip_results[order(x$eip_results$EIP),]
