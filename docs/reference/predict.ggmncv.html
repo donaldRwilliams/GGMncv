@@ -142,7 +142,7 @@ opening the door to out-of-sample prediction in multiple regression.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ggmncv</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, newdata <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, train_data <span class='op'>=</span> <span class='cn'>NULL</span>, newdata <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,6 +152,10 @@ opening the door to out-of-sample prediction in multiple regression.</p>
       <td><p>An object of class <code><a href='ggmncv.html'>ggmncv</a></code>.</p></td>
     </tr>
     <tr>
+      <th>train_data</th>
+      <td><p>Data used for model fitting (defaults to <code>NULL</code>).</p></td>
+    </tr>
+    <tr>
       <th>newdata</th>
       <td><p>An optional data frame in which to look for variables with which to predict.
 If omitted, the fitted values are used.</p></td>
@@ -159,10 +163,6 @@ If omitted, the fitted values are used.</p></td>
     <tr>
       <th>...</th>
       <td><p>Currently ignored.</p></td>
-    </tr>
-    <tr>
-      <th>train_data</th>
-      <td><p>Data used for model fitting (defaults to <code>NULL</code>).</p></td>
     </tr>
     </table>
 

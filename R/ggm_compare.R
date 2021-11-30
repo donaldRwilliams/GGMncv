@@ -1,5 +1,7 @@
 #' Compare Edges Between Gaussian Graphical Models
 #'
+#' @name compare_edges
+#'
 #' @description Establish whether each of the corresponding edges
 #'              are significantly different in two groups,
 #'              with the de-sparsified estimator of \insertCite{jankova2015confidence}{GGMncv}.
