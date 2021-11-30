@@ -30,13 +30,104 @@
 #' @param cores Numeric. Number of cores to use when executing the permutations in
 #'              parallel (defaults to \code{1}).
 #'
-#' @param progress  Should a progress bar be included ?
+#' @param progress Logical. Should a progress bar be included
+#'                 (defaults to \code{TRUE})?
+#'
+#' @param update_progress How many times should the progress bar be updated
+#'                        (defaults to \code{4})? Note that setting this to a
+#'                        large value should result in the worse performance,
+#'                        due to additional overhead communicating among the
+#'                        parallel processes.
 #'
 #' @param ... Additional arguments passed to \code{\link{ggmncv}}.
+
+#'
+#' @details
+#'
+#' \strong{User-Defined Functions}
+#'
+#' These functions must have two arguments, corresponding
+#' to the partial correlation network for each group. An
+#' example is provided below.
+#'
+#'
+#' For user-defined functions (\code{FUN}), absolute values are used
+#' to compute the p-value, assuming more than one value is returned
+#' (e.g., centrality). This is done to mimic the \code{R} package
+#' \strong{NCT}.
+#'
+#' A fail-safe method to ensure the p-value is computed correctly is
+#' to access the permutations and observed values from the \code{nct}
+#' object.
+#'
+#' Finally, comparing edges is not implemented. The most straightforward
+#' way to do this is with \code{\link{compare_edges}}, which
+#' uses the de-sparsified estimator.
+#'
+#' @note
+#'
+#' In \insertCite{van2017comparing;textual}{GGMncv}, it was suggested that
+#' these are tests of \emph{invariance}. To avoid confusion, that
+#' terminology is not used in \strong{GGMncv}. This is because
+#' these tests assume invariance or the null is \emph{true}, and thus
+#' can only be used to detect differences. Hence, it would be incorrect
+#' to suggest networks are the same, or evidence for invariance,
+#' by merely failing to reject the null hypothesis
+#' \insertCite{williams_null}{GGMncv}.
+#'
+#' For the defaults, Jensen-Shannon divergence is a symmetrized version
+#' of Kullback-Leibler divergence (the average of both directions).
+#'
+#' \strong{Computational Speed}
+#'
+#' This implementation has two key features that should make it
+#' scale to larger networks: (1) parallel computation and (2) the
+#' \code{R} package \strong{glassoFast} is used under the hood
+#' (as opposed to \strong{glasso}). CPU (time) comparisons are
+#' provided in \insertCite{sustik2012glassofast;textual}{GGMncv}.
+#'
+#' \strong{Non-regularized}
+#'
+#' Non-regularized can be implemented by setting \code{lambda = 0}. Note
+#' this is provided to \code{\link{ggmncv}} via \code{...}.
 #'
 #' @references
 #' \insertAllCited{}
 #'
+#' @return A list of class \code{nct}, including the following
+#'
+#' \itemize{
+#'
+#' \item \code{glstr_pvalue}: Global strength p-value.
+#'
+#' \item \code{sse_pvalue}: Sum of square error p-value.
+#'
+#' \item \code{jsd_pvalue}: Jensen-Shannon divergence p-value.
+#'
+#' \item \code{max_pvalue}: Maximum difference p-value.
+#'
+#'  \item \code{glstr_obs}: Global strength observed.
+#'
+#' \item \code{sse_obs}: Sum of square error observed.
+#'
+#' \item \code{jsd_obs}: Jensen-Shannon divergence observed.
+#'
+#' \item \code{max_obs}: Maximum difference observed.
+#'
+#' \item \code{glstr_perm}: Global strength permutations.
+#'
+#' \item \code{sse_perm}: Sum of square error permutations.
+#'
+#' \item \code{jsd_perm}: Jensen-Shannon divergence permutations.
+#'
+#' \item \code{max_perm}: Maximum difference permutations.
+#'
+#'
+#' }
+#'
+#' For user-defined functions, i.e., those provided to \code{FUN},
+#' the function name is pasted to \code{_pvalue}, \code{_obs}, and
+#' \code{_perm}.
 #'
 #' @export
 #'
@@ -46,6 +137,52 @@
 #' @importFrom parallel stopCluster
 #' @importFrom parallel parLapply
 #'
+#' @examples
+#' \donttest{
+#' # generate network
+#' main <- gen_net(p = 10)
+#'
+#' # assume groups are equal
+#' y1 <- MASS::mvrnorm(n = 500,
+#'                     mu = rep(0, 10),
+#'                     Sigma = main$cors)
+#'
+#' y2 <- MASS::mvrnorm(n = 500,
+#'                     mu = rep(0, 10),
+#'                     Sigma = main$cors)
+#'
+#' compare_ggms <- nct(y1, y2, iter = 500,
+#'                     progress = FALSE)
+#'
+#' compare_ggms
+#'
+#' # custom function
+#' # note: x & y are partial correlation networks
+#'
+#' # correlation
+#' Correlation <- function(x, y){
+#' cor(x[upper.tri(x)], y[upper.tri(y)])
+#' }
+#'
+#' compare_ggms <- nct(y1, y2,iter = 100,
+#'                     FUN = Correlation,
+#'                     progress = FALSE)
+#'
+#' compare_ggms
+#'
+#' # correlation and strength
+#'
+#' Strength <- function(x, y){
+#' NetworkToolbox::strength(x) - NetworkToolbox::strength(y)
+#' }
+#'
+#' compare_ggms <- nct(y1, y2, iter = 100,
+#'                     FUN = list(Correlation = Correlation,
+#'                                Strength = Strength),
+#'                     progress = FALSE)
+#'
+#' compare_ggms
+#' }
 nct <- function(Y_g1, Y_g2,
                 iter = 1000,
                 desparsify = TRUE,
@@ -53,6 +190,7 @@ nct <- function(Y_g1, Y_g2,
                 FUN = NULL,
                 cores = 1,
                 progress = TRUE,
+                update_progress = 4,
                 ...){
 
   p_g1 <- ncol(Y_g1)
@@ -79,8 +217,8 @@ nct <- function(Y_g1, Y_g2,
           R = cor(Y_g1, method = method),
           n = n_g1, lambda = sqrt(log(p_g1)/n_g1),
           progress = FALSE
-          )
         )
+      )
 
     fit_g2 <-
       desparsify(
@@ -91,16 +229,16 @@ nct <- function(Y_g1, Y_g2,
         )
       )
 
-    } else {
+  } else {
 
-      fit_g1 <- ggmncv(R = cor(Y_g1, method = method),
-                 n = n_g1, ...,
-                 progress = FALSE)
+    fit_g1 <- ggmncv(R = cor(Y_g1, method = method),
+                     n = n_g1, ...,
+                     progress = FALSE)
 
-      fit_g2 <- ggmncv(R = cor(Y_g2, method = method),
-                 n = n_g2, ...,
-                 progress = FALSE)
-    }
+    fit_g2 <- ggmncv(R = cor(Y_g2, method = method),
+                     n = n_g2, ...,
+                     progress = FALSE)
+  }
 
   pcor_g1 <- fit_g1$P
   pcor_g2 <- fit_g2$P
@@ -130,9 +268,13 @@ nct <- function(Y_g1, Y_g2,
 
   if(!is.null(FUN)){
 
+    if(length(FUN) == 1 & is(FUN, "list")){
+      stop("one function in `FUN` cannot be a list.")
+    }
+
     if(is(FUN, "function")){
 
-      obs$fun_obs <- FUN(pcor_g1, pcor_g2)
+      obs$fun_obs <- list(FUN(pcor_g1, pcor_g2))
 
     } else if (is(FUN, "list")){
 
@@ -149,7 +291,9 @@ nct <- function(Y_g1, Y_g2,
   if(cores == 1){
 
     if(progress){
-      pb <-  utils::txtProgressBar(min = 0, max = iter, style = 3)
+
+      pb <- utils::txtProgressBar(min = 0, max = iter, style = 3)
+
     }
 
     iter_results <- lapply(X = 1:iter, function(x){
@@ -233,21 +377,24 @@ nct <- function(Y_g1, Y_g2,
       }
 
       if(progress){
+
         utils::setTxtProgressBar(pb, x)
+
       }
+
       return(returned_obj)
 
     })
 
   } else {
 
-    cl <- makeCluster(cores)
+    cl <- parallel::makeCluster(cores)
 
     if(progress){
 
-      pboptions(nout = 10)
+      pbapply::pboptions(nout = update_progress)
 
-      iter_results <- pblapply(X = 1:iter, function(x){
+      iter_results <- pbapply::pblapply(X = 1:iter, function(x){
 
         perm_g1 <- sample(1:n_total, size = n_g1, replace = FALSE)
 
@@ -417,74 +564,104 @@ nct <- function(Y_g1, Y_g2,
       }, cl = cl)
 
     }
+
+    stopCluster(cl)
+
   }
-  stopCluster(cl)
 
   custom_results <- list()
+
   perm_list <- list()
 
   if(!is.null(FUN)){
 
-    if(length(FUN) == 1){
+    if (length(FUN) == 1) {
 
-      if(length(obs$fun_obs) == 1){
-        perm_list[[1]] <- sapply(iter_results, "[[", "fun_perm", simplify = TRUE)
-        names(perm_list) <- paste0(as.character(substitute(FUN)), "_perm")
-        custom_results[[1]] <- mean(as.numeric(perm_list[[1]]) >= obs$fun_obs)
-        names(custom_results) <- paste0(as.character(substitute(FUN)), "_pvalue")
-        obs$fun_obs <- list(obs$fun_obs)
-        names(obs$fun_obs) <- paste0(as.character(substitute(FUN)), "_obs")
+      if (length(obs$fun_obs[[1]]) == 1) {
 
-      }
+        perm_list[[1]] <-
+          sapply(iter_results, "[[", "fun_perm", simplify = TRUE)
 
+        custom_results[[1]] <-
+          mean(as.numeric(perm_list[[1]]) >= obs$fun_obs[[1]])
 
+        names(perm_list) <-
+          paste0(as.character(substitute(FUN)), "_perm")
 
+        names(custom_results) <-
+          paste0(as.character(substitute(FUN)), "_pvalue")
 
+        names(obs$fun_obs) <-
+          paste0(as.character(substitute(FUN)), "_obs")
+
+      } else {
+
+        perm_list[[1]] <-  t(sapply(iter_results, "[[", "fun_perm",
+                                  simplify = TRUE))
+
+        custom_results[[1]]  <- colMeans(apply(perm_list[[1]],
+                                               MARGIN = 2, function(x) {
+                    abs(x) >= abs(obs$fun_obs[[1]])
+                  }))
+
+        names(custom_results) <-
+          paste0(as.character(substitute(FUN)), "_pvalue")
+
+        names(perm_list) <-
+          paste0(as.character(substitute(FUN)), "_perm")
+
+        names(obs$fun_obs) <-
+          paste0(as.character(substitute(FUN)), "_obs")
+
+      } # end more than 1 test stat
 
     } else {
 
-      for(i in seq_len(length(FUN))) {
+      for(i in seq_along(FUN)){
 
-        res_x <- do.call(rbind, sapply(iter_results, "[[", "fun_perm",
-                                       simplify = TRUE)[i,])
+        res_i <-
+          do.call(rbind,
+                  t(sapply(iter_results, "[[", "fun_perm",
+                           simplify = TRUE))[,i])
 
-        perm_list[[i]] <- res_x
+        perm_list[[i]] <- res_i
 
-        if(ncol(res_x) > 1){
+        if (length(obs$fun_obs[[i]]) > 1) {
 
-          custom_results[[i]]  <- colMeans(t(apply(res_x, MARGIN = 1, function(x) {
-            abs(x) >= abs(obs$fun_obs[[i]])
-          })))
+          custom_results[[i]]  <- colMeans(apply(res_i,
+                                                 MARGIN = 2, function(x) {
+                                                   abs(x) >= abs(obs$fun_obs[[i]])
+                                                 }))
 
         } else {
 
-          custom_results[[i]] <- mean(res_x >= obs$fun_obs[[i]])
+          custom_results[[i]] <- mean(res_i >= obs$fun_obs[[i]])
 
-          }
+        }
+
       }
 
       names(custom_results) <- paste0(names(FUN), "_pvalue")
+
       names(perm_list) <- paste(names(FUN), "_perm")
+
       names(obs$fun_obs) <- paste0(names(obs$fun_obs), "_obs")
+
     }
 
-
-
   }
-
-
 
   default_names <- names(iter_results[[1]])[1:4]
 
   perm_list_default <- lapply(default_names, function(x) {
     results_x <- sapply(iter_results, "[[", x)
     return(results_x)
-    })
+  })
 
   default_results <- lapply(1:4, function(x) {
     results_x <- mean(perm_list_default[[x]] >= obs[[x]])
     return(results_x)
-    })
+  })
 
   names(default_results) <- paste0(sub(pattern = "\\_.*",
                                        replacement = "",
@@ -494,12 +671,52 @@ nct <- function(Y_g1, Y_g2,
 
   returned_object <- c(default_results,
                        custom_results,
-                       perm_list_default,
-                       perm_list,
                        obs[1:4],
-                       obs$fun_obs)
+                       obs$fun_obs,
+                       perm_list_default,
+                       perm_list)
+
+  class(returned_object) <- "nct"
 
   return(returned_object)
+}
+
+#' Print \code{nct} Objects
+#'
+#' @param x An object of class \code{nct}
+#' @param ... Currently ignored.
+#' @export
+print.nct <- function(x, ...){
+
+  check_defaults <- length(grep("_pvalue", names(x)))
+  cat("Network Comparsion Test\n")
+  cat("(GGMncv Edition)\n")
+  cat("----\n")
+  cat("Maximum Difference\n")
+  cat("p-value:", x$max_pvalue, "\n")
+  cat("----\n")
+  cat("Global Strength\n")
+  cat("p-value:", x$glstr_pvalue, "\n")
+  cat("----\n")
+  cat("Sum of Squared Error\n")
+  cat("p-value:", x$sse_pvalue, "\n")
+  cat("----\n")
+  cat("Jensen-Shannon divergence\n")
+  cat("p-value:", x$jsd_pvalue, "\n")
+  cat("----\n")
+
+  if (check_defaults > 4) {
+    user_defined <- x[5:check_defaults]
+    user_names <- gsub("_pvalue", "", names(user_defined))
+
+    for (i in seq_along(user_defined)) {
+      cat(user_names[i], "\n")
+      cat("p-value:", user_defined[[i]], "\n")
+      cat("----\n")
+    }
+
+  }
+
 }
 
 

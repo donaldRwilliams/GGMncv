@@ -13,6 +13,7 @@ nct(
   FUN = NULL,
   cores = 1,
   progress = TRUE,
+  update_progress = 4,
   ...
 )
 }
@@ -41,15 +42,152 @@ specifying custom test-statistics. See \strong{Examples}.}
 \item{cores}{Numeric. Number of cores to use when executing the permutations in
 parallel (defaults to \code{1}).}
 
-\item{progress}{Should a progress bar be included ?}
+\item{progress}{Logical. Should a progress bar be included
+(defaults to \code{TRUE})?}
+
+\item{update_progress}{How many times should the progress bar be updated
+(defaults to \code{4})? Note that setting this to a
+large value should result in the worse performance,
+due to additional overhead communicating among the
+parallel processes.}
 
 \item{...}{Additional arguments passed to \code{\link{ggmncv}}.}
+}
+\value{
+A list of class \code{nct}, including the following
+
+\itemize{
+
+\item \code{glstr_pvalue}: Global strength p-value.
+
+\item \code{sse_pvalue}: Sum of square error p-value.
+
+\item \code{jsd_pvalue}: Jensen-Shannon divergence p-value.
+
+\item \code{max_pvalue}: Maximum difference p-value.
+
+ \item \code{glstr_obs}: Global strength observed.
+
+\item \code{sse_obs}: Sum of square error observed.
+
+\item \code{jsd_obs}: Jensen-Shannon divergence observed.
+
+\item \code{max_obs}: Maximum difference observed.
+
+\item \code{glstr_perm}: Global strength permutations.
+
+\item \code{sse_perm}: Sum of square error permutations.
+
+\item \code{jsd_perm}: Jensen-Shannon divergence permutations.
+
+\item \code{max_perm}: Maximum difference permutations.
+
+
+}
+
+For user-defined functions, i.e., those provided to \code{FUN},
+the function name is pasted to \code{_pvalue}, \code{_obs}, and
+\code{_perm}.
 }
 \description{
 A re-implementation and extension of the permutation based
 network comparison test introduced in \insertCite{van2017comparing;textual}{GGMncv}.
 Such extensions include scaling to networks with many nodes and the option to
 use custom test-statistics.
+}
+\details{
+\strong{User-Defined Functions}
+
+These functions must have two arguments, corresponding
+to the partial correlation network for each group. An
+example is provided below.
+
+
+For user-defined functions (\code{FUN}), absolute values are used
+to compute the p-value, assuming more than one value is returned
+(e.g., centrality). This is done to mimic the \code{R} package
+\strong{NCT}.
+
+A fail-safe method to ensure the p-value is computed correctly is
+to access the permutations and observed values from the \code{nct}
+object.
+
+Finally, comparing edges is not implemented. The most straightforward
+way to do this is with \code{\link{compare_edges}}, which
+uses the de-sparsified estimator.
+}
+\note{
+In \insertCite{van2017comparing;textual}{GGMncv}, it was suggested that
+these are tests of \emph{invariance}. To avoid confusion, that
+terminology is not used in \strong{GGMncv}. This is because
+these tests assume invariance or the null is \emph{true}, and thus
+can only be used to detect differences. Hence, it would be incorrect
+to suggest networks are the same, or evidence for invariance,
+by merely failing to reject the null hypothesis
+\insertCite{williams_null}{GGMncv}.
+
+For the defaults, Jensen-Shannon divergence is a symmetrized version
+of Kullback-Leibler divergence (the average of both directions).
+
+\strong{Computational Speed}
+
+This implementation has two key features that should make it
+scale to larger networks: (1) parallel computation and (2) the
+\code{R} package \strong{glassoFast} is used under the hood
+(as opposed to \strong{glasso}). CPU (time) comparisons are
+provided in \insertCite{sustik2012glassofast;textual}{GGMncv}.
+
+\strong{Non-regularized}
+
+Non-regularized can be implemented by setting \code{lambda = 0}. Note
+this is provided to \code{\link{ggmncv}} via \code{...}.
+}
+\examples{
+\donttest{
+# generate network
+main <- gen_net(p = 10)
+
+# assume groups are equal
+y1 <- MASS::mvrnorm(n = 500,
+                    mu = rep(0, 10),
+                    Sigma = main$cors)
+
+y2 <- MASS::mvrnorm(n = 500,
+                    mu = rep(0, 10),
+                    Sigma = main$cors)
+
+compare_ggms <- nct(y1, y2, iter = 500,
+                    progress = FALSE)
+
+compare_ggms
+
+# custom function
+# note: x & y are partial correlation networks
+
+# correlation
+Correlation <- function(x, y){
+cor(x[upper.tri(x)], y[upper.tri(y)])
+}
+
+compare_ggms <- nct(y1, y2,iter = 100,
+                    FUN = Correlation,
+                    progress = FALSE)
+
+compare_ggms
+
+# correlation and strength
+
+Strength <- function(x, y){
+NetworkToolbox::strength(x) - NetworkToolbox::strength(y)
+}
+
+compare_ggms <- nct(y1, y2, iter = 100,
+                    FUN = list(Correlation = Correlation,
+                               Strength = Strength),
+                    progress = FALSE)
+
+compare_ggms
+}
 }
 \references{
 \insertAllCited{}
