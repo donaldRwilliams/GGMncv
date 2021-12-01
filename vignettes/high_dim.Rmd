@@ -1,0 +1,175 @@
+---
+title: "High Dimensional Data: Must Read!!"
+bibliography: ../inst/REFERENCES.bib
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{High Dimensional Data: Must Read!!}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Introduction
+**GGMncv** is set up for low-dimensional settings, that is, when 
+the number of observations ($n$) is much greater than the number 
+of nodes ($p$). This is perhaps not typical in the Gaussian graphical
+modeling literature, and is a direct result of my (the author of **GGMncv**)
+field  encountering low-dimensional data most often 
+[see for example @williams2019nonregularized; @williams2020back]. As a result, 
+*the defaults are honed in for low-dimensional data*!
+
+Of course, **GGMncv** can readily be used for high-dimensional data. In what 
+follows, I highlight several issues that may arise, in addition to solutions
+to overcome thoe issues.
+
+# Failure Altogether
+
+By default, **GGMncv** uses the sample based (inverse) covariance matrix for the 
+initial values, which is needed for employing nonconvex regularization.
+When $p > n$, **GGMncv** will produce an error because the sample based (inverse) covariance matrix cannot be inverted in this situation. 
+
+For example, notice the error when running the following code:
+
+```{r, error=TRUE}
+library(GGMncv)
+
+# p > n
+main <- gen_net(p = 50, 
+                edge_prob = 0.05)
+
+y <- MASS::mvrnorm(n = 49, 
+                   mu = rep(0, 50), 
+                   Sigma = main$cors)
+
+fit <- ggmncv(cor(y), n = nrow(y))
+```
+
+## Solution
+The solution is to provide an function for the initial matrix. To this end,
+**GGMncv** includes the function `lediot_wolf` which is a shrinkage 
+estimator. It is important to note that any function can be used, so long
+as it return the inverse **correlation** matrix.
+
+```{r, message=FALSE, warning=FALSE}
+fit <- ggmncv(cor(y), n = nrow(y), 
+              penalty = "atan",
+              progress = FALSE,
+              initial = ledoit_wolf, Y = y)
+```
+
+Notice the `Y = y`, which is used internally to pass additional arguments 
+via `...` to the function provided in `initial`.
+
+The conditional dependence structure can then be plotted with
+
+```{r, message=FALSE, warning=FALSE}
+plot(get_graph(fit), 
+     node_size = 5)
+```
+
+Here is an example of providing a function.
+
+```{r}
+initial_ggmncv <- function(y, ...){
+  Rinv <- corpcor::invcor.shrink(y, verbose = FALSE)
+  return(Rinv)
+}
+
+fit2 <- ggmncv(cor(y), n = nrow(y), 
+               penalty = "atan",
+               progress = FALSE,
+               initial = initial_ggmncv, y = y)
+
+plot(get_graph(fit2), 
+     node_size = 5)
+```
+
+
+Perhaps it is of interest to compare performance, given 
+that different initial values were used.
+
+```{r}
+# ledoit and wolf
+score_binary(estimate = fit$adj, 
+             true = main$adj, 
+             model_name = "lw")
+
+# schafer and strimmer
+score_binary(estimate = fit2$adj, 
+             true = main$adj,  
+             model_name = "ss")
+
+```
+
+# Works but Bad Performance
+
+Perhaps a more trick situation is where the covariance matrix
+can be inverted, but it is still ill-conditioned. This can occur
+when $p$ approaches but does not exceed $n$. Here performance
+can be very bad.
+
+```{r, error=TRUE}
+# p -> n
+main <- gen_net(p = 50, 
+                edge_prob = 0.05)
+
+y <- MASS::mvrnorm(n = 60, 
+                   mu = rep(0, 50), 
+                   Sigma = main$cors)
+
+fit <- ggmncv(cor(y), n = nrow(y), 
+              penalty = "atan",
+              progress = FALSE)
+
+score_binary(estimate = fit$adj, 
+             true = main$adj)
+```
+
+This is extremely problematic because there was no error, and the performance
+was terrible.
+
+## Solution
+
+One solution is again to provide a function to `initial`.
+
+```{r}
+fit <- ggmncv(cor(y), n = nrow(y), 
+              progress = FALSE,
+              penalty = "atan",
+              initial = ledoit_wolf, Y = y)
+
+score_binary(estimate = fit$adj, 
+             true = main$adj)
+```
+
+An additional solution is to use $L_1$-regularization, i.e.,
+
+```{r}
+fit_l1 <- ggmncv(cor(y), n = nrow(y), 
+              progress = FALSE, 
+              penalty = "lasso")
+
+score_binary(estimate = fit_l1$adj, 
+             true = main$adj)
+```
+
+
+A quick comparison of KL-divergence
+
+```{r}
+# atan
+kl_mvn(true = solve(main$cors), estimate = fit$Theta)
+
+# lasso
+kl_mvn(true = solve(main$cors), estimate = fit_l1$Theta)
+```
+
+
+# References

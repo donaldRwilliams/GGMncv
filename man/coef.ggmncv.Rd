@@ -18,7 +18,7 @@ A matrix of regression coefficients.
 There is a direct correspondence between the inverse covariance
 matrix and multiple regression \insertCite{stephens1998,kwan2014regression}{GGMncv}.
 This readily allows for converting the off diagonal elements to regression coefficients,
-resulting in noncovex penalization for multiple regression.
+resulting in noncovex penalization for multiple regression modeling.
 }
 \note{
 The coefficients can be accessed via \code{coefs[1,]},
