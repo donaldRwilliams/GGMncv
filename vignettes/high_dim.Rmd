@@ -23,11 +23,11 @@ of nodes ($p$). This is perhaps not typical in the Gaussian graphical
 modeling literature, and is a direct result of my (the author of **GGMncv**)
 field  encountering low-dimensional data most often 
 [see for example @williams2019nonregularized; @williams2020back]. As a result, 
-*the defaults are honed in for low-dimensional data*!
+**the defaults are honed in for low-dimensional data**!
 
 Of course, **GGMncv** can readily be used for high-dimensional data. In what 
 follows, I highlight several issues that may arise, in addition to solutions
-to overcome thoe issues.
+to overcome those issues.
 
 # Failure Altogether
 
@@ -54,8 +54,9 @@ fit <- ggmncv(cor(y), n = nrow(y))
 ## Solution
 The solution is to provide an function for the initial matrix. To this end,
 **GGMncv** includes the function `lediot_wolf` which is a shrinkage 
-estimator. It is important to note that any function can be used, so long
-as it return the inverse **correlation** matrix.
+estimator [@ledoit2004well]. It is important to note that any 
+function can be used, so long as it return the inverse **correlation** 
+matrix.
 
 ```{r, message=FALSE, warning=FALSE}
 fit <- ggmncv(cor(y), n = nrow(y), 
@@ -101,7 +102,7 @@ score_binary(estimate = fit$adj,
              true = main$adj, 
              model_name = "lw")
 
-# schafer and strimmer
+# Shaffer and strimmer
 score_binary(estimate = fit2$adj, 
              true = main$adj,  
              model_name = "ss")
@@ -110,7 +111,7 @@ score_binary(estimate = fit2$adj,
 
 # Works but Bad Performance
 
-Perhaps a more trick situation is where the covariance matrix
+Perhaps a trickier situation is when the covariance matrix
 can be inverted, but it is still ill-conditioned. This can occur
 when $p$ approaches but does not exceed $n$. Here performance
 can be very bad.
@@ -133,7 +134,7 @@ score_binary(estimate = fit$adj,
 ```
 
 This is extremely problematic because there was no error, and the performance
-was terrible.
+was terrible (note: 1 - specificity = the false positive rate).
 
 ## Solution
 

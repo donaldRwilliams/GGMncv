@@ -34,6 +34,7 @@ Imports:
     stats,
     utils
 Suggests:
+    car,
     corpcor,
     corrplot,
     NetworkToolbox,
