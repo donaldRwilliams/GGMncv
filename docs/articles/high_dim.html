@@ -64,6 +64,9 @@
       <a href="../articles/nct_custom.html">Custom Network Comparison Tests</a>
     </li>
     <li>
+      <a href="../articles/null_dist.html">NCT: Null Distributions</a>
+    </li>
+    <li>
       <a href="../articles/sign_restrict.html">Positive Manifold (Sign Restriction)</a>
     </li>
   </ul>
@@ -102,8 +105,8 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p><strong>GGMncv</strong> is set up for low-dimensional settings, that is, when the number of observations (<span class="math inline">\(n\)</span>) is much greater than the number of nodes (<span class="math inline">\(p\)</span>). This is perhaps not typical in the Gaussian graphical modeling literature, and is a direct result of my (the author of <strong>GGMncv</strong>) field encountering low-dimensional data most often <span class="citation">(see for example Williams et al. 2019; Williams and Rast 2020)</span>. As a result, <em>the defaults are honed in for low-dimensional data</em>!</p>
-<p>Of course, <strong>GGMncv</strong> can readily be used for high-dimensional data. In what follows, I highlight several issues that may arise, in addition to solutions to overcome thoe issues.</p>
+<p><strong>GGMncv</strong> is set up for low-dimensional settings, that is, when the number of observations (<span class="math inline">\(n\)</span>) is much greater than the number of nodes (<span class="math inline">\(p\)</span>). This is perhaps not typical in the Gaussian graphical modeling literature, and is a direct result of my (the author of <strong>GGMncv</strong>) field encountering low-dimensional data most often <span class="citation">(see for example Williams et al. 2019; Williams and Rast 2020)</span>. As a result, <strong>the defaults are honed in for low-dimensional data</strong>!</p>
+<p>Of course, <strong>GGMncv</strong> can readily be used for high-dimensional data. In what follows, I highlight several issues that may arise, in addition to solutions to overcome those issues.</p>
 </div>
 <div id="failure-altogether" class="section level1">
 <h1 class="hasAnchor">
@@ -122,11 +125,11 @@
                    Sigma <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">cors</span><span class="op">)</span>
 
 <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmncv.html">ggmncv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error in solve.default(R): system is computationally singular: reciprocal condition number = 7.51354e-20</span></code></pre></div>
+<span class="co">#&gt; Error in solve.default(R): system is computationally singular: reciprocal condition number = 1.56126e-18</span></code></pre></div>
 <div id="solution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#solution" class="anchor"></a>Solution</h2>
-<p>The solution is to provide an function for the initial matrix. To this end, <strong>GGMncv</strong> includes the function <code>lediot_wolf</code> which is a shrinkage estimator. It is important to note that any function can be used, so long as it return the inverse <strong>correlation</strong> matrix.</p>
+<p>The solution is to provide an function for the initial matrix. To this end, <strong>GGMncv</strong> includes the function <code>lediot_wolf</code> which is a shrinkage estimator <span class="citation">(Ledoit and Wolf 2004)</span>. It is important to note that any function can be used, so long as it return the inverse <strong>correlation</strong> matrix.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmncv.html">ggmncv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, 
               penalty <span class="op">=</span> <span class="st">"atan"</span>,
@@ -160,30 +163,30 @@
              true <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">adj</span>, 
              model_name <span class="op">=</span> <span class="st">"lw"</span><span class="op">)</span>
 <span class="co">#&gt;       measure     score model_name</span>
-<span class="co">#&gt; 1 specificity 0.9707904         lw</span>
-<span class="co">#&gt; 2 sensitivity 0.2622951         lw</span>
-<span class="co">#&gt; 3   precision 0.3200000         lw</span>
-<span class="co">#&gt; 4      recall 0.2622951         lw</span>
-<span class="co">#&gt; 5    f1_score 0.2882883         lw</span>
-<span class="co">#&gt; 6         mcc 0.2562434         lw</span>
+<span class="co">#&gt; 1 specificity 0.9922680         lw</span>
+<span class="co">#&gt; 2 sensitivity 0.1147541         lw</span>
+<span class="co">#&gt; 3   precision 0.4375000         lw</span>
+<span class="co">#&gt; 4      recall 0.1147541         lw</span>
+<span class="co">#&gt; 5    f1_score 0.1818182         lw</span>
+<span class="co">#&gt; 6         mcc 0.2050416         lw</span>
 
-<span class="co"># schafer and strimmer</span>
+<span class="co"># Shaffer and strimmer</span>
 <span class="fu"><a href="../reference/score_binary.html">score_binary</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">fit2</span><span class="op">$</span><span class="va">adj</span>, 
              true <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">adj</span>,  
              model_name <span class="op">=</span> <span class="st">"ss"</span><span class="op">)</span>
 <span class="co">#&gt;       measure     score model_name</span>
-<span class="co">#&gt; 1 specificity 0.9673540         ss</span>
-<span class="co">#&gt; 2 sensitivity 0.2786885         ss</span>
-<span class="co">#&gt; 3   precision 0.3090909         ss</span>
-<span class="co">#&gt; 4      recall 0.2786885         ss</span>
-<span class="co">#&gt; 5    f1_score 0.2931034         ss</span>
-<span class="co">#&gt; 6         mcc 0.2584504         ss</span></code></pre></div>
+<span class="co">#&gt; 1 specificity 0.9957045         ss</span>
+<span class="co">#&gt; 2 sensitivity 0.1147541         ss</span>
+<span class="co">#&gt; 3   precision 0.5833333         ss</span>
+<span class="co">#&gt; 4      recall 0.1147541         ss</span>
+<span class="co">#&gt; 5    f1_score 0.1917808         ss</span>
+<span class="co">#&gt; 6         mcc 0.2439607         ss</span></code></pre></div>
 </div>
 </div>
 <div id="works-but-bad-performance" class="section level1">
 <h1 class="hasAnchor">
 <a href="#works-but-bad-performance" class="anchor"></a>Works but Bad Performance</h1>
-<p>Perhaps a more trick situation is where the covariance matrix can be inverted, but it is still ill-conditioned. This can occur when <span class="math inline">\(p\)</span> approaches but does not exceed <span class="math inline">\(n\)</span>. Here performance can be very bad.</p>
+<p>Perhaps a trickier situation is when the covariance matrix can be inverted, but it is still ill-conditioned. This can occur when <span class="math inline">\(p\)</span> approaches but does not exceed <span class="math inline">\(n\)</span>. Here performance can be very bad.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># p -&gt; n</span>
 <span class="va">main</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gen_net.html">gen_net</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">50</span>, 
@@ -199,14 +202,14 @@
 
 <span class="fu"><a href="../reference/score_binary.html">score_binary</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">adj</span>, 
              true <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">adj</span><span class="op">)</span>
-<span class="co">#&gt;       measure       score</span>
-<span class="co">#&gt; 1 specificity  0.11769759</span>
-<span class="co">#&gt; 2 sensitivity  0.80327869</span>
-<span class="co">#&gt; 3   precision  0.04553903</span>
-<span class="co">#&gt; 4      recall  0.80327869</span>
-<span class="co">#&gt; 5    f1_score  0.08619173</span>
-<span class="co">#&gt; 6         mcc -0.05258957</span></code></pre></div>
-<p>This is extremely problematic because there was no error, and the performance was terrible.</p>
+<span class="co">#&gt;       measure      score</span>
+<span class="co">#&gt; 1 specificity 0.16924399</span>
+<span class="co">#&gt; 2 sensitivity 0.93442623</span>
+<span class="co">#&gt; 3   precision 0.05566406</span>
+<span class="co">#&gt; 4      recall 0.93442623</span>
+<span class="co">#&gt; 5    f1_score 0.10506912</span>
+<span class="co">#&gt; 6         mcc 0.06089020</span></code></pre></div>
+<p>This is extremely problematic because there was no error, and the performance was terrible (note: 1 - specificity = the false positive rate).</p>
 <div id="solution-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#solution-1" class="anchor"></a>Solution</h2>
@@ -219,13 +222,13 @@
 
 <span class="fu"><a href="../reference/score_binary.html">score_binary</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">adj</span>, 
              true <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">adj</span><span class="op">)</span>
-<span class="co">#&gt;       measure      score</span>
-<span class="co">#&gt; 1 specificity 0.99742268</span>
-<span class="co">#&gt; 2 sensitivity 0.09836066</span>
-<span class="co">#&gt; 3   precision 0.66666667</span>
-<span class="co">#&gt; 4      recall 0.09836066</span>
-<span class="co">#&gt; 5    f1_score 0.17142857</span>
-<span class="co">#&gt; 6         mcc 0.24397388</span></code></pre></div>
+<span class="co">#&gt;       measure     score</span>
+<span class="co">#&gt; 1 specificity 0.9656357</span>
+<span class="co">#&gt; 2 sensitivity 0.3114754</span>
+<span class="co">#&gt; 3   precision 0.3220339</span>
+<span class="co">#&gt; 4      recall 0.3114754</span>
+<span class="co">#&gt; 5    f1_score 0.3166667</span>
+<span class="co">#&gt; 6         mcc 0.2815270</span></code></pre></div>
 <p>An additional solution is to use <span class="math inline">\(L_1\)</span>-regularization, i.e.,</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit_l1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmncv.html">ggmncv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, 
@@ -234,28 +237,31 @@
 
 <span class="fu"><a href="../reference/score_binary.html">score_binary</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">fit_l1</span><span class="op">$</span><span class="va">adj</span>, 
              true <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">adj</span><span class="op">)</span>
-<span class="co">#&gt;       measure     score</span>
-<span class="co">#&gt; 1 specificity 0.9965636</span>
-<span class="co">#&gt; 2 sensitivity 0.1147541</span>
-<span class="co">#&gt; 3   precision 0.6363636</span>
-<span class="co">#&gt; 4      recall 0.1147541</span>
-<span class="co">#&gt; 5    f1_score 0.1944444</span>
-<span class="co">#&gt; 6         mcc 0.2566846</span></code></pre></div>
+<span class="co">#&gt;       measure      score</span>
+<span class="co">#&gt; 1 specificity 0.99828179</span>
+<span class="co">#&gt; 2 sensitivity 0.01639344</span>
+<span class="co">#&gt; 3   precision 0.33333333</span>
+<span class="co">#&gt; 4      recall 0.01639344</span>
+<span class="co">#&gt; 5    f1_score 0.03125000</span>
+<span class="co">#&gt; 6         mcc 0.06458476</span></code></pre></div>
 <p>A quick comparison of KL-divergence</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># atan</span>
 <span class="fu"><a href="../reference/kl_mvn.html">kl_mvn</a></span><span class="op">(</span>true <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="va">main</span><span class="op">$</span><span class="va">cors</span><span class="op">)</span>, estimate <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">Theta</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.166677</span>
+<span class="co">#&gt; [1] 1.495638</span>
 
 <span class="co"># lasso</span>
 <span class="fu"><a href="../reference/kl_mvn.html">kl_mvn</a></span><span class="op">(</span>true <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="va">main</span><span class="op">$</span><span class="va">cors</span><span class="op">)</span>, estimate <span class="op">=</span> <span class="va">fit_l1</span><span class="op">$</span><span class="va">Theta</span><span class="op">)</span>
-<span class="co">#&gt; [1] 2.338524</span></code></pre></div>
+<span class="co">#&gt; [1] 2.754701</span></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-ledoit2004well" class="csl-entry">
+Ledoit, Olivier, and Michael Wolf. 2004. <span>“A Well-Conditioned Estimator for Large-Dimensional Covariance Matrices.”</span> <em>Journal of Multivariate Analysis</em> 88 (2): 365–411.
+</div>
 <div id="ref-williams2020back" class="csl-entry">
 Williams, Donald R, and Philippe Rast. 2020. <span>“Back to the Basics: Rethinking Partial Correlation Network Methodology.”</span> <em>British Journal of Mathematical and Statistical Psychology</em> 73 (2): 187–212.
 </div>
