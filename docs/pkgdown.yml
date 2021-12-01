@@ -2,8 +2,10 @@ pandoc: 2.14.0.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  high_dim: high_dim.html
+  nct_custom: nct_custom.html
   sign_restrict: sign_restrict.html
-last_built: 2021-11-30T14:29Z
+last_built: 2021-12-01T00:03Z
 urls:
   reference: https://donaldrwilliams.github.io/GGMncv//reference
   article: https://donaldrwilliams.github.io/GGMncv//articles

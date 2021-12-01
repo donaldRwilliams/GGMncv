@@ -103,6 +103,12 @@ in ggmncv." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/high_dim.html">High Dimensional Data: Must Read!!</a>
+    </li>
+    <li>
+      <a href="../articles/nct_custom.html">Custom Network Comparison Tests</a>
+    </li>
+    <li>
       <a href="../articles/sign_restrict.html">Positive Manifold (Sign Restriction)</a>
     </li>
   </ul>
@@ -172,7 +178,12 @@ in <code><a href='ggmncv.html'>ggmncv</a></code>.</p>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># shrinkage</span></span>
 <span class='r-in'><span class='fu'>ledoit_wolf</span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in ledoit_wolf(Y):</span> Please install the 'nlshrink' package.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            B1          B2         B3          B4         B5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> B1  1.7481888 -0.40369737 -0.1292942 -0.59450245 -0.2768127</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> B2 -0.4036974  1.91707343 -0.9664283  0.03540245 -0.2046325</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> B3 -0.1292942 -0.96642834  2.1197014 -0.43273664 -0.3563303</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> B4 -0.5945024  0.03540245 -0.4327366  1.92211201 -0.6171229</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> B5 -0.2768127 -0.20463250 -0.3563303 -0.61712287  1.7916529</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># non-reg</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/solve.html'>solve</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>Y</span><span class='op'>)</span><span class='op'>)</span></span>

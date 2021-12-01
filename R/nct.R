@@ -706,15 +706,7 @@ print.nct <- function(x, ...){
   cat("----\n")
 
   if (check_defaults > 4) {
-    user_defined <- x[5:check_defaults]
-    user_names <- gsub("_pvalue", "", names(user_defined))
-
-    for (i in seq_along(user_defined)) {
-      cat(user_names[i], "\n")
-      cat("p-value:", user_defined[[i]], "\n")
-      cat("----\n")
-    }
-
+    cat("note: compute p-values manually for custom tests. see vignettes.")
   }
 
 }
