@@ -37,7 +37,9 @@ Suggests:
     car,
     corpcor,
     corrplot,
+    dplyr,
     NetworkToolbox,
+    NetworkComparisonTest,
     nlshrink,
     rmarkdown,
     knitr
