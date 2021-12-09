@@ -123,6 +123,15 @@ inference <- function(object,
 }
 
 
+#' @rdname inference
+#' @examples
+#'
+#' # alias
+#' all.equal(inference(fit), significance_test(fit))
+#'
+#' @export
+significance_test <- inference
+
 print_inference <- function(x, ...){
 
   cat("Statistical Inference\n")

@@ -87,3 +87,26 @@ constrained <- function(Sigma, adj){
 
   return(returned_object)
 }
+
+
+#' @rdname constrained
+#' @examples
+#'
+#' # alias
+#'
+#' # data
+#' y <- ptsd
+#'
+#' # nonreg (lambda = 0)
+#' fit <- ggmncv(cor(y), n = nrow(y),
+#'               lambda = 0,
+#'               progress = FALSE)
+#'
+#' # set values less than |0.1| to zero
+#' adj_new <- ifelse( abs(fit$P) <= 0.1, 0, 1)
+#'
+#' # mle given the graph
+#' mle_known_graph(cor(y), adj_new)
+#'
+#' @export
+mle_known_graph <- constrained

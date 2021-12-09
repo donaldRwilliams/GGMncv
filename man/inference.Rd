@@ -2,9 +2,12 @@
 % Please edit documentation in R/inference.R
 \name{inference}
 \alias{inference}
+\alias{significance_test}
 \title{Statistical Inference for Regularized Gaussian Graphical Models}
 \usage{
 inference(object, method = "fdr", alpha = 0.05, ...)
+
+significance_test(object, method = "fdr", alpha = 0.05, ...)
 }
 \arguments{
 \item{object}{An object of class \code{ggmncv}}
@@ -62,6 +65,10 @@ fit <- ggmncv(cor(Y), n = nrow(Y),
 
 # statistical inference
 inference(fit)
+
+# alias
+all.equal(inference(fit), significance_test(fit))
+
 }
 \references{
 \insertAllCited{}

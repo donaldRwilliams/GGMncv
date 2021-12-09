@@ -2,9 +2,12 @@
 % Please edit documentation in R/htf.R
 \name{constrained}
 \alias{constrained}
+\alias{mle_known_graph}
 \title{Precision Matrix with Known Graph}
 \usage{
 constrained(Sigma, adj)
+
+mle_known_graph(Sigma, adj)
 }
 \arguments{
 \item{Sigma}{Covariance matrix}
@@ -68,6 +71,23 @@ while(check_zeros){
 }
 
 }
+
+# alias
+
+# data
+y <- ptsd
+
+# nonreg (lambda = 0)
+fit <- ggmncv(cor(y), n = nrow(y),
+              lambda = 0,
+              progress = FALSE)
+
+# set values less than |0.1| to zero
+adj_new <- ifelse( abs(fit$P) <= 0.1, 0, 1)
+
+# mle given the graph
+mle_known_graph(cor(y), adj_new)
+
 }
 \references{
 \insertAllCited{}
