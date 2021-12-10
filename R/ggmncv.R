@@ -992,11 +992,15 @@ print.ggmncv <- function(x,...){
 plot.ggmncv <- function(x, size = 1,
                         alpha = 0.5, ...){
 
-  if(x$select != "lambda"){
+  if (is.null(x$lambda)) {
+    stop("plot relations with `plot(get_graph(x))`")
+  }
+
+  if (x$select != "lambda") {
     stop("select must be 'lambda'.")
   }
 
-  if(is.null(x$fitted_models)){
+  if (is.null(x$fitted_models)) {
     stop("models not stored.")
   }
 
