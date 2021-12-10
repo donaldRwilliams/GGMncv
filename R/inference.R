@@ -124,6 +124,7 @@ inference <- function(object,
 
 
 #' @rdname inference
+#'
 #' @examples
 #'
 #' # alias
