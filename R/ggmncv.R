@@ -18,7 +18,7 @@
 #'           The options include \code{aic}, \code{ebic} (ebic_gamma defaults to \code{0.5}),
 #'           \code{ric}, or any of the generalized information criteria provided in section 5 of
 #'           \insertCite{kim2012consistent;textual}{GGMncv}. The options are \code{gic_1}
-#'           (i.e., \code{bic}) to \code{gic_6}.
+#'           (i.e., \code{bic}) to \code{gic_6} (see '\code{Details}').
 #'
 #' @param select Character string. Which tuning parameter should be selected
 #'               (defaults to \code{"lambda"})? The options include \code{"lambda"}
@@ -163,6 +163,46 @@
 #' covariance matrix is used for the starting values. This is expected to work well,
 #' assuming that \mjseqn{n} is sufficiently larger than  \mjseqn{p}.
 #'
+#' \strong{Generalized Information Criteria}
+#'
+#' The following are the available GIC:
+#'
+#' \itemize{
+#'
+#' \item \mjseqn{\text{GIC}_1:  |\textbf{E}| \cdot \text{log}(n)}
+#'        (\code{ic = "gic_1"}  or \code{ic = "bic"})
+#'
+#' \item  \mjseqn{\text{GIC}_2: |\textbf{E}| \cdot p^{1/3}}
+#' (\code{ic = "gic_2"})
+#'
+#' \item  \mjseqn{\text{GIC}_3:  |\textbf{E}| \cdot 2 \cdot \text{log}(p)}
+#' (\code{ic = "gic_3"} or \code{ic = "ric"})
+#'
+#' \item \mjseqn{\text{GIC}_4: |\textbf{E}| \cdot 2 \cdot \text{log}(p) +
+#'       \text{log}\big(\text{log}(p)\big)}
+#'        (\code{ic = "gic_4"})
+#'
+#' \item \mjseqn{\text{GIC}_5: |\textbf{E}| \cdot \text{log}(p) +
+#'        \text{log}\big(\text{log}(n)\big) \cdot \text{log}(p)}
+#'       (\code{ic = "gic_5"})
+#'
+#'  \item \mjseqn{\text{GIC}_6: |\textbf{E}| \cdot \text{log}(n)
+#'        \cdot \text{log}(p)}
+#'         (\code{ic = "gic_6"})
+#' }
+#'
+#'  Note that \mjseqn{|\textbf{E}|} denotes the number of edges (nonzero relations)
+#'  in the graph, \mjseqn{p} the number of nodes (columns), and
+#'  \mjseqn{n} the number of observations (rows).
+#'  Further each can be understood as a penalty term added to
+#'  negative 2 times the log-likelihood, that is,
+#'
+#' \mjseqn{-2 l_n(\hat{\boldsymbol{\Theta}}) = -2 \Big[\frac{n}{2} \text{log} \text{det}
+#' \hat{\boldsymbol{\Theta}} - \text{tr}(\hat{\textbf{S}}\hat{\boldsymbol{\Theta}})\Big]}
+#'
+#'  where \mjseqn{\hat{\boldsymbol{\Theta}}} is the estimated precision matrix
+#'  (e.g., for a given \mjseqn{\lambda} and \mjseqn{\gamma})
+#'  and \mjseqn{\hat{\textbf{S}}} is the sample-based covariance matrix.
 #'
 #' @note
 #'
