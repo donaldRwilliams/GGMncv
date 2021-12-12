@@ -191,16 +191,40 @@ The following are the available GIC:
 
 \itemize{
 
-\item \mjseqn{\textrm{GIC}_1 |\textbf{E}| \cdot \textrm{log}(n)}
+\item \mjseqn{\textrm{GIC}_1:  |\textbf{E}| \cdot \textrm{log}(n)}
        (\code{ic = "gic_1"}  or \code{ic = "bic"})
 
- }
+\item  \mjseqn{\textrm{GIC}_2: |\textbf{E}| \cdot p^{1/3}}
+       (\code{ic = "gic_2"})
+
+\item  \mjseqn{\textrm{GIC}_3:  |\textbf{E}| \cdot 2 \cdot \textrm{log}(p)}
+(\code{ic = "gic_3"} or \code{ic = "ric"})
+
+\item \mjseqn{\textrm{GIC}_4: |\textbf{E}| \cdot 2 \cdot \textrm{log}(p) +
+      \textrm{log}\big(\textrm{log}(p)\big)}
+       (\code{ic = "gic_4"})
+
+\item \mjseqn{\textrm{GIC}_5: |\textbf{E}| \cdot \textrm{log}(p) +
+       \textrm{log}\big(\textrm{log}(n)\big) \cdot \textrm{log}(p)}
+      (\code{ic = "gic_5"})
+
+ \item \mjseqn{\textrm{GIC}_6: |\textbf{E}| \cdot \textrm{log}(n)
+       \cdot \textrm{log}(p)}
+        (\code{ic = "gic_6"})
+}
 
  Note that \mjseqn{|\textbf{E}|} denotes the number of edges (nonzero relations)
  in the graph, \mjseqn{p} the number of nodes (columns), and
  \mjseqn{n} the number of observations (rows).
  Further each can be understood as a penalty term added to
  negative 2 times the log-likelihood, that is,
+
+\mjseqn{-2 l_n(\hat{\boldsymbol{\Theta}}) = -2 \Big[\frac{n}{2} \textrm{log} \textrm{det}
+\hat{\boldsymbol{\Theta}} - \textrm{tr}(\hat{\textbf{S}}\hat{\boldsymbol{\Theta}})\Big]}
+
+ where \mjseqn{\hat{\boldsymbol{\Theta}}} is the estimated precision matrix
+ (e.g., for a given \mjseqn{\lambda} and \mjseqn{\gamma})
+ and \mjseqn{\hat{\textbf{S}}} is the sample-based covariance matrix.
 }
 \note{
 \strong{initial}
