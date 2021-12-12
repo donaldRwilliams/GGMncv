@@ -52,10 +52,14 @@ An object of class \code{ggplot}
 Visualize the conditional dependence structure.
 }
 \examples{
+\donttest{
+
 Y <- na.omit(bfi[,1:25])
 
 fit <- ggmncv(cor(Y), n = nrow(Y),
               progress = FALSE)
 
 plot(get_graph(fit))
+
+}
 }

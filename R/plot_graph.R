@@ -40,12 +40,16 @@
 #' @importFrom sna gplot.layout.circle
 #'
 #' @examples
+#' \donttest{
+#'
 #' Y <- na.omit(bfi[,1:25])
 #'
 #' fit <- ggmncv(cor(Y), n = nrow(Y),
 #'               progress = FALSE)
 #'
 #' plot(get_graph(fit))
+#'
+#' }
 plot.graph <- function(x,
                        layout = "circle",
                        neg_col = "#D55E00",
