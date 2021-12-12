@@ -80,7 +80,7 @@ use custom test-statistics." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GGMncv</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -316,10 +316,23 @@ doi: <a href='https://doi.org/10.31234/osf.io/7uhx8'>10.31234/osf.io/7uhx8</a>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>compare_ggms</span> <span class='op'>&lt;-</span> <span class='fu'>nct</span><span class='op'>(</span><span class='va'>y1</span>, <span class='va'>y2</span>, iter <span class='op'>=</span> <span class='fl'>500</span>,</span>
 <span class='r-in'>                    progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in stopCluster(cl):</span> object 'cl' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>compare_ggms</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos):</span> object 'compare_ggms' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Network Comparsion Test</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (GGMncv Edition)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Maximum Difference</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.538 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Global Strength</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.562 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sum of Squared Error</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.196 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Jensen-Shannon divergence</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.122 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># custom function</span></span>
 <span class='r-in'><span class='co'># note: x &amp; y are partial correlation networks</span></span>
@@ -332,10 +345,24 @@ doi: <a href='https://doi.org/10.31234/osf.io/7uhx8'>10.31234/osf.io/7uhx8</a>
 <span class='r-in'><span class='va'>compare_ggms</span> <span class='op'>&lt;-</span> <span class='fu'>nct</span><span class='op'>(</span><span class='va'>y1</span>, <span class='va'>y2</span>,iter <span class='op'>=</span> <span class='fl'>100</span>,</span>
 <span class='r-in'>                    FUN <span class='op'>=</span> <span class='va'>Correlation</span>,</span>
 <span class='r-in'>                    progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in stopCluster(cl):</span> object 'cl' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>compare_ggms</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos):</span> object 'compare_ggms' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Network Comparsion Test</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (GGMncv Edition)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Maximum Difference</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.45 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Global Strength</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.52 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sum of Squared Error</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.22 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Jensen-Shannon divergence</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.12 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> note: compute p-values manually for custom tests. see vignettes.</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># correlation and strength</span></span>
 <span class='r-in'></span>
@@ -347,10 +374,24 @@ doi: <a href='https://doi.org/10.31234/osf.io/7uhx8'>10.31234/osf.io/7uhx8</a>
 <span class='r-in'>                    FUN <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Correlation <span class='op'>=</span> <span class='va'>Correlation</span>,</span>
 <span class='r-in'>                               Strength <span class='op'>=</span> <span class='va'>Strength</span><span class='op'>)</span>,</span>
 <span class='r-in'>                    progress <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in stopCluster(cl):</span> object 'cl' not found</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>compare_ggms</span></span>
-<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos):</span> object 'compare_ggms' not found</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Network Comparsion Test</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (GGMncv Edition)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Maximum Difference</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.44 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Global Strength</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.54 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Sum of Squared Error</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.21 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Jensen-Shannon divergence</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> p-value: 0.1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ----</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> note: compute p-values manually for custom tests. see vignettes.</span>
 <span class='r-in'><span class='co'># }</span></span>
 </pre>
   </div>

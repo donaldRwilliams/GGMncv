@@ -41,9 +41,11 @@ For example, notice the error when running the following code:
 library(GGMncv)
 
 # p > n
+set.seed(2)
 main <- gen_net(p = 50, 
                 edge_prob = 0.05)
 
+set.seed(2)
 y <- MASS::mvrnorm(n = 49, 
                    mu = rep(0, 50), 
                    Sigma = main$cors)
@@ -86,7 +88,8 @@ initial_ggmncv <- function(y, ...){
 fit2 <- ggmncv(cor(y), n = nrow(y), 
                penalty = "atan",
                progress = FALSE,
-               initial = initial_ggmncv, y = y)
+               initial = initial_ggmncv, 
+               y = y)
 
 plot(get_graph(fit2), 
      node_size = 5)

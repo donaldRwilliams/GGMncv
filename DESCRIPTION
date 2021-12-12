@@ -1,8 +1,8 @@
 Package: GGMncv
 Type: Package
 Title: Gaussian Graphical Models with Nonconvex Regularization
-Version: 2.0.1
-Date: 2020-11-15
+Version: 2.1.0
+Date: 2021-12-12
 Authors@R: person("Donald", "Williams", email = "drwwilliams@ucdavis.edu", role = c("aut", "cre"))
 Description: Estimate Gaussian graphical models with nonconvex penalties <doi:10.31234/osf.io/ad57p>, 
   including the atan Wang and Zhu (2016) <doi:10.1155/2016/6495417>, 

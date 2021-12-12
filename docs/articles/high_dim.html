@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">GGMncv</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -120,15 +120,17 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">GGMncv</span><span class="op">)</span>
 
 <span class="co"># p &gt; n</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
 <span class="va">main</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gen_net.html">gen_net</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">50</span>, 
                 edge_prob <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>
 
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html">mvrnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">49</span>, 
                    mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">50</span><span class="op">)</span>, 
                    Sigma <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">cors</span><span class="op">)</span>
 
 <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmncv.html">ggmncv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error in solve.default(R): system is computationally singular: reciprocal condition number = 1.8935e-18</span></code></pre></div>
+<span class="co">#&gt; Error in solve.default(R): system is computationally singular: reciprocal condition number = 3.39775e-18</span></code></pre></div>
 <div id="solution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#solution" class="anchor"></a>Solution</h2>
@@ -154,7 +156,8 @@
 <span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmncv.html">ggmncv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, 
                penalty <span class="op">=</span> <span class="st">"atan"</span>,
                progress <span class="op">=</span> <span class="cn">FALSE</span>,
-               initial <span class="op">=</span> <span class="va">initial_ggmncv</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
+               initial <span class="op">=</span> <span class="va">initial_ggmncv</span>, 
+               y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_graph.html">get_graph</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span>, 
      node_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
@@ -166,24 +169,24 @@
              true <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">adj</span>, 
              model_name <span class="op">=</span> <span class="st">"lw"</span><span class="op">)</span>
 <span class="co">#&gt;       measure     score model_name</span>
-<span class="co">#&gt; 1 specificity 0.9785223         lw</span>
-<span class="co">#&gt; 2 sensitivity 0.1803279         lw</span>
-<span class="co">#&gt; 3   precision 0.3055556         lw</span>
-<span class="co">#&gt; 4      recall 0.1803279         lw</span>
-<span class="co">#&gt; 5    f1_score 0.2268041         lw</span>
-<span class="co">#&gt; 6         mcc 0.2045912         lw</span>
+<span class="co">#&gt; 1 specificity 0.9750859         lw</span>
+<span class="co">#&gt; 2 sensitivity 0.2459016         lw</span>
+<span class="co">#&gt; 3   precision 0.3409091         lw</span>
+<span class="co">#&gt; 4      recall 0.2459016         lw</span>
+<span class="co">#&gt; 5    f1_score 0.2857143         lw</span>
+<span class="co">#&gt; 6         mcc 0.2583199         lw</span>
 
 <span class="co"># Shaffer and strimmer</span>
 <span class="fu"><a href="../reference/score_binary.html">score_binary</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">fit2</span><span class="op">$</span><span class="va">adj</span>, 
              true <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">adj</span>,  
              model_name <span class="op">=</span> <span class="st">"ss"</span><span class="op">)</span>
 <span class="co">#&gt;       measure     score model_name</span>
-<span class="co">#&gt; 1 specificity 0.9793814         ss</span>
-<span class="co">#&gt; 2 sensitivity 0.1803279         ss</span>
-<span class="co">#&gt; 3   precision 0.3142857         ss</span>
-<span class="co">#&gt; 4      recall 0.1803279         ss</span>
-<span class="co">#&gt; 5    f1_score 0.2291667         ss</span>
-<span class="co">#&gt; 6         mcc 0.2085279         ss</span></code></pre></div>
+<span class="co">#&gt; 1 specificity 0.9759450         ss</span>
+<span class="co">#&gt; 2 sensitivity 0.2459016         ss</span>
+<span class="co">#&gt; 3   precision 0.3488372         ss</span>
+<span class="co">#&gt; 4      recall 0.2459016         ss</span>
+<span class="co">#&gt; 5    f1_score 0.2884615         ss</span>
+<span class="co">#&gt; 6         mcc 0.2622113         ss</span></code></pre></div>
 </div>
 </div>
 <div id="works-but-bad-performance" class="section level1">
@@ -205,13 +208,13 @@
 
 <span class="fu"><a href="../reference/score_binary.html">score_binary</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">adj</span>, 
              true <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">adj</span><span class="op">)</span>
-<span class="co">#&gt;       measure      score</span>
-<span class="co">#&gt; 1 specificity 0.12800687</span>
-<span class="co">#&gt; 2 sensitivity 0.93442623</span>
-<span class="co">#&gt; 3   precision 0.05317164</span>
-<span class="co">#&gt; 4      recall 0.93442623</span>
-<span class="co">#&gt; 5    f1_score 0.10061783</span>
-<span class="co">#&gt; 6         mcc 0.04107837</span></code></pre></div>
+<span class="co">#&gt;       measure       score</span>
+<span class="co">#&gt; 1 specificity  0.07302405</span>
+<span class="co">#&gt; 2 sensitivity  0.88524590</span>
+<span class="co">#&gt; 3   precision  0.04766108</span>
+<span class="co">#&gt; 4      recall  0.88524590</span>
+<span class="co">#&gt; 5    f1_score  0.09045226</span>
+<span class="co">#&gt; 6         mcc -0.03444145</span></code></pre></div>
 <p>This is extremely problematic because there was no error, and the performance was terrible (note: 1 - specificity = the false positive rate).</p>
 <div id="solution-1" class="section level2">
 <h2 class="hasAnchor">
@@ -226,12 +229,12 @@
 <span class="fu"><a href="../reference/score_binary.html">score_binary</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">adj</span>, 
              true <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">adj</span><span class="op">)</span>
 <span class="co">#&gt;       measure     score</span>
-<span class="co">#&gt; 1 specificity 0.9931271</span>
-<span class="co">#&gt; 2 sensitivity 0.1147541</span>
-<span class="co">#&gt; 3   precision 0.4666667</span>
-<span class="co">#&gt; 4      recall 0.1147541</span>
-<span class="co">#&gt; 5    f1_score 0.1842105</span>
-<span class="co">#&gt; 6         mcc 0.2133777</span></code></pre></div>
+<span class="co">#&gt; 1 specificity 0.9725086</span>
+<span class="co">#&gt; 2 sensitivity 0.2622951</span>
+<span class="co">#&gt; 3   precision 0.3333333</span>
+<span class="co">#&gt; 4      recall 0.2622951</span>
+<span class="co">#&gt; 5    f1_score 0.2935780</span>
+<span class="co">#&gt; 6         mcc 0.2632312</span></code></pre></div>
 <p>An additional solution is to use <span class="math inline">\(L_1\)</span>-regularization, i.e.,</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit_l1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ggmncv.html">ggmncv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, 
@@ -241,21 +244,21 @@
 <span class="fu"><a href="../reference/score_binary.html">score_binary</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">fit_l1</span><span class="op">$</span><span class="va">adj</span>, 
              true <span class="op">=</span> <span class="va">main</span><span class="op">$</span><span class="va">adj</span><span class="op">)</span>
 <span class="co">#&gt;       measure     score</span>
-<span class="co">#&gt; 1 specificity 0.9905498</span>
+<span class="co">#&gt; 1 specificity 0.9914089</span>
 <span class="co">#&gt; 2 sensitivity 0.1311475</span>
-<span class="co">#&gt; 3   precision 0.4210526</span>
+<span class="co">#&gt; 3   precision 0.4444444</span>
 <span class="co">#&gt; 4      recall 0.1311475</span>
-<span class="co">#&gt; 5    f1_score 0.2000000</span>
-<span class="co">#&gt; 6         mcc 0.2142260</span></code></pre></div>
+<span class="co">#&gt; 5    f1_score 0.2025316</span>
+<span class="co">#&gt; 6         mcc 0.2215582</span></code></pre></div>
 <p>A quick comparison of KL-divergence</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># atan</span>
 <span class="fu"><a href="../reference/kl_mvn.html">kl_mvn</a></span><span class="op">(</span>true <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="va">main</span><span class="op">$</span><span class="va">cors</span><span class="op">)</span>, estimate <span class="op">=</span> <span class="va">fit</span><span class="op">$</span><span class="va">Theta</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.045355</span>
+<span class="co">#&gt; [1] 1.539283</span>
 
 <span class="co"># lasso</span>
 <span class="fu"><a href="../reference/kl_mvn.html">kl_mvn</a></span><span class="op">(</span>true <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html">solve</a></span><span class="op">(</span><span class="va">main</span><span class="op">$</span><span class="va">cors</span><span class="op">)</span>, estimate <span class="op">=</span> <span class="va">fit_l1</span><span class="op">$</span><span class="va">Theta</span><span class="op">)</span>
-<span class="co">#&gt; [1] 2.106814</span></code></pre></div>
+<span class="co">#&gt; [1] 2.374752</span></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level1 unnumbered">
