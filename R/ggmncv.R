@@ -167,6 +167,12 @@
 #'
 #' The following are the available GIC:
 #'
+#' \itemize{
+#'
+#' \item \mjseqn{\text{GIC}_1 |\textbf{E} | \cdot \text{log}(n)}
+#'        (\code{ic = "gic_1"}  or \code{ic = "bic"})
+#'
+#'  }
 #'
 #'  Note that \mjseqn{|\textbf{E}|} denotes the number of edges (nonzero relations)
 #'  in the graph, \mjseqn{p} the number of nodes (columns), and
