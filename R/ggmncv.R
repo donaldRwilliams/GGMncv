@@ -169,7 +169,7 @@
 #'
 #' \itemize{
 #'
-#' \item \mjseqn{\text{GIC}_1 |\textbf{E} | \cdot \text{log}(n)}
+#' \item \mjseqn{\text{GIC}\_1 |\textbf{E}| \cdot \text{log}(n)}
 #'        (\code{ic = "gic_1"}  or \code{ic = "bic"})
 #'
 #'  }
