@@ -191,7 +191,7 @@ The following are the available GIC:
 
 \itemize{
 
-\item \mjseqn{\text{GIC}\_1 |\textbf{E}| \cdot \text{log}(n)}
+\item \mjseqn{\textrm{GIC}_1 |\textbf{E}| \cdot \textrm{log}(n)}
        (\code{ic = "gic_1"}  or \code{ic = "bic"})
 
  }
